@@ -11,11 +11,11 @@ assignees: ''
 
 
 ## Use Case Information
-Use Case Name: 
-Level:
-Brief Description:
-Preconditions:
-Triggering Event:
-Main Flow:
-Extension:
-Postcondition:
+- Use Case Name: 
+- Level:
+- Brief Description:
+- Preconditions:
+- Triggering Event:
+- Main Flow:
+- Extension:
+- Postcondition:
