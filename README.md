@@ -52,8 +52,14 @@ _TODO: add install Instructions_
 
 ## Usage 
 To  run the project, you'll want to build it first. To do that, `cd` into the project directory and run:
-```
-./mvnm spring-boot:run
+
+```bash
+# For MacOS
+./mvnm spring-boot:run 
+
+# For Windows
+mvnw.cmd spring-boot:run #Window
 ``` 
+
 Maven will build the java files and start a local server at http://localhost:8080
 From there you can hit just about any end point in the application.
