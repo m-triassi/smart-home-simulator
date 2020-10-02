@@ -37,4 +37,7 @@ build/
 ._.DS_Store
 **/.DS_Store
 **/._.DS_Store
-~                      
+
+### npm install should not be run in the root directory... ###
+/node_modules
+package-lock.json

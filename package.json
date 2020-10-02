@@ -1,0 +1,22 @@
+{
+  "name": "smart-home-simulator",
+  "version": "1.0.0",
+  "description": "A Java REST API built on SpringBoot + Maven and VueJs for the front end that simulates the operation of a smart home.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cd src/main && npm run dev",
+    "prod": "cd src/main && npm run prod",
+    "start": "cd src/main && npm run dev && cd ../../ && ./mvnw spring-boot:run"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/m-triassi/smart-home-simulator.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/m-triassi/smart-home-simulator/issues"
+  },
+  "homepage": "https://github.com/m-triassi/smart-home-simulator#readme"
+}
