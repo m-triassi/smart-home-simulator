@@ -58,7 +58,7 @@ To  run the project, you'll want to build it first. To do that, `cd` into the pr
 ./mvnm spring-boot:run 
 
 # For Windows
-mvnw.cmd spring-boot:run #Window
+./mvnw.cmd spring-boot:run #Window
 ``` 
 
 Maven will build the java files and start a local server at http://localhost:8080
