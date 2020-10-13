@@ -24,7 +24,30 @@ public class UserService {
         return repository.findById(id).get();
     }
 
+    public User findByEmail(String email) {
+        return repository.findByEmail(email);
+    }
+
     public User save(User user) {
         return repository.save(user);
+    }
+
+    // save list of users
+    public List<User> saveUsers(List<User> users) {
+        return (List<User>) repository.saveAll(users);
+    }
+
+    public void deleteUser(Long id){
+        repository.deleteById(id);
+    }
+
+    public User updateUser(User updatedUser){
+        User existingUser = findById(updatedUser.getId());
+        if(existingUser == null)
+            return existingUser;
+        existingUser.setHome(updatedUser.getHome());
+        existingUser.setZone(updatedUser.getZone());
+        // existingUser.setEmail(updatedUser.getEmail());
+        return save(existingUser);
     }
 }
