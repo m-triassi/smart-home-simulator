@@ -1,0 +1,13 @@
+version: '3.1'
+
+services:
+        simulator-db:
+           image: mysql
+           restart: always
+           environment: 
+              MYSQL_ROOT_PASSWORD: root
+              MYSQL_DATABASE: smart-home-simulator
+           ports: 
+              - "3307:3306"
+           volumes:
+               - ./smart-home-simulator.sql:/smart-home-simulator.sql
