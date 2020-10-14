@@ -1,24 +1,24 @@
 <template>
     <div class="signup-form">
-        <form>
-            <h3>Sign Un</h3>
+        <form @submit.prevent="submitForm()">
+            <h3>Sign Up</h3>
 
             <div class="signup-box">
                 <label>Name</label>
-                <input type="text"/>
+                <input id ='name' v-model='name' type="text"/>
             </div>
 
             <div class="signup-box">
                 <label>Email address</label>
-                <input type="email"/>
+                <input id='email' v-model='email' type="email"/>
             </div>
 
             <div class="signup-box">
                 <label>Password</label>
-                <input type="password"/>
+                <input id='password' v-model='password' type="password"/>
             </div>
 
-            <button type="submit">Sign Up</button>
+            <button>Sign Up</button>
         </form>
         <br/>
     </div>
@@ -27,7 +27,24 @@
 <script>
     export default {
         data() {
-            return {}
+            return {
+                name: '',
+                email: '',
+                password: ''
+            }
+        },
+        
+        methods: {
+            submitForm(){
+                console.log('514');
+                console.log('name: ', this.name, ' email: ', this.email, ' password: ', this.password);
+                var path = '/user/store?name=' + this.name + '&email=' + this.email + '&password=' + this.password;
+                axios.post(path).then(function(response){
+                    console.log(response);
+                }).catch(function(error){
+                    console.log(error);
+                });
+            }
         }
     }
 </script>
