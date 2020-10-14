@@ -26,7 +26,7 @@ public class UserController {
         return userService.findById(id);
     }
 
-    @GetMapping(value = "/user/store")
+    @PostMapping(value = "/user/store")
     public String store(@RequestParam(value = "name") String name,
                         @RequestParam(value = "email") String email,
                         @RequestParam(value = "password") String password) {
