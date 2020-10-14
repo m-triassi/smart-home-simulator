@@ -13,6 +13,11 @@ export default {
             return {
                 count: 0
             };
+        },
+        mounted() {
+          axios.get('/users').then(function (response) {
+            console.log(response);
+          })
         }
 }
 
