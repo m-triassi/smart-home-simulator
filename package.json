@@ -18,5 +18,8 @@
   "bugs": {
     "url": "https://github.com/m-triassi/smart-home-simulator/issues"
   },
-  "homepage": "https://github.com/m-triassi/smart-home-simulator#readme"
+  "homepage": "https://github.com/m-triassi/smart-home-simulator#readme",
+  "dependencies": {
+    "vue-tabs-component": "^1.5.0"
+  }
 }
