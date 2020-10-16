@@ -9,8 +9,16 @@ import heating from './components/HeatingModule';
 import custom from './components/CustomModule';
 import simulator from './components/SimulatorModule';
 
+import Vue from 'vue'
+import vuetify from 'vuetify' // path to vuetify export
+
+
   const app = new Vue({
     el: '#app',
+    data:{
+      checkedLocations:[]
+    },
+    vuetify,
     components: {
         mainpage,
         profile,
@@ -20,6 +28,7 @@ import simulator from './components/SimulatorModule';
         heating,
         custom,
         simulator,
-    }
-});
+    },
+    
+}).$mount('#app');
 

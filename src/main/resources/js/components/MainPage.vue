@@ -5,7 +5,7 @@
         <table class="main_table">
 
             <tr>
-                <td rowspan="2">
+                <td class="profile_section" rowspan="2">
                     <p>Simulation</p>
 
                     <profile></profile>
@@ -25,6 +25,9 @@
             </tr>
                 <td colspan="2">
                     <p>Output Console</p>
+
+                    <outputconsole></outputconsole>
+
                 </td>
             <tr>
 
@@ -40,14 +43,16 @@
 <script>
 
 import profile from './Profile';
-
 import modules from './Modules'
+import outputconsole from './OutputConsole'
+
 
 export default {
     name: 'mainpage',
     components:{
         'profile':profile,
         'modules':modules,
+        'outputconsole':outputconsole,
     }
 }
 
@@ -67,5 +72,10 @@ export default {
     .main_table{
         width: 100%;
         height: 100%;
+    }
+
+    .profile_section{
+        width: 20%;
+        height: auto;
     }
 </style>

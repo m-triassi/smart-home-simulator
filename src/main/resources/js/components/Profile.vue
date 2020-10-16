@@ -5,7 +5,8 @@
         <table class="profile_table">
 
             <tr>
-                <button>ON</button>
+                <toggle-button :value="true"
+               :labels="{checked: 'On', unchecked: 'Off'}"/>
             </tr>
 
             <tr>
@@ -13,7 +14,8 @@
             </tr>
 
             <tr>
-                <img src="\\main\\resources\\static\\assets\\default-profile.png" alt="Default Profile"/>
+                <img class="default_profile_avatar" src="https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png" alt="Default Profile"/>
+                <h5>Parent</h5>
             </tr>
                 
             <tr>
@@ -22,7 +24,7 @@
             </tr>
                 
             <tr>
-                <h5><strong>Outside Temp. 15C</strong></h5>
+                <h5><strong>Outside Temp. {{temperature}}C</strong></h5>
             </tr>
 
             <tr>
@@ -37,10 +39,18 @@
 
 <script>
 
+import Vue from 'vue';
+import { ToggleButton } from 'vue-js-toggle-button'
+ 
+Vue.component('ToggleButton', ToggleButton)
+
 export default {
         name: 'profile',
         data() {
             return {
+
+                temperature:15
+
             };
         }
 }
@@ -52,6 +62,11 @@ export default {
     .profile_table{
         width: 100%;
         height: 100%;
+    }
+
+    .default_profile_avatar{
+        width: 20%;
+        height: auto;
     }
 
 </style>
