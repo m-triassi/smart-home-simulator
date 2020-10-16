@@ -17,7 +17,7 @@ import axios from 'axios';
 window.axios = axios
 
 const app = new Vue({
-el: '#app',
+    el: '#app',
     data:{
       checkedLocations:[]
     },
