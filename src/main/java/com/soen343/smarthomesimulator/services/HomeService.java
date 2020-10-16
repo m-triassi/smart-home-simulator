@@ -3,6 +3,7 @@ package com.soen343.smarthomesimulator.services;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.soen343.smarthomesimulator.models.Home;
 import com.soen343.smarthomesimulator.repositories.HomeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -11,5 +12,9 @@ import org.springframework.stereotype.Service;
 public class HomeService {
 
     @Autowired HomeRepository repository;
+
+    public Home save(Home home) {
+        return repository.save(home);
+    }
 
 }

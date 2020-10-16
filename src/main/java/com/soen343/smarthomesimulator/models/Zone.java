@@ -21,11 +21,20 @@ public class Zone {
 
     private String name;
 
-    private Integer temperature;
+    private Integer temperature = 21;
 
     @ManyToOne
     @JoinColumn(name = "home_id")
     private Home home;
+
+    public Zone(String name, Home home) {
+        this.name = name;
+        this.home = home;
+    }
+
+    public Zone(String name) {
+        this.name = name;
+    }
 
     public Long getId() {
         return id;
@@ -50,5 +59,4 @@ public class Zone {
     public void setTemperature(Integer temperature) {
         this.temperature = temperature;
     }
-
 }

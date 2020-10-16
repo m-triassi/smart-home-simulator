@@ -1,6 +1,9 @@
 package com.soen343.smarthomesimulator.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.soen343.smarthomesimulator.services.ZoneService;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -11,7 +14,7 @@ import javax.persistence.OneToOne;
 
 // Windows, Doors, etc...
 @Entity
-@Table(name = "appliances")
+@Table(name = "openings")
 public class Opening {
 
     @Id
@@ -20,7 +23,16 @@ public class Opening {
 
     private String type;
 
-    private Integer state;
+    private Integer state = 0;
+
+    public Opening() {
+        this.type = "door";
+    }
+
+    public Opening(String type, Zone zone) {
+        this.type = type;
+        this.zone = zone;
+    }
 
     @OneToOne
     @JoinColumn(name = "zone_id")
