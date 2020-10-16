@@ -45,10 +45,32 @@ You can [get it here](https://www.oracle.com/java/technologies/javase-downloads.
 *A Portion of these instructions were taken from the oracle help pages, [here](https://docs.oracle.com/en/java/javase/11/install/installation-jdk-microsoft-windows-platforms.html#GUID-371F38CC-248F-49EC-BB9C-C37FC89E52A0)*.
 If you need more comprehensive information, be sure to visit that page. 
 
+### MySql
+- Required Version: `^5.7`
+
+This project also requires a MySql Database to be running. 
+
+_TODO: setup instructions_
+
 ### Node
+- Required Version: `^14.0`
+
 Node is a Javascript runtime, its package manager holds all of our front end dependencies.
 
 _TODO: add install Instructions_
+
+### Application Properties
+Once set up, you'll need to add your database credentials to the `application.properties` file.
+```
+# For MacOS
+cp application.properties.example application.properties
+
+# for Windows
+copy application.properties.example application.properties
+```
+
+make sure to fill the `application.properties` with the appropriate credentials. 
+
 
 ## Usage 
 To  run the project, you'll want to build it first. To do that, `cd` into the project directory and run:
@@ -63,3 +85,12 @@ To  run the project, you'll want to build it first. To do that, `cd` into the pr
 
 Maven will build the java files and start a local server at http://localhost:8080
 From there you can hit just about any end point in the application.
+
+
+
+## Support 
+Some Useful guides and information for using Spring, Vue, and other technology used in the project can be found here:
+
+- [Building a RESTful service with SpringBoot](https://spring.io/guides/gs/rest-service/)
+- [The VueJS Documentation](https://vuejs.org/v2/guide/) 
+- [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
