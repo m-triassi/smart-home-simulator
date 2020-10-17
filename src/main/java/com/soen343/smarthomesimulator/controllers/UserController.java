@@ -45,6 +45,7 @@ public class UserController {
     public JSONObject update(@RequestParam(value = "id") Long id,
                              @RequestParam(value = "home_id", required = false) Long homeId,
                              @RequestParam(value = "zone_id", required = false) Long zoneId) {
+        // TODO: Update password, name, role
 
         User user = userService.findById(id);
         if (homeId != null && homeService.exists(homeId)) {
@@ -68,7 +69,6 @@ public class UserController {
 
     @GetMapping("/user")
     public User show(@RequestParam(value = "id") Long id) {
-        // TODO: get some user with "id"
         return userService.findById(id);
     }
 
