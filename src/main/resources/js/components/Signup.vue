@@ -28,9 +28,9 @@
     export default {
         data() {
             return {
-                name: '',
-                email: '',
-                password: ''
+              name: '',
+              email: '',
+              password: ''
             }
         },
         
@@ -39,6 +39,8 @@
                 var path = '/user/store?name=' + this.name + '&email=' + this.email + '&password=' + this.password;
                 axios.post(path).then(function(response){
                     console.log(response);
+                    window.location.href = "/";
+
                 }).catch(function(error){
                     console.log(error);
                 });
