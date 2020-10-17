@@ -28,6 +28,10 @@ public class Zone {
     @JoinColumn(name = "home_id")
     private Home home;
 
+    public Zone() {
+        this.name = "Generic Zone";
+    }
+
     public Zone(String name, Home home) {
         this.name = name;
         this.home = home;

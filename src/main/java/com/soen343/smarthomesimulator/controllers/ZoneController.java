@@ -3,6 +3,7 @@ package com.soen343.smarthomesimulator.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soen343.smarthomesimulator.models.Opening;
 import com.soen343.smarthomesimulator.models.Zone;
+import com.soen343.smarthomesimulator.services.HomeService;
 import com.soen343.smarthomesimulator.services.OpeningService;
 import com.soen343.smarthomesimulator.services.UserService;
 import com.soen343.smarthomesimulator.services.ZoneService;
@@ -24,12 +25,15 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 
 @RestController
 public class ZoneController {
 
+    @Autowired
+    HomeService homeService;
 
     @Autowired
     ZoneService zoneService;
@@ -44,8 +48,13 @@ public class ZoneController {
         this.response.put("success", "true");
     }
 
+    @GetMapping("/zones")
+    public List<Zone> index(@RequestParam(value = "home_id") Long homeId) {
+        return zoneService.findByHome(homeId);
+    }
+
     @PostMapping("/zones/load")
-    public JSONObject load(@RequestParam(value = "layout") MultipartFile layout) {
+    public JSONObject load(@RequestParam(value = "layout") MultipartFile layout, @RequestParam(value = "home_id", required = false) Long homeId) {
         if (!layout.getContentType().equals("application/json")) {
             this.response.put("success", "false");
             this.response.put("message", "File Supplied is not a JSON text file. File type supplied: ".concat(layout.getContentType()));
@@ -62,7 +71,6 @@ public class ZoneController {
             return new JSONObject(this.response);
         }
 
-//        ObjectMapper?
         JSONParser loaded = new JSONParser(JSONParser.DEFAULT_PERMISSIVE_MODE);
         JSONArray parsed = new JSONArray();
         try {
@@ -79,7 +87,12 @@ public class ZoneController {
 
         // Build zones + openings
         for (Object z : parsed) {
-            Zone zone = new Zone(handleGet(z, "name"));
+            Zone zone;
+            if (homeId != null && homeService.exists(homeId)) {
+                zone = new Zone(handleGet(z, "name"), homeService.findById(homeId));
+            } else {
+                zone = new Zone(handleGet(z, "name"));
+            }
             zoneService.save(zone);
 
             int wCount = Integer.parseInt(handleGet(z, "windows"));
