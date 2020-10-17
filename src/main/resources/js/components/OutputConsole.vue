@@ -10,7 +10,7 @@ export default {
         name: 'outputconsole',
         data() {
             return {
-                message:"basifbnsaidfbisdbfsdf \n oanfdioabfisehfisebfsif \n oahf9sadhf9sdghs9dpofhasiopfghsdb \n abfnioseadfghsi9dfhs \n\n\n\n\n\n oiasgbdhfiasgbfdh",
+                message:"basifbnsaidfbisdbfsdf \n oanfdioabfisehfisebfsif \n oahf9sadhf9sdghs9dpofhasiopfghsdb \n abfnioseadfghsi9dfhs \n\n\n\n\n\n oiasgbdhfiasgbfdhs",
             };
         }
 }
