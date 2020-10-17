@@ -1,5 +1,7 @@
 package com.soen343.smarthomesimulator.repositories;
 
+import java.util.Optional;
+
 import com.soen343.smarthomesimulator.models.User;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

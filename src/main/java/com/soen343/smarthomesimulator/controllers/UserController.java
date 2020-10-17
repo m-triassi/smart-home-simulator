@@ -37,16 +37,17 @@ public class UserController {
         return userService.findUserByCredentials(email, password);
     }
 
-    @PostMapping(value = "/user/store")
+    @GetMapping(value = "/user/store")
     public String store(@RequestParam(value = "name") String name,
                         @RequestParam(value = "email") String email,
-                        @RequestParam(value = "password") String password) {
+                        @RequestParam(value = "password") String password,
+                        @RequestParam(value = "role") String role) {
 
         // TODO: Input Validation
 
         password = this.passwordEncoder().encode(password);
 
-        if (userService.save(new User(name, email, password)) != null) {
+        if (userService.save(new User(name, email, password, role)) != null) {
             return "{\"success\": true}";
         }
 

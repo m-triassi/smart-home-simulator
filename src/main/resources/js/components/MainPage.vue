@@ -1,7 +1,15 @@
 <template>
     
     <div>
-
+        <a href="login" class="LoginButton">
+            Login
+        </a>
+        <a href="signup" class="SignupButton">
+            Signup
+        </a>
+        <a href="logout" class="LogoutButton">
+            Logout
+        </a>
         <table class="main_table">
 
             <tr>
@@ -34,8 +42,6 @@
             </tr>
 
         </table>
-
-
     </div>
 
 </template>

@@ -36,8 +36,6 @@
         
         methods: {
             submitForm(){
-                console.log('514');
-                console.log('name: ', this.name, ' email: ', this.email, ' password: ', this.password);
                 var path = '/user/store?name=' + this.name + '&email=' + this.email + '&password=' + this.password;
                 axios.post(path).then(function(response){
                     console.log(response);
