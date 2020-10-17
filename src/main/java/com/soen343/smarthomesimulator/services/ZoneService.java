@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class ZoneService {
 
-    @Autowired ZoneRepository repository;
+    @Autowired
+    ZoneRepository repository;
 
 }
