@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class OpeningService {
 
-    @Autowired OpeningRepository repository;
+    @Autowired
+    OpeningRepository repository;
 
 }

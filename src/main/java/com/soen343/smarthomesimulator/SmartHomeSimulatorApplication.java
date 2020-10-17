@@ -11,8 +11,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @EnableJpaRepositories(basePackageClasses = UserRepository.class)
 public class SmartHomeSimulatorApplication extends SpringBootServletInitializer {
 
-	public static void main(String[] args) {
-		SpringApplication.run(SmartHomeSimulatorApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(SmartHomeSimulatorApplication.class, args);
+    }
 
 }

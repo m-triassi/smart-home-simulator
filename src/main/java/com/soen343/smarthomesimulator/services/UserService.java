@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class UserService {
-    @Autowired UserRepository repository;
+    @Autowired
+    UserRepository repository;
 
     public List<User> findAll() {
         var iterator = repository.findAll();
