@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ApplianceService {
 
-    @Autowired ApplianceRepository repository;
+    @Autowired
+    ApplianceRepository repository;
 
 
 }

@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class ZoneService {
 
-    @Autowired ZoneRepository repository;
+    @Autowired
+    ZoneRepository repository;
 
     public Zone save(Zone zone) {
         return repository.save(zone);

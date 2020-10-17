@@ -88,6 +88,20 @@ From there you can hit just about any end point in the application.
 
 
 
+## Design
+A portion of the requirements for this project involve designing a robust and documented system.
+Below is a Domain Diagram that describes the models and their relationships, a class diagram that shows which classes call which,
+as well as a sequence diagram the illustrates the flow a user might take when navigating the system.
+
+### Domain Model
+
+![Domain Model](docs/SHS-Domain_Model.png)
+
+
+### Class Diagram
+
+![Class Diagram](docs/SHS-Class_Diagram.png)
+
 ## Support 
 Some Useful guides and information for using Spring, Vue, and other technology used in the project can be found here:
 

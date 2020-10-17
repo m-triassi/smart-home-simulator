@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class HomeService {
 
-    @Autowired HomeRepository repository;
+    @Autowired
+    HomeRepository repository;
 
     public Home save(Home home) {
         return repository.save(home);
