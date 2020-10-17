@@ -27,6 +27,18 @@ public class Home {
 
     private Timestamp date;
 
+    public Home() {
+        this.name = "Generic Home";
+        this.date = new Timestamp(System.currentTimeMillis());
+        this.outside_temp = 21;
+    }
+
+    public Home(String name) {
+        this.name = name;
+        this.date = new Timestamp(System.currentTimeMillis());
+        this.outside_temp = 21;
+    }
+
     public Long getId() {
         return id;
     }
