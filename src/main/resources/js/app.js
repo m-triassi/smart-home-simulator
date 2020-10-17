@@ -11,9 +11,12 @@ import simulator from './components/SimulatorModule';
 
 import Vue from 'vue'
 import vuetify from 'vuetify' // path to vuetify export
+import axios from 'axios';
 
+// make axios globally available
+window.axios = axios
 
-  const app = new Vue({
+const app = new Vue({
     el: '#app',
     data:{
       checkedLocations:[]
