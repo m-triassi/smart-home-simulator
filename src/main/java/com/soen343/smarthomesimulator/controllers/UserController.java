@@ -29,7 +29,7 @@ public class UserController {
         return userService.findById(id);
     }
 
-    @GetMapping("/userLogin")
+    @GetMapping("/user/login")
     public User getUser(@RequestParam(value = "email") String email,
                         @RequestParam(value = "password") String password) {
 
@@ -37,7 +37,7 @@ public class UserController {
         return userService.findUserByCredentials(email, password);
     }
 
-    @GetMapping(value = "/user/store")
+    @PostMapping(value = "/user/store")
     public String store(@RequestParam(value = "name") String name,
                         @RequestParam(value = "email") String email,
                         @RequestParam(value = "password") String password,
@@ -45,7 +45,7 @@ public class UserController {
 
         // TODO: Input Validation
 
-        password = this.passwordEncoder().encode(password);
+        password = passwordEncoder().encode(password);
 
         if (userService.save(new User(name, email, password, role)) != null) {
             return "{\"success\": true}";
@@ -54,7 +54,7 @@ public class UserController {
         return "{\"success\": false}";
     }
 
-    @Bean
+
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }

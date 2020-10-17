@@ -14,19 +14,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class UserDetailsServiceConfig implements UserDetailsService{
-	
-	@Autowired
-	UserRepository userRepo;
+public class UserDetailsServiceConfig implements UserDetailsService {
 
-	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		User user = userRepo.findByEmail(email);
-		
-		if(user == null) 
-			throw new UsernameNotFoundException("email not found");
+    @Autowired
+    UserRepository userRepo;
 
-		return new UserDetailsModel(user);
-	}
-    
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepo.findByEmail(email);
+
+        if (user == null)
+            throw new UsernameNotFoundException("email not found");
+
+        return new UserDetailsModel(user);
+    }
+
 }

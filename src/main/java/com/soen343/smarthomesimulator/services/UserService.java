@@ -6,6 +6,7 @@ import java.util.List;
 import com.soen343.smarthomesimulator.models.User;
 import com.soen343.smarthomesimulator.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -38,26 +39,16 @@ public class UserService {
         return (List<User>) repository.saveAll(users);
     }
 
-    public void deleteUser(Long id){
+    public void deleteById(Long id) {
         repository.deleteById(id);
     }
 
-    public User updateUser(User updatedUser){
-        User existingUser = findById(updatedUser.getId());
-        if(existingUser == null)
-            return existingUser;
-        existingUser.setHome(updatedUser.getHome());
-        existingUser.setZone(updatedUser.getZone());
-        // existingUser.setEmail(updatedUser.getEmail());
-        return save(existingUser);
-    }
-
-    public User findUserByCredentials(String email, String password){
+    public User findUserByCredentials(String email, String password) {
         User potentialUser = repository.findByEmail(email);
-        System.out.println("514findbyemail " + potentialUser.getId());
-        if(potentialUser != null && potentialUser.getPassword() == password)
+        if (potentialUser != null && new BCryptPasswordEncoder().matches(password, potentialUser.getPassword())) {
             return potentialUser;
-        else
+        } else {
             return null;
+        }
     }
 }

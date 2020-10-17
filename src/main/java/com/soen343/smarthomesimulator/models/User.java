@@ -38,6 +38,12 @@ public class User {
     @JoinColumn(name = "zone_id")
     private Zone zone;
 
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
+
+    private static final String ROLE_USER = "ROLE_USER";
+
+    private static final String ROLE_CHILD = "ROLE_CHILD";
+
     public User() {
     }
 
@@ -46,14 +52,14 @@ public class User {
         this.email = email;
         this.name = name;
         this.password = password;
-        this.role = "USER_ROLE";
+        this.role = ROLE_USER;
     }
 
     public User(String name, String email, String password) {
         this.email = email;
         this.name = name;
         this.password = password;
-        this.role = "USER_ROLE";
+        this.role = ROLE_USER;
     }
 
     public User(String name, String email, String password, String role) {
