@@ -1,6 +1,7 @@
 package com.soen343.smarthomesimulator.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -38,7 +39,7 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String name,  String email, String password) {
+    public User(Long id, String name, String email, String password) {
         this.id = id;
         this.email = email;
         this.name = name;

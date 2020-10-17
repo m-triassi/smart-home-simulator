@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class HomeService {
 
-    @Autowired HomeRepository repository;
+    @Autowired
+    HomeRepository repository;
 
 }
