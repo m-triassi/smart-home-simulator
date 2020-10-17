@@ -14,6 +14,14 @@ public class HomeService {
     @Autowired
     HomeRepository repository;
 
+    public Home findById(Long id) {
+        return repository.findById(id).get();
+    }
+
+    public boolean exists(Long id) {
+        return repository.existsById(id);
+    }
+
     public Home save(Home home) {
         return repository.save(home);
     }

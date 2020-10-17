@@ -27,8 +27,6 @@ public class UserDetailsModel implements UserDetails{
         this.name = user.getName();
         this.id = user.getId();
         this.role = user.getRole();
-
-        System.out.println("role: " + this.role);
     }
 
     public UserDetailsModel(){
