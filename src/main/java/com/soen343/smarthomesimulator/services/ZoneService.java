@@ -21,6 +21,14 @@ public class ZoneService {
     @PersistenceContext
     EntityManager entityManager;
 
+    public Zone findById(Long id) {
+        return repository.findById(id).get();
+    }
+
+    public boolean exists(Long id) {
+        return repository.existsById(id);
+    }
+
     public List<Zone> findByHome(Long homeID) {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Zone> query = cb.createQuery(Zone.class);
