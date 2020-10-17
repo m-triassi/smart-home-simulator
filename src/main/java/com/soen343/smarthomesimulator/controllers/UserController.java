@@ -8,10 +8,9 @@ import com.soen343.smarthomesimulator.services.UserService;
 import com.soen343.smarthomesimulator.services.ZoneService;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -72,12 +71,23 @@ public class UserController {
         return userService.findById(id);
     }
 
-    @PostMapping("/user/store")
-    public JSONObject store(@RequestParam(value = "name") String name,
-                        @RequestParam(value = "email") String email,
+
+    @GetMapping("/user/login")
+    public User getUser(@RequestParam(value = "email") String email,
                         @RequestParam(value = "password") String password) {
 
+        //TODO: instead of returning the user create, implement persistence for user login
+        return userService.findUserByCredentials(email, password);
+    }
+
+    @PostMapping(value = "/user/store")
+    public JSONObject store(@RequestParam String name,
+                        @RequestParam String email,
+                        @RequestParam String password) {
+
         // TODO: Input Validation
+
+        password = passwordEncoder().encode(password);
 
         if (userService.save(new User(name, email, password)) != null) {
             return new JSONObject(this.response);
@@ -85,5 +95,10 @@ public class UserController {
 
         this.response.put("success", "false");
         return new JSONObject(this.response);
+    }
+
+
+    public BCryptPasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 }

@@ -8,10 +8,13 @@ import security from './components/SecurityModule';
 import heating from './components/HeatingModule';
 import custom from './components/CustomModule';
 import simulator from './components/SimulatorModule';
+import login from './components/Login';
+import signup from './components/Signup';
 
 import Vue from 'vue'
 import vuetify from 'vuetify' // path to vuetify export
 import axios from 'axios';
+
 
 // make axios globally available
 window.axios = axios
@@ -31,6 +34,7 @@ const app = new Vue({
         heating,
         custom,
         simulator,
+        signup,
     },
     
 }).$mount('#app');

@@ -83,7 +83,7 @@ CREATE TABLE `users` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role` enum('admin','user','child') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `role` enum('ROLE_ADMIN','ROLE_USER','ROLE_CHILD') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `home_id` bigint(20) unsigned DEFAULT NULL,
   `zone_id` bigint(20) unsigned DEFAULT NULL,
