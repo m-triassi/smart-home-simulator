@@ -50,4 +50,13 @@ public class UserService {
         // existingUser.setEmail(updatedUser.getEmail());
         return save(existingUser);
     }
+
+    public User findUserByCredentials(String email, String password){
+        User potentialUser = repository.findByEmail(email);
+        System.out.println("514findbyemail " + potentialUser.getId());
+        if(potentialUser != null && potentialUser.getPassword() == password)
+            return potentialUser;
+        else
+            return null;
+    }
 }
