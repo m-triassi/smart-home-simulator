@@ -28,7 +28,7 @@
             </tr>
 
             <tr>
-                <h5><strong>Date</strong></h5>
+                <h5><strong>{{input_date}}</strong></h5>
             </tr>
 
         </table>
@@ -49,7 +49,8 @@ export default {
         data() {
             return {
 
-                temperature:15
+                temperature:15,
+                input_date:new Date().toLocaleString()
 
             };
         }
