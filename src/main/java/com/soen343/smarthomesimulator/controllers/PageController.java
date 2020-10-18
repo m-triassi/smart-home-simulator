@@ -11,4 +11,9 @@ public class PageController {
         return "signup";
     }
 
+    @RequestMapping("/edit/profile")
+    public String editProfile(){
+        return "editProfile";
+    }
+
 }

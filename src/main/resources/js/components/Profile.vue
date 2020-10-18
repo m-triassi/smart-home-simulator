@@ -15,7 +15,8 @@
 
             <tr>
                 <img class="default_profile_avatar" src="https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png" alt="Default Profile"/>
-                <h5>Parent</h5>
+                <h5>{{user.role}}</h5>
+                <h5>{{user.email}}</h5>
             </tr>
                 
             <tr>
@@ -50,9 +51,25 @@ export default {
             return {
 
                 temperature:15,
-                input_date:new Date().toLocaleString()
-
+                input_date:new Date().toLocaleString(),
+                user: {}
             };
+        },
+
+        methods: {
+            getName() {
+                var path = 'user/current';
+
+                axios.get(path).then(response =>{
+                    this.user = response.data;
+                })
+                .catch(function(error){
+                    console.log(error);
+                });
+            }
+        },
+        mounted(){
+            this.getName()
         }
 }
 

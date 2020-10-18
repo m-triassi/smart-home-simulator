@@ -1,16 +1,90 @@
-a.LoginButton, a.SignupButton, a.LogoutButton{
-     display:inline-block;
-     padding:0.35em 1.2em;
-     border:0.1em solid #802525;
-     margin:0 0.3em 0.3em 0;
-     border-radius:0.12em;
-     box-sizing: border-box;
-     text-decoration:none;
-     font-weight:300;
-     color:#000000;
-     text-align:center;
-    }
+  a.LoginButton, a.SignupButton, a.LogoutButton, a.EditButton{
+       display:inline-block;
+       padding:0.35em 1.2em;
+       border:0.1em solid #802525;
+       margin:0 0.3em 0.3em 0;
+       border-radius:0.12em;
+       box-sizing: border-box;
+       text-decoration:none;
+       font-weight:300;
+       color:#000000;
+       text-align:center;
+      }
 
-    a.LogoutButton{
+    a.LogoutButton, a.EditButton{
         float: right;
     }
+
+    body {
+        padding-top: 40px;
+        padding-bottom: 40px;
+        background-color: #eee;
+      }
+      .input{
+        display: block;
+        width: 100%;
+        padding: .5rem .75rem;
+        font-size: 1rem;
+        line-height: 1.25;
+        color: #495057;
+        background-color: #fff;
+        background-image: none;
+        background-clip: padding-box;
+        border: 1px solid rgba(0,0,0,.15);
+        border-radius: .25rem;
+        transition: border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+        margin-bottom: 1rem;
+      }
+      
+      .signup-form {
+        max-width: 330px;
+        padding: 15px;
+        margin: 0 auto;
+      }
+      .signup-form h3 {
+        margin-bottom: 10px;
+        font-weight: 500;
+        font-size: 2rem;
+        text-align: center;
+      }
+      .form-signin .radio {
+        font-weight: 400;
+      }
+      .signup-form .input {
+        position: relative;
+        box-sizing: border-box;
+        height: auto;
+        padding: 10px;
+        font-size: 16px;
+      }
+      .signup-form .input:focus {
+        z-index: 2;
+      }
+      .signup-form input[type="email"] {
+        border-bottom-right-radius: 0;
+        border-bottom-left-radius: 0;
+      }
+      .signup-form input[type="password"] {
+        margin-bottom: 10px;
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+      }
+
+      .btn {
+        display: block;
+        width: 100%;
+        padding: .5rem 1rem;
+        font-size: 1.25rem;
+        line-height: 1.5;
+        border-radius: .3rem;
+        color: #fff;
+        background-color: #007bff;
+        border-color: #007bff;
+        font-weight: 400;
+        text-align: center;
+        white-space: nowrap;
+        vertical-align: middle;
+        user-select: none;
+        border: 1px solid transparent;
+    }
+      

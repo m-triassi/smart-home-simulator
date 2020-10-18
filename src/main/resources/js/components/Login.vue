@@ -31,7 +31,6 @@
         
         methods: {
             submitForm(){
-                console.log(' email: ', this.email, ' password: ', this.password);
                 
                 var path = '/userLogin?email=' + this.email + '&password=' + this.password;
                 axios.get(path).then(function(response){

@@ -10,6 +10,9 @@
         <a href="logout" class="LogoutButton">
             Logout
         </a>
+        <a href="edit/profile" class="EditButton">
+            Edit Profile
+        </a>
         <table class="main_table">
 
             <tr>

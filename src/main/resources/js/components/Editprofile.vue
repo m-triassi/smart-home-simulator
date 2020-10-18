@@ -1,7 +1,7 @@
 <template>
     <div class="signup-form">
         <form @submit.prevent="submitForm()">
-            <h3>Please sign up</h3>
+            <h3>Edit your profile</h3>
 
             <div class="signup-box">
                 <input class= 'input' id ='name' v-model='name' type="text" placeholder="Name"/>
@@ -25,7 +25,7 @@
                 <label>Guest</label>
             </div>
 
-            <button class="btn">Sign Up</button>
+            <button class="btn">Edit</button>
         </form>
         <br/>
     </div>
@@ -53,8 +53,7 @@
                     this.isChild = false;
                 if(this.isGuest == "")
                     this.isGuest = false;
-                var path = '/user/store?name=' + this.name + '&email=' + this.email + '&password=' + this.password + '&isParent=' + this.isParent + 
-                '&isChild=' + this.isChild + '&isGuest=' + this.isGuest;
+                var path = '/user/service?';
                 axios.post(path).then(function(response){
                     console.log(response);
                     window.location.href = "/";
