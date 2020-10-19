@@ -2,13 +2,7 @@ package com.soen343.smarthomesimulator.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 // Windows, Doors, etc...
 @Entity
@@ -23,6 +17,12 @@ public class Opening {
 
     private Integer state = 0;
 
+    private static final int STATE_OPEN = 1;
+
+    private static final int STATE_CLOSED = 0;
+
+    private static final int STATE_LOCKED = -1;
+
     public Opening() {
         this.type = "door";
     }
@@ -32,8 +32,7 @@ public class Opening {
         this.zone = zone;
     }
 
-    @OneToOne
-    @JoinColumn(name = "zone_id")
+    @ManyToOne
     private Zone zone;
 
     public Long getId() {
@@ -57,11 +56,8 @@ public class Opening {
     }
 
     public void setState(Integer state) {
+        // TODO: State Validation - constrain to one of the enums
         this.state = state;
-    }
-
-    public Zone getZone() {
-        return zone;
     }
 
     public void setZone(Zone zone) {

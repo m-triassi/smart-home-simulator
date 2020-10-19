@@ -2,15 +2,8 @@ package com.soen343.smarthomesimulator.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "zones")
@@ -23,6 +16,9 @@ public class Zone {
     private String name;
 
     private Integer temperature = 21;
+
+    @OneToMany(mappedBy = "zone", cascade = CascadeType.ALL)
+    private List<Opening> openings;
 
     @ManyToOne
     @JoinColumn(name = "home_id")
@@ -63,5 +59,13 @@ public class Zone {
 
     public void setTemperature(Integer temperature) {
         this.temperature = temperature;
+    }
+
+    public List<Opening> getOpenings() {
+        return openings;
+    }
+
+    public void setOpenings(List<Opening> opening) {
+        this.openings = opening;
     }
 }
