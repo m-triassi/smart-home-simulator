@@ -98,15 +98,12 @@ public class UserController {
 
     @GetMapping("/user/current")
     public User currentUser() {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass());
-
         // case when no user is logged in, the principal is set to string 'anonymousUser' by default;
-        // if a user is logged in, cast the principal to UserDetailsModel
+        // if a user is logged in, cast the principal to User
         if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass() == String.class)
             return null;
         else{
             User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            System.out.println(currentUser.getUsername());
             return currentUser;
         }
     }

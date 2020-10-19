@@ -49,6 +49,8 @@ public class User implements UserDetails {
 
     private static final String ROLE_CHILD = "ROLE_CHILD";
 
+    private static final String ROLE_STRANGER = "ROLE_STRANGER";
+
     public User() {
     }
 

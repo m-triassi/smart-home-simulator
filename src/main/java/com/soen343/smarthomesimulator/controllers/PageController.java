@@ -16,4 +16,9 @@ public class PageController {
         return "editProfile";
     }
 
+    @RequestMapping("/edit/home")
+    public String editHome(){
+        return "editHome";
+    }
+
 }

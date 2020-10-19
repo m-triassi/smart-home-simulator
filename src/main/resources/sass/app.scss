@@ -1,4 +1,4 @@
-  a.LoginButton, a.SignupButton, a.LogoutButton, a.EditButton{
+  a.LoginButton, a.SignupButton, a.LogoutButton, a.EditButton, a.EditHomeButton{
        display:inline-block;
        padding:0.35em 1.2em;
        border:0.1em solid #802525;
@@ -11,7 +11,7 @@
        text-align:center;
       }
 
-    a.LogoutButton, a.EditButton{
+    a.LogoutButton, a.EditButton {
         float: right;
     }
 
@@ -86,5 +86,10 @@
         vertical-align: middle;
         user-select: none;
         border: 1px solid transparent;
-    }
+      }
+      .sidetoside{
+        display: inline-block;
+      }
+    
+
       

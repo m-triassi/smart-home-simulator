@@ -15,8 +15,8 @@
 
             <tr>
                 <img class="default_profile_avatar" src="https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png" alt="Default Profile"/>
-                <h5>{{user.role}}</h5>
-                <h5>{{user.email}}</h5>
+                <h5>Signed in user name: {{user.name}}</h5>
+                <h5>Access type: {{user.role}}</h5>
             </tr>
                 
             <tr>
@@ -61,6 +61,7 @@ export default {
                 var path = 'user/current';
 
                 axios.get(path).then(response =>{
+                    console.log(response)
                     this.user = response.data;
                 })
                 .catch(function(error){
