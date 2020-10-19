@@ -13,6 +13,10 @@
         <a href="edit/profile" class="EditButton">
             Edit Profile
         </a>
+        <a href="edit/home" class="EditHomeButton">
+            Create or edit Home
+        </a>
+
         <table class="main_table">
 
             <tr>
