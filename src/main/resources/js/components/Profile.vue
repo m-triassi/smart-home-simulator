@@ -61,7 +61,6 @@ export default {
                 var path = 'user/current';
 
                 axios.get(path).then(response =>{
-                    console.log(response)
                     this.user = response.data;
                 })
                 .catch(function(error){

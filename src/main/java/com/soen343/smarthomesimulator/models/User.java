@@ -43,11 +43,13 @@ public class User implements UserDetails {
     @JoinColumn(name = "zone_id")
     private Zone zone;
 
-    private static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
 
-    private static final String ROLE_USER = "ROLE_USER";
+    public static final String ROLE_PARENT = "ROLE_PARENT";
 
-    private static final String ROLE_CHILD = "ROLE_CHILD";
+    public static final String ROLE_USER = "ROLE_USER";
+
+    public static final String ROLE_CHILD = "ROLE_CHILD";
 
     private static final String ROLE_STRANGER = "ROLE_STRANGER";
 

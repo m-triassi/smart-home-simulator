@@ -13,6 +13,7 @@ import signup from './components/Signup';
 import editprofile from './components/Editprofile';
 import edithome from './components/Edithome';
 
+
 import Vue from 'vue'
 import vuetify from 'vuetify' // path to vuetify export
 import axios from 'axios';
