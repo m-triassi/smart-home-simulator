@@ -10,7 +10,9 @@
             </tr>
 
             <tr>
-                <button>Edit</button>
+                <a href="edit/profile" class="EditButton">
+                    Edit Profile
+                </a>
             </tr>
 
             <tr>

@@ -48,10 +48,12 @@
 </template>
 
 <script>
-    export default {
-        data() {
 
-            
+    import edithome from './Edithome'
+
+    export default {
+        name:'edithome',
+        data() {
 
             return {
                 name: '',

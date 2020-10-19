@@ -7,7 +7,7 @@
                 <p>This is the simulator module</p>
             </tr>
                 
-            <tr>
+            <!--<tr>
                 <a href="edit/profile" class="EditButton">
                     Edit Profile
                 </a>
@@ -17,6 +17,10 @@
                 <a href="edit/home" class="EditHomeButton">
                     Create or edit Home
                 </a>
+            </tr>-->
+
+            <tr class='shs'>
+                <edithome></edithome>
             </tr>
 
         </table>
@@ -26,8 +30,13 @@
 
 <script>
 
+import edithome from './Edithome'
+
 export default {
         name: 'simulator',
+        components:{
+            'edithome':edithome,
+        },
         data() {
             return {
                 
@@ -51,6 +60,11 @@ export default {
     .main_table{
         width: 100%;
         height: 100%;
+    }
+
+    .shs{
+        width: 40%;
+        height: auto;
     }
 
     .profile_section{
