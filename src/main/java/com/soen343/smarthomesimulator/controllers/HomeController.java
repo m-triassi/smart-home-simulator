@@ -33,6 +33,7 @@ public class HomeController {
         return new JSONObject(this.response);
     }
 
+    @PostMapping("/home/update")
     public JSONObject update(@RequestParam(value = "id") Long id,
                              @RequestParam(value = "temperature", required = false) Integer temperature,
                              @RequestParam(value = "date", required = false) String date) {
@@ -42,7 +43,7 @@ public class HomeController {
             home.setOutside_temp(temperature);
         }
 
-        if (date != null) {
+        if (date != "") {
             home.setDate(Timestamp.valueOf(date));
         }
 

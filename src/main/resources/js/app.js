@@ -11,6 +11,8 @@ import simulator from './components/SimulatorModule';
 import login from './components/Login';
 import signup from './components/Signup';
 import editprofile from './components/Editprofile';
+import edithome from './components/Edithome';
+
 
 import Vue from 'vue'
 import vuetify from 'vuetify' // path to vuetify export
@@ -37,6 +39,7 @@ const app = new Vue({
         simulator,
         signup,
         editprofile,
+        edithome
     },
     
 }).$mount('#app');
