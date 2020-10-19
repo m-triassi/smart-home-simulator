@@ -24,6 +24,10 @@
                 <input class= 'input' id ='home_date' v-model='date' type="date" placeholder="Date"/>
             </div>
 
+            <div class="signup-box">
+                <input id = 'home_time' v-model='time' type="text" :placeholder="[[today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()]]">
+            </div>
+            <br/>
             <button class="btn">Edit Home</button>
         </form>
         <form @submit.prevent="createZone()">
@@ -46,13 +50,19 @@
 <script>
     export default {
         data() {
+
+            
+
             return {
                 name: '',
                 id: '',
                 temperature: '',
                 date: '',
                 zone_id: '',
-                layout: ''
+                layout: '',
+                today: new Date(),
+                time: new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()
+                
             }
         },
         
@@ -64,7 +74,7 @@
             },
             editHome() {
                 
-                var path = '/home/update?id=' + this.id + '&temperature=' + this.temperature + '&date=' +this.date;
+                var path = '/home/update?id=' + this.id + '&temperature=' + this.temperature + '&date=' +this.date+' '+this.time;
                 this.callAxios(path);
             },
             createZone() {
