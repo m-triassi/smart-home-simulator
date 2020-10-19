@@ -44,8 +44,10 @@ public class UserController {
     @PostMapping("/user/update")
     public JSONObject update(@RequestParam(value = "id") Long id,
                              @RequestParam(value = "home_id", required = false) Long homeId,
-                             @RequestParam(value = "zone_id", required = false) Long zoneId) {
-        // TODO: Update password, name, role
+                             @RequestParam(value = "zone_id", required = false) Long zoneId,
+                             @RequestParam(value = "name", required = false) String name,
+                             @RequestParam(value = "email", required = false) String email,
+                             @RequestParam(value = "password", required = false) String password) {
 
         User user = userService.findById(id);
         if (homeId != null && homeService.exists(homeId)) {
@@ -61,6 +63,19 @@ public class UserController {
         } else if (zoneId != null) {
             this.response.put("zone", "Zone supplied does not exist");
         }
+
+        if (name != null) {
+            user.setName(name);
+        }
+
+        if (email != null) {
+            user.setEmail(email);
+        }
+
+        if (password != null) {
+            user.setPassword(passwordEncoder().encode(password));
+        }
+
 
         userService.save(user);
 

@@ -53,6 +53,12 @@ public class ZoneController {
         return zoneService.findByHome(homeId);
     }
 
+    /**
+     * Accepts a JSON file and converts it to zones and opening
+     * @param layout
+     * @param homeId
+     * @return JSONObject
+     */
     @PostMapping("/zones/load")
     public JSONObject load(@RequestParam(value = "layout") MultipartFile layout, @RequestParam(value = "home_id", required = false) Long homeId) {
         if (!layout.getContentType().equals("application/json")) {

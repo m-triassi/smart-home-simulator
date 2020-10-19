@@ -15,6 +15,10 @@ public class OpeningService {
     @Autowired
     OpeningRepository repository;
 
+    public Opening findById(Long id) {
+        return repository.findById(id).get();
+    }
+
     public Opening save(Opening opening) {
         return repository.save(opening);
     }
