@@ -83,39 +83,34 @@ public class UserController {
 
     @GetMapping("/user/current")
     public User currentUser() {
-        System.out.println(SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass());
 
         // case when no user is logged in, the principal is set to string 'anonymousUser' by default;
         // if a user is logged in, cast the principal to UserDetailsModel
-        if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass() == String.class)
+        if (SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass() == String.class)
             return null;
-        else{
-            User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            System.out.println(currentUser.getUsername());
-            return currentUser;
+        else {
+            return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         }
     }
 
     @PostMapping(value = "/user/store")
     public JSONObject store(@RequestParam(value = "name") String name,
-                        @RequestParam(value = "email") String email,
-                        @RequestParam(value = "password") String password,
-                        @RequestParam(value = "isParent") Boolean isParent,
-                        @RequestParam(value = "isChild") Boolean isChild,
-                        @RequestParam(value = "isGuest") Boolean isGuest) {
+                            @RequestParam(value = "email") String email,
+                            @RequestParam(value = "password") String password,
+                            @RequestParam(value = "isParent") Boolean isParent,
+                            @RequestParam(value = "isChild") Boolean isChild,
+                            @RequestParam(value = "isGuest") Boolean isGuest) {
 
         // TODO: Input Validation
 
         password = this.passwordEncoder().encode(password);
         String role;
-        if(isParent){
-            role = "ROLE_PARENT";
-        }
-        else if(isChild){
-            role = "ROLE_CHILD";
-        }
-        else{
-            role="ROLE_USER";
+        if (isParent) {
+            role = User.ROLE_PARENT;
+        } else if (isChild) {
+            role = User.ROLE_CHILD;
+        } else {
+            role = User.ROLE_USER;
         }
 
         if (userService.save(new User(name, email, password, role)) != null) {
