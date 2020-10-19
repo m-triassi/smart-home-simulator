@@ -6,6 +6,7 @@ import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -13,7 +14,11 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
-
+/**
+ * Class HomeController
+ * 
+ * Controller for the Home component. Contains the endpoints that perform logic on the home entity.
+ */
 @RestController
 public class HomeController {
 
@@ -27,6 +32,14 @@ public class HomeController {
         this.response.put("success", "true");
     }
 
+    /**
+     * POST endpoint to <code>/home/store</code>
+     * 
+     * This endpoint creates a new Home entity and saves it to the database.
+     * 
+     * @param name Defines the name of the home being saved.
+     * @return Response containing the operation's status.
+     */
     @PostMapping("/home/store")
     public JSONObject store(@RequestParam(value = "name") String name) {
         homeService.save(new Home(name));
