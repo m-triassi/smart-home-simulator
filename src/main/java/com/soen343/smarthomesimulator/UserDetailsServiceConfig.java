@@ -3,7 +3,6 @@ package com.soen343.smarthomesimulator;
 import java.util.Optional;
 
 import com.soen343.smarthomesimulator.models.User;
-import com.soen343.smarthomesimulator.models.UserDetailsModel;
 import com.soen343.smarthomesimulator.repositories.UserRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +19,13 @@ public class UserDetailsServiceConfig implements UserDetailsService {
     UserRepository userRepo;
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+    public User loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepo.findByEmail(email);
 
         if (user == null)
             throw new UsernameNotFoundException("email not found");
 
-        return new UserDetailsModel(user);
+        return new User(user);
     }
 
 }

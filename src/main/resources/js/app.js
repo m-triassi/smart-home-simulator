@@ -10,6 +10,7 @@ import custom from './components/CustomModule';
 import simulator from './components/SimulatorModule';
 import login from './components/Login';
 import signup from './components/Signup';
+import editprofile from './components/Editprofile';
 
 import Vue from 'vue'
 import vuetify from 'vuetify' // path to vuetify export
@@ -35,6 +36,7 @@ const app = new Vue({
         custom,
         simulator,
         signup,
+        editprofile,
     },
     
 }).$mount('#app');
