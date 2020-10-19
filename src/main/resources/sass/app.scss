@@ -12,8 +12,12 @@ a.LoginButton, a.SignupButton, a.LogoutButton, a.EditButton, a.EditHomeButton{
       }
 
 
-    a.LogoutButton, a.EditButton {
+    a.LogoutButton {
         float: right;
+    }
+
+    a.EditButton{
+        float: left;
     }
 
     body {
