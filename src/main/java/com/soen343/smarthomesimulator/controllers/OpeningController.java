@@ -24,6 +24,15 @@ public class OpeningController {
         this.response.put("success", "true");
     }
 
+    /**
+     * POST endpoint to <code>/openings/update</code>
+     * 
+     * Sets the state of a particular opening during the simulation.
+     * 
+     * @param id The id of the opening.
+     * @param state The state to set the opening to.
+     * @return The response status of the operation.
+     */
     @PostMapping("/openings/update")
     public JSONObject update(@RequestParam(value = "id") Long id, @RequestParam(value = "state") int state) {
         Opening opening = openingService.findById(id);

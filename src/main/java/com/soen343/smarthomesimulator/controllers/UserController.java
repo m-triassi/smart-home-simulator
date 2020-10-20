@@ -36,11 +36,33 @@ public class UserController {
         this.response.put("success", "true");
     }
 
+    /**
+     * GET endpoint to <code>/users</code>
+     * 
+     * Sets the state of a particular opening during the simulation.
+     * 
+     * @param id The id of the opening.
+     * @param state The state to set the opening to.
+     * @return The response status of the operation.
+     */
     @GetMapping("/users")
     public List<User> index() {
         return userService.findAll();
     }
 
+    /**
+     * POST endpoint to <code>/user/update</code>
+     * 
+     * Updates user information.
+     * 
+     * @param id User Entity ID
+     * @param homeId Home Entity ID
+     * @param zoneId Zone Entity ID
+     * @param name User's name to be updated to
+     * @param email User's email to be updated to
+     * @param password User's password to be updated to
+     * @return Returns a JSON status object based on the operation status.
+     */
     @PostMapping("/user/update")
     public JSONObject update(@RequestParam(value = "id") Long id,
                              @RequestParam(value = "home_id", required = false) Long homeId,
@@ -82,12 +104,28 @@ public class UserController {
         return new JSONObject(this.response);
     }
 
+    /**
+     * GET endpoint to <code>/user</code>
+     * 
+     * Finds user and retrieves user data based on ID.
+     * 
+     * @param id User ID
+     * @return Returns the User data
+     */
     @GetMapping("/user")
     public User show(@RequestParam(value = "id") Long id) {
         return userService.findById(id);
     }
 
-
+    /**
+     * GET endpoint to <code>/user/login</code>
+     * 
+     * Gets user by email and password
+     * 
+     * @param email User's email
+     * @param password User's password
+     * @return Returns the User data
+     */
     @GetMapping("/user/login")
     public User getUser(@RequestParam(value = "email") String email,
                         @RequestParam(value = "password") String password) {
@@ -96,6 +134,13 @@ public class UserController {
         return userService.findUserByCredentials(email, password);
     }
 
+    /**
+     * GET endpoint to <code>/user/current</code>
+     * 
+     * Retrieves the current authenticated user's information.
+     * 
+     * @return Current User object
+     */
     @GetMapping("/user/current")
     public User currentUser() {
 
@@ -109,6 +154,19 @@ public class UserController {
         }
     }
 
+    /**
+     * POST endpoint to <code>/user/store</code>
+     * 
+     * Signs a User entity up.
+     * 
+     * @param name User's name
+     * @param email User's email
+     * @param password User's password
+     * @param isParent Boolean if the User's type is parent
+     * @param isChild Boolean if the User's type is child
+     * @param isGuest Boolean if the User's type is guest
+     * @return Returns a JSON status object based on the operation status.
+     */
     @PostMapping(value = "/user/store")
     public JSONObject store(@RequestParam(value = "name") String name,
 
