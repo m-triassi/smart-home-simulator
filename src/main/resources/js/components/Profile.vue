@@ -1,31 +1,20 @@
 <template>
-
     <div>
-
         <table class="profile_table">
-
             <tr>
-                <toggle-button :value="true"
-               :labels="{checked: 'On', unchecked: 'Off'}"/>
-            </tr>
-
-            <tr>
-                <a href="edit/profile" class="EditButton">
+                <a href="edit/profile" class="EditButton" :class="{disabled: simulationEnabled}">
                     Edit Profile
                 </a>
             </tr>
-
             <tr>
                 <img class="default_profile_avatar" src="https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png" alt="Default Profile"/>
                 <h5>Signed in user name: {{user.name}}</h5>
                 <h5>Access type: {{user.role}}</h5>
-            </tr>
-                
+            </tr> 
             <tr>
                 <h5>Location:</h5>
                 <h5>Kitchen</h5>
             </tr>
-                
             <tr>
                 <h5><strong>Outside Temp. {{temperature}}C</strong></h5>
             </tr>
@@ -49,9 +38,9 @@ Vue.component('ToggleButton', ToggleButton)
 
 export default {
         name: 'profile',
+        props:['simulationEnabled'],
         data() {
             return {
-
                 temperature:15,
                 input_date:new Date().toLocaleString(),
                 user: {}
@@ -68,7 +57,7 @@ export default {
                 .catch(function(error){
                     console.log(error);
                 });
-            }
+            }, 
         },
         mounted(){
             this.getName()
@@ -87,6 +76,12 @@ export default {
     .default_profile_avatar{
         width: 20%;
         height: auto;
+    }
+
+    .disabled {
+        cursor: not-allowed;
+        color: gray;
+        pointer-events: none;
     }
 
 </style>

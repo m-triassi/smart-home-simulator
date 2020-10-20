@@ -16,15 +16,17 @@
             <tr>
                 <td class="profile_section" rowspan="2">
                     <p>Simulation</p>
-
-                    <profile></profile>
+                    
+                    <toggle-button :value="simulationEnabled" :labels="{checked: 'On', unchecked: 'Off'}" @change="simulationEnabled=!simulationEnabled"/>
+                    
+                    <profile :simulationEnabled = simulationEnabled></profile>
 
                 </td>
 
                 <td>
                     <p>Modules</p>
 
-                    <modules></modules>
+                    <modules :simulationEnabled = simulationEnabled></modules>
 
                 </td>
 
@@ -35,7 +37,7 @@
                 <td colspan="2">
                     <p>Output Console</p>
 
-                    <outputconsole></outputconsole>
+                    <outputconsole :simulationEnabled = simulationEnabled></outputconsole>
 
                 </td>
             <tr>
@@ -60,7 +62,12 @@ export default {
         'profile':profile,
         'modules':modules,
         'outputconsole':outputconsole,
-    }
+    },
+    data() {
+            return {
+                simulationEnabled:false
+            };
+        }
 }
 
 </script>

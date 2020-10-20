@@ -1,6 +1,6 @@
 <template>
     <div>
-        <textarea class="output_box" v-model="message" placeholder="" :readonly="true"></textarea>
+        <textarea class="output_box" v-model="message" @input="$emit('message', $event.target.value)" placeholder="" :readonly="true"></textarea>
     </div>
 </template>
 
@@ -8,10 +8,15 @@
 
 export default {
         name: 'outputconsole',
+        props:['simulationEnabled'],
         data() {
             return {
-                message:"basifbnsaidfbisdbfsdf \n oanfdioabfisehfisebfsif \n oahf9sadhf9sdghs9dpofhasiopfghsdb \n abfnioseadfghsi9dfhs \n\n\n\n\n\n oiasgbdhfiasgbfdhs",
             };
+        },
+        computed:{
+            message(){
+                return this.simulationEnabled ? "Simulation ON" : "Simulation OFF"
+            }
         }
 }
 
