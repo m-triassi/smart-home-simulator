@@ -19,8 +19,8 @@
                 </a>
             </tr>-->
 
-            <tr class='shs'>
-                <edithome></edithome>
+            <tr>
+                <edithome :simulationEnabled = simulationEnabled></edithome>
             </tr>
 
         </table>
@@ -34,6 +34,7 @@ import edithome from './Edithome'
 
 export default {
         name: 'simulator',
+        props:['simulationEnabled'],
         components:{
             'edithome':edithome,
         },
@@ -58,12 +59,12 @@ export default {
     }
 
     .main_table{
-        width: 100%;
-        height: 100%;
+        width: 20%;
+        height: auto;
     }
 
     .shs{
-        width: 40%;
+        width: 20%;
         height: auto;
     }
 

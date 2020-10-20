@@ -3,7 +3,7 @@
 <div>
     <tabs>
         <tab name="SHS">
-            <simulator></simulator>
+            <simulator :simulationEnabled = simulationEnabled></simulator>
         </tab>
         <tab name="SHC">
             <core></core>
@@ -37,6 +37,7 @@ Vue.component('tab', Tab);
 
 export default {
         name: 'modules',
+        props:['simulationEnabled'],
         components:{
             'core':core,
             'security':security,
