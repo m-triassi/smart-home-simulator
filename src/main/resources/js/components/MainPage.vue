@@ -1,51 +1,52 @@
 <template>
-    
-    <div>
-        <a href="login" class="LoginButton">
-            Login
-        </a>
-        <a href="signup" class="SignupButton">
-            Signup
-        </a>
-        <a href="logout" class="LogoutButton">
-            Logout
-        </a>
 
-        <table class="main_table">
+  <div>
+    <a href="login" class="LoginButton">
+      Login
+    </a>
+    <a href="signup" class="SignupButton">
+      Signup
+    </a>
+    <a href="logout" class="LogoutButton">
+      Logout
+    </a>
 
-            <tr>
-                <td class="profile_section" rowspan="2">
-                    <p>Simulation</p>
-                    
-                    <toggle-button :value="simulationEnabled" :labels="{checked: 'On', unchecked: 'Off'}" @change="simulationEnabled=!simulationEnabled"/>
-                    
-                    <profile :simulationEnabled = simulationEnabled></profile>
+    <table class="main_table">
 
-                </td>
+      <tr>
+        <td class="profile_section" rowspan="2">
+          <p>Simulation</p>
 
-                <td>
-                    <p>Modules</p>
+          <toggle-button :value="simulationEnabled" :labels="{checked: 'On', unchecked: 'Off'}"
+                         @change="simulationEnabled=!simulationEnabled"/>
 
-                    <modules :simulationEnabled = simulationEnabled></modules>
+          <profile :simulationEnabled="simulationEnabled" :user="user"></profile>
 
-                </td>
+        </td>
 
-                <td>
-                    <p>House View</p>
-                </td>
-            </tr>
-                <td colspan="2">
-                    <p>Output Console</p>
+        <td>
+          <p>Modules</p>
 
-                    <outputconsole :simulationEnabled = simulationEnabled></outputconsole>
+          <modules :simulationEnabled=simulationEnabled :user="user"></modules>
 
-                </td>
-            <tr>
+        </td>
 
-            </tr>
+        <td>
+          <div v-for="zone in zones" class="zone_box">{{zone.name}}</div>
+        </td>
+      </tr>
+      <td colspan="2">
+        <p>Output Console</p>
 
-        </table>
-    </div>
+        <outputconsole :simulationEnabled=simulationEnabled></outputconsole>
+
+      </td>
+      <tr>
+
+      </tr>
+
+    </table>
+  </div>
 
 </template>
 
@@ -57,39 +58,68 @@ import outputconsole from './OutputConsole'
 
 
 export default {
-    name: 'mainpage',
-    components:{
-        'profile':profile,
-        'modules':modules,
-        'outputconsole':outputconsole,
+  name: 'mainpage',
+  components: {
+    'profile': profile,
+    'modules': modules,
+    'outputconsole': outputconsole,
+  },
+  methods: {
+    getUser() {
+      var path = 'user/current';
+      axios.get(path).then(response => {
+        axios.get('/user?id=' + response.data.id).then(response => {
+          this.user = response.data;
+        })
+      }).catch(function (error) {
+        console.log(error);
+      });
     },
-    data() {
-            return {
-                simulationEnabled:false
-            };
-        }
+    getZones() {
+      axios.get("/zones?home_id=" + this.user.home.id).then(response => {
+        this.zones = response.data;
+      }).catch(function (error){
+        console.log(error)
+      })
+    }
+  },
+  mounted() {
+    this.getUser();
+    setTimeout(this.getZones, 1000)
+  },
+  data() {
+    return {
+      simulationEnabled: false,
+      user: {},
+      zones: {}
+    };
+  }
 }
 
 </script>
 
 <style>
-    table, th, td {
-        border: 1px solid black;
-        border-collapse: collapse;
-    }
-    
-    th, td {
-        padding: 5px;
-        text-align: left;    
-    }
+table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
 
-    .main_table{
-        width: 100%;
-        height: 100%;
-    }
+th, td {
+  padding: 5px;
+  text-align: left;
+}
 
-    .profile_section{
-        width: 20%;
-        height: auto;
-    }
+.main_table {
+  width: 100%;
+  height: 100%;
+}
+
+.profile_section {
+  width: 20%;
+  height: auto;
+}
+.zone_box {
+  padding: 100px;
+  outline: 2px solid black;
+}
 </style>

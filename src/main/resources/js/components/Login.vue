@@ -31,11 +31,8 @@
         
         methods: {
             submitForm(){
-                
                 var path = '/userLogin?email=' + this.email + '&password=' + this.password;
-                axios.get(path).then(function(response){
-                    console.log(response);
-                }).catch(function(error){
+                axios.get(path).catch(function(error){
                     console.log(error);
                 });
             }
