@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -130,7 +131,6 @@ public class UserController {
     public User getUser(@RequestParam(value = "email") String email,
                         @RequestParam(value = "password") String password) {
 
-        //TODO: instead of returning the user create, implement persistence for user login
         return userService.findUserByCredentials(email, password);
     }
 
@@ -198,6 +198,18 @@ public class UserController {
         return new JSONObject(this.response);
     }
 
+    @PostMapping("/users/destroy")
+    public JSONObject destroy(@RequestParam(value = "id") Long id) {
+        User current = currentUser();
+        if (current != null && (current.getId().equals(id) || current.getRole().equals(User.ROLE_ADMIN))) {
+            userService.deleteById(id);
+        } else {
+            // TODO: Add exception that sets status code to 403 here
+            this.response.put("success", "false");
+            this.response.put("message", "You do not have permission to perform that action");
+        }
+        return new JSONObject(this.response);
+    }
 
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
