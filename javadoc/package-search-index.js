@@ -1,0 +1,1 @@
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"com.soen343.smarthomesimulator"},{"l":"com.soen343.smarthomesimulator.controllers"},{"l":"com.soen343.smarthomesimulator.models"},{"l":"com.soen343.smarthomesimulator.repositories"},{"l":"com.soen343.smarthomesimulator.services"}];updateSearchResults();
