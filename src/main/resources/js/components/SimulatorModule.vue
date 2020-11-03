@@ -1,43 +1,108 @@
 <template>
   <div>
     <table class="main_table">
-
       <tr>
         <p>This is the simulator module</p>
       </tr>
 
-      <!--<tr>
-          <a href="edit/profile" class="EditButton">
-              Edit Profile
-          </a>
-      </tr>
-
       <tr>
-          <a href="edit/home" class="EditHomeButton">
-              Create or edit Home
-          </a>
-      </tr>-->
-
-      <tr class='shs'>
-        <edithome :user="user" :simulationEnabled=simulationEnabled></edithome>
+        <td>
+          <edithome :simulationEnabled="simulationEnabled"></edithome>
+        </td>
+        <td>
+          <tr>
+            <strong>Move</strong>
+            <select v-model="selectedUser">
+              <option disabled value="">Select user</option>
+              <option v-for="item in usersList" :key="item.id" :value="item">
+                {{ item.name }}
+              </option>
+            </select>
+          </tr>
+          <tr>
+            <strong>to</strong>
+            <select v-model="selectedZone">
+              <option disabled value="">Select zone</option>
+              <option v-for="item in zonesList" :key="item.id" :value="item">
+                {{ item.name }}
+              </option>
+            </select>
+          </tr>
+          <tr>
+            <button v-on:click="moveUser()">Confirm</button>
+          </tr>
+        </td>
       </tr>
-
     </table>
   </div>
 </template>
 
 <script>
-
-import edithome from './Edithome'
+import edithome from "./Edithome";
 
 export default {
-  name: 'simulator',
-  components: {
-    'edithome': edithome,
-  },
+  name: "simulator",
   props: ["user", "simulationEnabled"],
-}
+  components: {
+    edithome: edithome,
+  },
+  data() {
+    return {
+      selectedUser: "",
+      selectedZone: "",
+      usersList: {},
+      zonesList: {},
+      currentHomeId: 1,
+    };
+  },
 
+  methods: {
+    getUsers() {
+      var path = "users";
+      axios
+        .get(path)
+        .then((response) => {
+          this.usersList = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    getZones() {
+      var path = "zones?home_id=" + this.currentHomeId;
+
+      axios
+        .get(path)
+        .then((response) => {
+          this.zonesList = response.data;
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    moveUser() {
+      var path =
+        "user/update?id=" +
+        this.selectedUser.id +
+        "&zone_id=" +
+        this.selectedZone.id;
+      this.callAxios(path);
+    },
+    callAxios(path) {
+      axios
+        .post(path)
+        .then(function (response) {
+          console.log(response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+  },
+  mounted() {
+    this.getUsers(), this.getZones();
+  },
+};
 </script>
 
 <style>

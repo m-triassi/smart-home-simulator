@@ -1,5 +1,4 @@
 <template>
-
   <div>
     <a href="login" class="LoginButton">
       Login
@@ -47,8 +46,6 @@
 
     </table>
   </div>
-
-</template>
 
 <script>
 
