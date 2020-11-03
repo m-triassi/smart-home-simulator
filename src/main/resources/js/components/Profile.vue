@@ -1,87 +1,68 @@
 <template>
-    <div>
-        <table class="profile_table">
-            <tr>
-                <a href="edit/profile" class="EditButton" :class="{disabled: simulationEnabled}">
-                    Edit Profile
-                </a>
-            </tr>
-            <tr>
-                <img class="default_profile_avatar" src="https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png" alt="Default Profile"/>
-                <h5>Signed in user name: {{user.name}}</h5>
-                <h5>Access type: {{user.role}}</h5>
-            </tr> 
-            <tr>
-                <h5>Location:</h5>
-                <h5>Kitchen</h5>
-            </tr>
-            <tr>
-                <h5><strong>Outside Temp. {{temperature}}C</strong></h5>
-            </tr>
-
-            <tr>
-                <h5><strong>{{input_date}}</strong></h5>
-            </tr>
-
-        </table>
-
-    </div>
-
+  <div>
+    <table class="profile_table">
+      <tr>
+        <a href="edit/profile" class="EditButton" :class="{disabled: simulationEnabled}">
+          Edit Profile
+        </a>
+      </tr>
+      <tr>
+        <img class="default_profile_avatar"
+             src="https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png"
+             alt="Default Profile"/>
+        <h5>Signed in user name: {{ user.name }}</h5>
+        <h5>Access type: {{ user.role }}</h5>
+      </tr>
+      <tr>
+        <h5>Location:</h5>
+        <h5>Kitchen</h5>
+      </tr>
+      <tr>
+        <h5><strong>Outside Temp. {{ temperature }}C</strong></h5>
+      </tr>
+      <tr>
+        <h5><strong>{{ input_date }}</strong></h5>
+      </tr>
+    </table>
+  </div>
 </template>
 
 <script>
 
 import Vue from 'vue';
-import { ToggleButton } from 'vue-js-toggle-button'
- 
+import {ToggleButton} from 'vue-js-toggle-button'
+
 Vue.component('ToggleButton', ToggleButton)
 
 export default {
-        name: 'profile',
-        props:['simulationEnabled'],
-        data() {
-            return {
-                temperature:15,
-                input_date:new Date().toLocaleString(),
-                user: {}
-            };
-        },
-
-        methods: {
-            getName() {
-                var path = 'user/current';
-
-                axios.get(path).then(response =>{
-                    this.user = response.data;
-                })
-                .catch(function(error){
-                    console.log(error);
-                });
-            }, 
-        },
-        mounted(){
-            this.getName()
-        }
+  name: 'profile',
+  data() {
+    return {
+      temperature: this.user.home.outside_temp,
+      input_date: new Date().toLocaleString()
+    };
+  },
+  props: ["user", "simulationEnabled"]
 }
 
 </script>
 
 <style>
 
-    .profile_table{
-        width: 100%;
-        height: 100%;
-    }
+.profile_table {
+  width: 100%;
+  height: 100%;
+}
 
-    .default_profile_avatar{
-        width: 20%;
-        height: auto;
-    }
+.default_profile_avatar {
+  width: 20%;
+  height: auto;
+}
 
-    .disabled {
-        cursor: not-allowed;
-        color: gray;
-        pointer-events: none;
-    }
+.disabled {
+  cursor: not-allowed;
+  color: gray;
+  pointer-events: none;
+}
 
 </style>

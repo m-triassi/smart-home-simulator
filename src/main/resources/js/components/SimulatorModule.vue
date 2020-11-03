@@ -42,7 +42,7 @@ import edithome from "./Edithome";
 
 export default {
   name: "simulator",
-  props: ["simulationEnabled"],
+  props: ["user", "simulationEnabled"],
   components: {
     edithome: edithome,
   },
@@ -59,7 +59,6 @@ export default {
   methods: {
     getUsers() {
       var path = "users";
-
       axios
         .get(path)
         .then((response) => {
@@ -107,15 +106,12 @@ export default {
 </script>
 
 <style>
-table,
-th,
-td {
+table, th, td {
   border: 1px solid black;
   border-collapse: collapse;
 }
 
-th,
-td {
+th, td {
   padding: 5px;
   text-align: left;
 }

@@ -1,24 +1,24 @@
 <template>
 
-<div>
+  <div>
     <tabs>
-        <tab name="SHS">
-            <simulator :simulationEnabled = simulationEnabled></simulator>
-        </tab>
-        <tab name="SHC">
-            <core></core>
-        </tab>
-        <tab name="SHP">
-            <security></security>
-        </tab>
-        <tab name="SHH">
-            <heating></heating>
-        </tab>
-        <tab name="+">
-            <custom></custom>
-        </tab>
+      <tab name="SHS">
+        <simulator :user="user" :simulationEnabled=simulationEnabled></simulator>
+      </tab>
+      <tab name="SHC">
+        <core></core>
+      </tab>
+      <tab name="SHP">
+        <security></security>
+      </tab>
+      <tab name="SHH">
+        <heating></heating>
+      </tab>
+      <tab name="+">
+        <custom></custom>
+      </tab>
     </tabs>
-</div>
+  </div>
 
 </template>
 
@@ -36,20 +36,15 @@ Vue.component('tabs', Tabs);
 Vue.component('tab', Tab);
 
 export default {
-        name: 'modules',
-        props:['simulationEnabled'],
-        components:{
-            'core':core,
-            'security':security,
-            'heating':heating,
-            'custom':custom,
-            'simulator':simulator,
-        },
-        data() {
-            return {
-                
-            };
-        }
+  name: 'modules',
+  components: {
+    'core': core,
+    'security': security,
+    'heating': heating,
+    'custom': custom,
+    'simulator': simulator,
+  },
+  props: ["user", "simulationEnabled"]
 }
 
 </script>

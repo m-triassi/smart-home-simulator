@@ -48,6 +48,10 @@ public class ZoneController {
         this.response.put("success", "true");
     }
 
+    /**
+     * @param homeId
+     * @return
+     */
     @GetMapping("/zones")
     public List<Zone> index(@RequestParam(value = "home_id") Long homeId) {
         return zoneService.findByHome(homeId);
