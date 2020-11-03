@@ -10,43 +10,29 @@
         <a href="logout" class="LogoutButton">
             Logout
         </a>
-
         <table class="main_table">
-
             <tr>
                 <td class="profile_section" rowspan="2">
                     <p>Simulation</p>
-                    
                     <toggle-button :value="simulationEnabled" :labels="{checked: 'On', unchecked: 'Off'}" @change="simulationEnabled=!simulationEnabled"/>
-                    
                     <profile :simulationEnabled = simulationEnabled></profile>
-
                 </td>
-
                 <td>
                     <p>Modules</p>
-
                     <modules :simulationEnabled = simulationEnabled></modules>
-
                 </td>
-
                 <td>
                     <p>House View</p>
                 </td>
             </tr>
                 <td colspan="2">
                     <p>Output Console</p>
-
                     <outputconsole :simulationEnabled = simulationEnabled></outputconsole>
-
                 </td>
             <tr>
-
             </tr>
-
         </table>
     </div>
-
 </template>
 
 <script>
