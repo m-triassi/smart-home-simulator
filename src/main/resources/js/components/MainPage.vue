@@ -31,7 +31,8 @@
         </td>
 
         <td>
-          <div v-for="zone in zones" class="zone_box">{{zone.name}}</div>
+          <div v-for="zone in zones" :key="zone.id" class="zone_box">{{zone.name}}</div>
+          <p>House Layout</p>
         </td>
       </tr>
       <td colspan="2">
@@ -46,6 +47,8 @@
 
     </table>
   </div>
+   
+</template>
 
 <script>
 
