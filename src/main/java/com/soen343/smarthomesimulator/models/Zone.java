@@ -20,9 +20,12 @@ public class Zone {
     @OneToMany(mappedBy = "zone", cascade = CascadeType.ALL)
     private List<Opening> openings;
 
+    @OneToMany(mappedBy = "zone", cascade = CascadeType.ALL)
+    private List<Appliance> appliances;
+
     @ManyToOne
     @JoinColumn(name = "home_id")
-    private Home home;
+    public Home home;
 
     public Zone() {
         this.name = "Generic Zone";
@@ -67,5 +70,13 @@ public class Zone {
 
     public void setOpenings(List<Opening> opening) {
         this.openings = opening;
+    }
+
+    public List<Appliance> getAppliances() {
+        return appliances;
+    }
+
+    public void setAppliances(List<Appliance> appliances) {
+        this.appliances = appliances;
     }
 }
