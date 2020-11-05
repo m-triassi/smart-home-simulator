@@ -51,11 +51,9 @@ export default {
       selectedUser: "",
       selectedZone: "",
       usersList: {},
-      zonesList: {},
-      currentHomeId: 1,
+      zonesList: {}
     };
   },
-
   methods: {
     getUsers() {
       var path = "users";
@@ -69,8 +67,7 @@ export default {
         });
     },
     getZones() {
-      var path = "zones?home_id=" + this.currentHomeId;
-
+      var path = "zones?home_id=" + this.user.home.id;
       axios
         .get(path)
         .then((response) => {
@@ -100,8 +97,9 @@ export default {
     },
   },
   mounted() {
-    this.getUsers(), this.getZones();
-  },
+    this.getUsers();
+    setTimeout(this.getZones, 1000);
+  }
 };
 </script>
 

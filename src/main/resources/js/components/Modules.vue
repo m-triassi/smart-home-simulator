@@ -1,12 +1,12 @@
 <template>
 
-  <div>
+  <div v-if="user.id != undefined">
     <tabs>
       <tab name="SHS">
         <simulator :user="user" :simulationEnabled=simulationEnabled></simulator>
       </tab>
       <tab name="SHC">
-        <core></core>
+        <core :user="user" :simulationEnabled=simulationEnabled></core>
       </tab>
       <tab name="SHP">
         <security></security>

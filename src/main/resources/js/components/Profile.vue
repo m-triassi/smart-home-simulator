@@ -1,6 +1,6 @@
 <template>
   <div>
-    <table class="profile_table">
+    <table class="profile_table" v-if="user.id != undefined">
       <tr>
         <a href="edit/profile" class="EditButton" :class="{disabled: simulationEnabled}">
           Edit Profile
@@ -15,13 +15,13 @@
       </tr>
       <tr>
         <h5>Location:</h5>
-        <h5>Kitchen</h5>
+        <h5>{{user.zone.name}}</h5>
       </tr>
       <tr>
-        <h5><strong>Outside Temp. {{ temperature }}C</strong></h5>
+        <h5><strong>Outside Temp. {{ this.user.home.outside_temp }}C</strong></h5>
       </tr>
       <tr>
-        <h5><strong>{{ input_date }}</strong></h5>
+        <h5><strong>{{ new Date().toLocaleString() }}</strong></h5>
       </tr>
     </table>
   </div>
@@ -36,13 +36,11 @@ Vue.component('ToggleButton', ToggleButton)
 
 export default {
   name: 'profile',
+  props: ["user", "simulationEnabled"],
   data() {
     return {
-      temperature: this.user.home.outside_temp,
-      input_date: new Date().toLocaleString()
     };
-  },
-  props: ["user", "simulationEnabled"]
+  }
 }
 
 </script>
