@@ -44,10 +44,10 @@ public class OpeningController {
 
     /**
      * POST endpoint to <code>/openings/update</code>
-     * 
+     * <p>
      * Sets the state of a particular opening during the simulation.
-     * 
-     * @param id The id of the opening.
+     *
+     * @param id    The id of the opening.
      * @param state The state to set the opening to.
      * @return The response status of the operation.
      */

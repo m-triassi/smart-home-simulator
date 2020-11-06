@@ -10,6 +10,12 @@ import javax.persistence.*;
 @Table(name = "openings")
 public class Opening {
 
+    private static final int STATE_OPEN = 1;
+
+    private static final int STATE_CLOSED = 0;
+
+    private static final int STATE_LOCKED = -1;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -21,14 +27,7 @@ public class Opening {
     @ManyToOne
     @JsonIgnoreProperties("openings")
     private Zone zone;
-
-    private static final int STATE_OPEN = 1;
-
-    private static final int STATE_CLOSED = 0;
-
-    private static final int STATE_LOCKED = -1;
-
-
+    
     public Opening() {
         this.type = "door";
     }
