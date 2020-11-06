@@ -31,6 +31,18 @@ public class Appliance {
     @JoinColumn(name = "zone_id")
     private Zone zone;
 
+    public Appliance() {
+        this.type = "default Appliance";
+        this.name = "Anonymous Appliance";
+    }
+
+    public Appliance(String type, String name) {
+        this.type = type;
+        this.name = name;
+        this.state = 0;
+
+    }
+
     public Long getId() {
         return id;
     }
@@ -63,19 +75,15 @@ public class Appliance {
         this.state = state;
     }
 
-    public Home getHome() {
-        return home;
-    }
-
     public void setHome(Home home) {
         this.home = home;
     }
 
-    public Zone getZone() {
-        return zone;
-    }
-
     public void setZone(Zone zone) {
         this.zone = zone;
+
+        if (this.home == null) {
+            this.setHome(zone.home);
+        }
     }
 }
