@@ -9,6 +9,12 @@ import javax.persistence.*;
 @Table(name = "openings")
 public class Opening {
 
+    private static final int STATE_OPEN = 1;
+
+    private static final int STATE_CLOSED = 0;
+
+    private static final int STATE_LOCKED = -1;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -17,11 +23,8 @@ public class Opening {
 
     private Integer state = 0;
 
-    private static final int STATE_OPEN = 1;
-
-    private static final int STATE_CLOSED = 0;
-
-    private static final int STATE_LOCKED = -1;
+    @ManyToOne
+    public Zone zone;
 
     public Opening() {
         this.type = "door";
@@ -31,9 +34,6 @@ public class Opening {
         this.type = type;
         this.zone = zone;
     }
-
-    @ManyToOne
-    private Zone zone;
 
     public Long getId() {
         return id;

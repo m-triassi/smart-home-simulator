@@ -3,6 +3,7 @@ package com.soen343.smarthomesimulator.controllers;
 
 import com.soen343.smarthomesimulator.models.Appliance;
 import com.soen343.smarthomesimulator.models.Home;
+import com.soen343.smarthomesimulator.models.User;
 import com.soen343.smarthomesimulator.models.Zone;
 import com.soen343.smarthomesimulator.services.ApplianceService;
 import com.soen343.smarthomesimulator.services.HomeService;
@@ -83,6 +84,13 @@ public class ApplianceController {
                              @RequestParam(value = "state", required = false) Integer state,
                              @RequestParam(value = "name", required = false) String name,
                              @RequestParam(value = "zone_id", required = false) Long zoneId) {
+
+        User current = new UserController().currentUser();
+        if (current != null && (current.getZone().getId().equals(zoneId) || current.getRole().equals(User.ROLE_ADMIN))) {
+            this.response.put("success", "");
+            this.response.put("message", "You do not have permission to perform that action");
+            return new JSONObject(this.response);
+        }
 
         Appliance appliance = applianceService.findById(applianceId);
 
