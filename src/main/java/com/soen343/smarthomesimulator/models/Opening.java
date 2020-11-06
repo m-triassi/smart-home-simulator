@@ -1,5 +1,6 @@
 package com.soen343.smarthomesimulator.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -24,8 +25,9 @@ public class Opening {
     private Integer state = 0;
 
     @ManyToOne
-    public Zone zone;
-
+    @JsonIgnoreProperties("openings")
+    private Zone zone;
+    
     public Opening() {
         this.type = "door";
     }
@@ -58,6 +60,10 @@ public class Opening {
     public void setState(Integer state) {
         // TODO: State Validation - constrain to one of the enums
         this.state = state;
+    }
+
+    public Zone getZone() {
+        return zone;
     }
 
     public void setZone(Zone zone) {
