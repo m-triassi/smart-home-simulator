@@ -34,6 +34,8 @@
                     <label :for="location.id">{{location.name}}</label>
                 </div>
 
+                <p>{{checkedLocations.name}}</p>
+
                 <button>All/None</button>
                 
             </tr>
@@ -48,6 +50,7 @@
 
 export default {
         name: 'core',
+        props: ["user", "simulationEnabled"],
         data() {
             return {
 
@@ -55,40 +58,64 @@ export default {
 
                     {
                         id:1,
-                        name:"Windows"
+                        name:"Windows",
+                        type:1
                     },
                     {
                         id:2,
-                        name: "Lights"
+                        name: "Lights",
+                        type:2
                     },
                     {
                         id:3,
-                        name:"Doors"
+                        name:"Doors",
+                        type:3
                     }
 
                 ],
                 picked:"None",
-
-                locations:[
-
-                    {
-                        id:4,
-                        name:"Backyard"
-                    },
-                    {
-                        id:5,
-                        name:"Garage"
-                    },
-                    {
-                        id:6,
-                        name:"Main"
-                    },
-
-                ],
+                locations:{},
                 checkedLocations: [],
+                openingsList:{}
 
             };
-        }
+        },
+        methods: {
+            getZones() {
+                var path = "zones?home_id=" + this.user.home.id;
+                axios
+                .get(path)
+                .then((response) => {
+                    this.locations = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            getOpenings(){
+                var path = "openings";
+                axios
+                .get(path)
+                .then((response) => {
+                    this.openingsList = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            },
+            changeOpeningState(){
+                for(var i = 0; i < this.openingsList.length; i++){
+                    if(this.openingsList[i].state == 0){
+                        this.openingsList[i].state = 1
+                    }else{
+                        this.openingsList[i].state = 0
+                    }
+                }
+            }
+        },
+  mounted() {
+    setTimeout(this.getZones, 1000);
+  }
 }
 
 </script>
