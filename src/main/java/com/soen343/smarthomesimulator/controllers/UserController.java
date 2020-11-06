@@ -83,6 +83,8 @@ public class UserController {
         if (zoneId != null && zoneService.exists(zoneId)) {
             Zone zone = zoneService.findById(zoneId);
             user.setZone(zone);
+        } else if (zoneId != null && zoneId == 0) {
+            user.setZone(null);
         } else if (zoneId != null) {
             this.response.put("zone", "Zone supplied does not exist");
         }

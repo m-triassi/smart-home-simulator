@@ -1,5 +1,6 @@
 package com.soen343.smarthomesimulator.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -9,6 +10,12 @@ import javax.persistence.*;
 @Table(name = "openings")
 public class Opening {
 
+    private static final int STATE_OPEN = 1;
+
+    private static final int STATE_CLOSED = 0;
+
+    private static final int STATE_LOCKED = -1;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -17,12 +24,10 @@ public class Opening {
 
     private Integer state = 0;
 
-    private static final int STATE_OPEN = 1;
-
-    private static final int STATE_CLOSED = 0;
-
-    private static final int STATE_LOCKED = -1;
-
+    @ManyToOne
+    @JsonIgnoreProperties("openings")
+    private Zone zone;
+    
     public Opening() {
         this.type = "door";
     }
@@ -31,9 +36,6 @@ public class Opening {
         this.type = type;
         this.zone = zone;
     }
-
-    @ManyToOne
-    private Zone zone;
 
     public Long getId() {
         return id;
@@ -58,6 +60,10 @@ public class Opening {
     public void setState(Integer state) {
         // TODO: State Validation - constrain to one of the enums
         this.state = state;
+    }
+
+    public Zone getZone() {
+        return zone;
     }
 
     public void setZone(Zone zone) {
