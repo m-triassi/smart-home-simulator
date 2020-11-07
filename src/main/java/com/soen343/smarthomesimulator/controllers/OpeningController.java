@@ -57,7 +57,7 @@ public class OpeningController {
         User current = new UserController().currentUser();
 
         if (current != null && (current.getZone().getId().equals(opening.getZone().getId()) || current.getRole().equals(User.ROLE_ADMIN))) {
-            this.response.put("success", "");
+            this.response.put("success", "true");
             this.response.put("message", "You do not have permission to perform that action");
             return new JSONObject(this.response);
         }

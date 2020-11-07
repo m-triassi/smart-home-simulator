@@ -15,6 +15,7 @@ import edithome from './components/Edithome';
 
 
 import Vue from 'vue'
+import VueX from 'vuex'
 import vuetify from 'vuetify' // path to vuetify export
 import axios from 'axios';
 
@@ -42,5 +43,16 @@ const app = new Vue({
         edithome
     },
     
-}).$mount('#app');
+}).use(VueX).$mount('#app');
+
+const store = new VueX.Store({
+    state: {
+        count: 0
+    },
+    mutations: {
+        increment (state) {
+            state.count++
+        }
+    }
+})
 
