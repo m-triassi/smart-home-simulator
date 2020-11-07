@@ -43,6 +43,14 @@ public class Appliance {
 
     }
 
+    public Appliance(Zone zone, String type) {
+        this.zone = zone;
+        this.home = zone.home;
+        this.type = type;
+        this.name = "Default " + type;
+        this.state = 0;
+    }
+
     public Long getId() {
         return id;
     }

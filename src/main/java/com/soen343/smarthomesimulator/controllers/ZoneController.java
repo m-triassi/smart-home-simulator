@@ -1,12 +1,10 @@
 package com.soen343.smarthomesimulator.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.soen343.smarthomesimulator.models.Appliance;
 import com.soen343.smarthomesimulator.models.Opening;
 import com.soen343.smarthomesimulator.models.Zone;
-import com.soen343.smarthomesimulator.services.HomeService;
-import com.soen343.smarthomesimulator.services.OpeningService;
-import com.soen343.smarthomesimulator.services.UserService;
-import com.soen343.smarthomesimulator.services.ZoneService;
+import com.soen343.smarthomesimulator.services.*;
 import net.minidev.json.JSONArray;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
@@ -40,6 +38,9 @@ public class ZoneController {
 
     @Autowired
     OpeningService openingService;
+
+    @Autowired
+    ApplianceService applianceService;
 
     private Map<String, String> response;
 
@@ -114,8 +115,8 @@ public class ZoneController {
             for (int j = 0; j < dCount; j++) {
                 openingService.save(new Opening("door", zone));
             }
+            applianceService.save(new Appliance(zone, "light"));
         }
-
 
         this.response.put("layout", parsed.toString());
         return new JSONObject(this.response);
