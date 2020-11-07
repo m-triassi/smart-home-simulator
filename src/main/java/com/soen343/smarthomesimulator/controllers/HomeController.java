@@ -49,15 +49,20 @@ public class HomeController {
     @PostMapping("/home/update")
     public JSONObject update(@RequestParam(value = "id") Long id,
                              @RequestParam(value = "temperature", required = false) Integer temperature,
-                             @RequestParam(value = "date", required = false) String date) {
+                             @RequestParam(value = "date", required = false) String date,
+                             @RequestParam(value = "security_level", required = false) String securityLevel) {
         Home home = homeService.findById(id);
 
         if (temperature != null) {
             home.setOutside_temp(temperature);
         }
-
-        if (date != "") {
+        System.out.println(date);
+        if (date != null) {
             home.setDate(Timestamp.valueOf(date));
+        }
+
+        if (securityLevel != null) {
+            home.setSecurityLevel(securityLevel);
         }
 
         homeService.save(home);
