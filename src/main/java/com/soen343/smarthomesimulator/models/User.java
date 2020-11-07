@@ -136,6 +136,12 @@ public class User implements UserDetails {
     }
 
     public Zone getZone() {
+        if (zone == null) {
+            Zone outside = new Zone("Outside");
+            outside.setId(Long.valueOf(0));
+            return outside;
+        }
+
         return zone;
     }
 
