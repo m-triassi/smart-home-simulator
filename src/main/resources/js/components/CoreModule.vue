@@ -30,12 +30,13 @@
 
             <tr>
                 <div v-bind:key="location.id" v-for="location in locations">
-                    <input type="checkbox" :id="location.id" :value="location.name" v-model="checkedLocations">
+                    <input type="radio" :id="location.id" :value="location.name" v-model="checkedLocation">
                     <label :for="location.id">{{location.name}}</label>
+                    <br>
                 </div>
 
-                <p>{{locations.name}}</p>
-
+                <span>Selected: {{ checkedLocation }}</span>
+                <br>
                 <button>All/None</button>
                 
             </tr>
@@ -50,7 +51,7 @@
 
 export default {
         name: 'core',
-        props: ["user", "simulationEnabled"],
+        props: ["simulationEnabled"],
         data() {
             return {
 
@@ -75,14 +76,14 @@ export default {
                 ],
                 picked:"None",
                 locations:{},
-                checkedLocations: [],
+                checkedLocation: "None",
                 openingsList:{}
 
             };
         },
         methods: {
             getZones() {
-                var path = "zones?home_id=" + this.user.home.id;
+                var path = "zones?home_id=" + this.$store.state.user.home.id;
                 axios
                 .get(path)
                 .then((response) => {

@@ -8,7 +8,7 @@
 
 export default {
         name: 'outputconsole',
-        props:['simulationEnabled', 'message'],
+        props:['simulationEnabled'],
         data() {
             return {
             };
