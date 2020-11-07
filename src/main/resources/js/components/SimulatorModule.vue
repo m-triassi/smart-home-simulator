@@ -4,7 +4,6 @@
       <tr>
         <p>This is the simulator module</p>
       </tr>
-
       <tr>
         <td>
           <edithome :simulationEnabled="simulationEnabled" :user="user"></edithome>
@@ -23,6 +22,7 @@
             <strong>to</strong>
             <select v-model="selectedZone">
               <option disabled value="">Select zone</option>
+              <option :key="0" :value="{id:0}">Leave</option>
               <option v-for="item in zonesList" :key="item.id" :value="item">
                 {{ item.name }}
               </option>
@@ -99,6 +99,7 @@ export default {
   mounted() {
     this.getUsers();
     setTimeout(this.getZones, 1000);
+    localStorage.message += "testFromSimulationModule"
   }
 };
 </script>

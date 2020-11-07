@@ -34,7 +34,7 @@
                     <label :for="location.id">{{location.name}}</label>
                 </div>
 
-                <p>{{checkedLocations.name}}</p>
+                <p>{{locations.name}}</p>
 
                 <button>All/None</button>
                 
@@ -87,6 +87,7 @@ export default {
                 .get(path)
                 .then((response) => {
                     this.locations = response.data;
+                    console.log(this.locations)
                 })
                 .catch(function (error) {
                     console.log(error);

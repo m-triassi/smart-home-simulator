@@ -16,8 +16,8 @@
         <td class="profile_section" rowspan="2">
           <p>Simulation</p>
 
-          <toggle-button :value="simulationEnabled" :labels="{checked: 'On', unchecked: 'Off'}"
-                         @change="simulationEnabled=!simulationEnabled"/>
+          <toggle-button :value=simulationEnabled :labels="{checked: 'On', unchecked: 'Off'}"
+                         @change="changeState(), value = simulationEnabled"/>
 
           <profile :simulationEnabled="simulationEnabled" :user="user"></profile>
 
@@ -38,7 +38,7 @@
       <td colspan="2">
         <p>Output Console</p>
 
-        <outputconsole :simulationEnabled=simulationEnabled></outputconsole>
+        <outputconsole :message=message :simulationEnabled=simulationEnabled></outputconsole>
 
       </td>
       <tr>
@@ -81,18 +81,41 @@ export default {
       }).catch(function (error){
         console.log(error)
       })
+    },
+    changeState(){
+
+      if(this.simulationEnabled === 1){
+        this.simulationEnabled = 0;
+      }else{
+        this.simulationEnabled = 1;
+      }
+
+      localStorage.simulationEnabled = this.simulationEnabled;
+      console.log("simulationEnabled: "+this.simulationEnabled);
     }
   },
   mounted() {
     this.getUser();
-    setTimeout(this.getZones, 1000)
+    setTimeout(this.getZones, 1000);
+
+    if(localStorage.simulationEnabled == undefined){
+      this.simulationEnabled = 0;
+    }else{
+      this.simulationEnabled = localStorage.simulationEnabled;
+    }
   },
   data() {
     return {
-      simulationEnabled: false,
+      simulationEnabled: null,
       user: {},
-      zones: {}
+      zones: {},
+      message:""
     };
+  },
+  watch: {
+    simulationEnabled(newState){
+      localStorage.simulationEnabled = newState;
+    }
   }
 }
 
