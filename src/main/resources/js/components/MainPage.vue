@@ -86,9 +86,13 @@ export default {
 
       if(this.simulationEnabled === 1){
         this.simulationEnabled = 0;
+        this.$store.commit('appendMessage','Simulation OFF');
       }else{
         this.simulationEnabled = 1;
+        this.$store.commit('appendMessage','Simulation ON');
       }
+
+      console.log("output: "+this.$store.state.outputMessage)
 
       localStorage.simulationEnabled = this.simulationEnabled;
       console.log("simulationEnabled: "+this.simulationEnabled);

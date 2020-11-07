@@ -24,14 +24,14 @@ import axios from 'axios';
 window.axios = axios
 
 const store = new VueX.Store({
-    state: {
-        count: 0
-    },
-    mutations: {
-        increment (state) {
-            state.count++
-        }
-    }
+  state: {
+      outputMessage:""
+  },
+  mutations: {
+      appendMessage (state, message){
+        state.outputMessage += (message+"\n")
+      }
+  }
 })
 
 const app = new Vue({
