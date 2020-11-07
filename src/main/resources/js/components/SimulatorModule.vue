@@ -84,6 +84,13 @@ export default {
         "&zone_id=" +
         this.selectedZone.id;
       this.callAxios(path);
+
+      if(this.selectedZone.id == 0){
+        this.$store.commit('appendMessage',this.selectedUser.name+' left the house.');
+      }else{
+        this.$store.commit('appendMessage',this.selectedUser.name+' moved to '+this.selectedZone.name+'.');
+      }
+
     },
     callAxios(path) {
       axios
@@ -99,7 +106,6 @@ export default {
   mounted() {
     this.getUsers();
     setTimeout(this.getZones, 1000);
-    localStorage.message += "testFromSimulationModule"
   }
 };
 </script>

@@ -15,11 +15,10 @@ export default {
         },
         computed:{
             message(){
-                return localStorage.message;
+                return this.$store.state.outputMessage;
             }
         },
         mounted(){
-            localStorage.message +="test"
         }
 }
 
