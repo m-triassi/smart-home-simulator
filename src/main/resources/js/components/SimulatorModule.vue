@@ -7,7 +7,7 @@
 
       <tr>
         <td>
-          <edithome :simulationEnabled="simulationEnabled"></edithome>
+          <edithome :simulationEnabled="simulationEnabled" :user="user"></edithome>
         </td>
         <td>
           <tr>
