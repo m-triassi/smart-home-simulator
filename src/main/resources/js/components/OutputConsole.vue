@@ -8,15 +8,18 @@
 
 export default {
         name: 'outputconsole',
-        props:['simulationEnabled'],
+        props:['simulationEnabled', 'message'],
         data() {
             return {
             };
         },
         computed:{
             message(){
-                return this.simulationEnabled ? "Simulation ON" : "Simulation OFF"
+                return localStorage.message;
             }
+        },
+        mounted(){
+            localStorage.message +="test"
         }
 }
 
