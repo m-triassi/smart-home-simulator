@@ -23,12 +23,24 @@ import axios from 'axios';
 // make axios globally available
 window.axios = axios
 
+const store = new VueX.Store({
+    state: {
+        count: 0
+    },
+    mutations: {
+        increment (state) {
+            state.count++
+        }
+    }
+})
+
 const app = new Vue({
     el: '#app',
     data:{
       checkedLocations:[]
     },
     vuetify,
+    store: store,
     components: {
         mainpage,
         profile,
@@ -44,15 +56,4 @@ const app = new Vue({
     },
     
 }).use(VueX).$mount('#app');
-
-const store = new VueX.Store({
-    state: {
-        count: 0
-    },
-    mutations: {
-        increment (state) {
-            state.count++
-        }
-    }
-})
 
