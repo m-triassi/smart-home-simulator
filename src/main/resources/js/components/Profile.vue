@@ -31,8 +31,7 @@
           <h5>Location:</h5>
         </td>
         <td class="profileValue">
-          <h5 v-if="$store.state.user.zone.id != 0">{{$store.state.user.zone.name}}</h5>
-          <h5 v-if="$store.state.user.zone.id == 0">Away</h5>
+          <h5>{{$store.state.user.zone.name}}</h5>
         </td>
       </tr>
       <tr>
