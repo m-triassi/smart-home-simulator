@@ -1,8 +1,10 @@
 package com.soen343.smarthomesimulator.controllers;
 
+import com.soen343.smarthomesimulator.models.Appliance;
 import com.soen343.smarthomesimulator.models.Home;
 import com.soen343.smarthomesimulator.models.User;
 import com.soen343.smarthomesimulator.models.Zone;
+import com.soen343.smarthomesimulator.services.ApplianceService;
 import com.soen343.smarthomesimulator.services.HomeService;
 import com.soen343.smarthomesimulator.services.UserService;
 import com.soen343.smarthomesimulator.services.ZoneService;
@@ -29,6 +31,9 @@ public class UserController {
 
     @Autowired
     ZoneService zoneService;
+
+    @Autowired
+    ApplianceService applianceService;
 
     private Map<String, String> response;
 
@@ -70,7 +75,7 @@ public class UserController {
                              @RequestParam(value = "zone_id", required = false) Long zoneId,
                              @RequestParam(value = "name", required = false) String name,
                              @RequestParam(value = "email", required = false) String email,
-                             @RequestParam(value = "password", required = false) String password) {
+                             @RequestParam(value = "password", required = false) String password) throws Exception {
 
         User user = userService.findById(id);
         if (homeId != null && homeService.exists(homeId)) {
@@ -87,6 +92,19 @@ public class UserController {
             user.setZone(null);
         } else if (zoneId != null) {
             this.response.put("zone", "Zone supplied does not exist");
+        }
+
+        if (user.getHome().getAutoMode() == 1) {
+            for (Appliance appliance: user.getZone().getAppliances()) {
+                if (appliance != null && appliance.getType().equals("light") && appliance.getState() != 1) {
+                    appliance.setState(1);
+                    applianceService.save(appliance);
+                }
+            }
+        }
+
+        if (user.getHome().getSecurityLevel().equals(Home.SECURITY_ARMED) && user.getZone().getId() != 0) {
+            throw new Exception("Alarm has been triggered. Please leave the home and disable the alarm.");
         }
 
         if (name != null) {

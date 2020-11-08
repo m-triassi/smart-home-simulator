@@ -3,21 +3,17 @@ package com.soen343.smarthomesimulator.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import org.springframework.data.rest.core.annotation.RestResource;
+import com.soen343.smarthomesimulator.observers.UserObserver;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeSupport;
 import java.util.Collection;
+import java.util.Collections;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "users")
@@ -55,10 +51,15 @@ public class User implements UserDetails {
 
     private static final String ROLE_STRANGER = "ROLE_STRANGER";
 
+    private transient PropertyChangeSupport support;
+
     public User() {
+        this.registerObserver();
     }
 
     public User(Long id, String name, String email, String password) {
+        this.registerObserver();
+
         this.id = id;
         this.email = email;
         this.name = name;
@@ -67,6 +68,8 @@ public class User implements UserDetails {
     }
 
     public User(String name, String email, String password) {
+        this.registerObserver();
+
         this.email = email;
         this.name = name;
         this.password = password;
@@ -74,18 +77,30 @@ public class User implements UserDetails {
     }
 
     public User(String name, String email, String password, String role) {
+        this.registerObserver();
+
         this.email = email;
         this.name = name;
         this.password = password;
         this.role = role;
     }
 
-    public User(User user){
+    public User(User user) {
+        this.registerObserver();
+
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.name = user.getName();
         this.id = user.getId();
         this.role = user.getRole();
+    }
+
+    public void addPropertyChangeListener(PropertyChangeListener pcl) {
+        support.addPropertyChangeListener(pcl);
+    }
+
+    public void removePropertyChangeListener(PropertyChangeListener pcl) {
+        support.removePropertyChangeListener(pcl);
     }
 
     public Long getId() {
@@ -139,6 +154,7 @@ public class User implements UserDetails {
     public Zone getZone() {
         if (zone == null) {
             Zone outside = new Zone("Outside");
+            outside.setAppliances(Collections.emptyList());
             outside.setId(Long.valueOf(0));
             return outside;
         }
@@ -147,6 +163,7 @@ public class User implements UserDetails {
     }
 
     public void setZone(Zone zone) {
+        this.support.firePropertyChange("zone", this.zone, zone);
         this.zone = zone;
     }
 
@@ -178,5 +195,9 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true;
+    }
+
+    private void registerObserver() {
+        this.support = new PropertyChangeSupport(this);
     }
 }
