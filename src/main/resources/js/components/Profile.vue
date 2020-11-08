@@ -14,7 +14,7 @@
               src="https://www.pikpng.com/pngl/m/80-805523_default-avatar-svg-png-icon-free-download-264157.png"
               alt="Default Profile"/>
               <p/>
-              {{ this.user.name }}
+              {{ $store.state.user.name }}
         </td>
       </tr>
       <tr>
@@ -49,7 +49,7 @@
           <h5>Simulation date:</h5>
         </td>
         <td class="profileValue">
-          <h5>{{user.home.date}}</h5>
+          <h5>{{ $store.state.user.home.date}}</h5>
         </td>
       </tr>
     </table>

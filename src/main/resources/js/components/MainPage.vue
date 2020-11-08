@@ -17,18 +17,18 @@
           <p>Simulation
 
           <toggle-button :value="simulationEnabled" :labels="{checked: 'On', unchecked: 'Off'}"
-                         @change="onToggle()" class="onOffSimul" :disabled="user.name == null"/>
+                         @change="onToggle()" class="onOffSimul" :disabled="$store.state.user.name == null"/>
 
           </p>
           <p></p>
-          <profile :simulationEnabled="simulationEnabled" :user="user"></profile>
+          <profile :simulationEnabled="simulationEnabled" ></profile>
 
         </td>
 
         <td>
           <p>Modules</p>
 
-          <modules :simulationEnabled=simulationEnabled :user="user"></modules>
+          <modules :simulationEnabled="simulationEnabled"></modules>
 
         </td>
 
@@ -85,6 +85,7 @@ export default {
                 });
         },
         getZones() {
+          if(this.$store.state.user.home){
             axios
                 .get('/zones?home_id=' + this.$store.state.user.home.id)
                 .then((response) => {
@@ -93,6 +94,7 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                 });
+          }
         },
         onToggle() {
           var speedselected = document.querySelector('span[id="speedselected"]').textContent.split(" ")[1];
@@ -106,7 +108,7 @@ export default {
           }
           interval = setInterval(() => {
               if(this.simulationEnabled){
-                axios.post("/home/update?id=" + this.user.home.id + "&dateToBeIncremented=" + this.user.home.date).then(response => {
+                axios.post("/home/update?id=" + this.$store.state.user.home.id + "&dateToBeIncremented=" + this.$store.state.user.home.date).then(response => {
                   this.zones = response.data;
                 }).catch(function (error){
                   console.log(error)

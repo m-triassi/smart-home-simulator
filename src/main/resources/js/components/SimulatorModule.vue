@@ -6,7 +6,7 @@
       </tr>
       <tr>
         <td>
-          <edithome :simulationEnabled="simulationEnabled" :user="user"></edithome>
+          <edithome :simulationEnabled="simulationEnabled"></edithome>
         </td>
         <td>
           <tr>
@@ -68,7 +68,7 @@ export default {
     },
     getZones() {
 
-      if(this.user.home){
+      if(this.$store.state.user.home){
         var path = "zones?home_id=" + this.$store.state.user.home.id;
         axios
           .get(path)

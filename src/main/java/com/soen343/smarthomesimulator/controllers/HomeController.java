@@ -69,7 +69,7 @@ public class HomeController {
     public JSONObject update(@RequestParam(value = "id") Long id,
                              @RequestParam(value = "temperature", required = false) Integer temperature,
                              @RequestParam(value = "date", required = false) String date,
-                             @RequestParam(value = "dateToBeIncremented", required = false) String dateToBeIncremented) {
+                             @RequestParam(value = "dateToBeIncremented", required = false) String dateToBeIncremented,
                              @RequestParam(value = "security_level", required = false) String securityLevel,
                              @RequestParam(value = "auto_mode", required = false) Integer autoMode,
                              @RequestParam(value = "simulation_state", required = false) Integer simulationState) {

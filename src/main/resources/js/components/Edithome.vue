@@ -97,7 +97,7 @@ export default {
       })
     },
     joinHome() {
-      this.callAxios('/user/update?id=' + this.user.id + '&home_id=' + this.joinId)
+      this.callAxios('/user/update?id=' + this.$store.state.user.id + '&home_id=' + this.joinId)
     },
     callAxios(path) {
       axios.post(path).then(function (response) {
