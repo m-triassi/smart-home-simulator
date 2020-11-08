@@ -13,6 +13,8 @@
                         :value="Boolean(this.$store.state.simulationState)"
                         :labels="{ checked: 'On', unchecked: 'Off' }"
                         @change="changeState()"
+                        class="onOffSimul"
+                        :disabled="$store.state.user.name == null"
                     />
                     <profile></profile>
                 </td>
@@ -63,7 +65,6 @@ export default {
                             } else {
                                 this.$store.state.isAway = false;
                             }
-                            console.log("simulationState before if "+this.$store.state.simulationState)
                             if (this.$store.state.simulationState == null || this.$store.state.simulationState == undefined) {
                                 this.$store.state.simulationState = this.$store.state.user.home.simulationState;
                             }
@@ -74,6 +75,7 @@ export default {
                 });
         },
         getZones() {
+          if(this.$store.state.user.home){
             axios
                 .get('/zones?home_id=' + this.$store.state.user.home.id)
                 .then((response) => {
@@ -82,8 +84,25 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                 });
+          }
+        },
+        onToggle() {
+          
+          this.simulationEnabled = !this.simulationEnabled;
+          
+          if(this.simulationEnabled){
+
+            if(!window.location.href.includes('#shc')){
+              window.location.href = window.location.origin + '#shc';
+            }
+          }
+          
         },
         changeState() {
+
+            var speedselected = document.querySelector('span[id="speedselected"]').textContent.split(" ")[1];
+            var interval;
+
             if (this.$store.state.simulationState != null) {
                 if (this.$store.state.simulationState == 0) {
                     this.$store.state.simulationState = 1;
@@ -117,6 +136,21 @@ export default {
                         });
                 }
             }
+
+            interval = setInterval(() => {
+              if(Boolean(this.$store.state.simulationState)){
+                axios.post("/home/update?id=" + this.$store.state.user.home.id + "&dateToBeIncremented=" + this.$store.state.user.home.date).then(response => {
+                  this.zones = response.data;
+                }).catch(function (error){
+                  console.log(error)
+                })
+                this.getUser();
+              }
+              else{
+                clearInterval(interval);
+                interval = null;
+              }
+            }, 1000/speedselected);
         },
     },
     mounted() {

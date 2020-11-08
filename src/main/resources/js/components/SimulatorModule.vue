@@ -66,15 +66,19 @@ export default {
         });
     },
     getZones() {
-      var path = "zones?home_id=" + this.$store.state.user.home.id;
-      axios
-        .get(path)
-        .then((response) => {
-          this.zonesList = response.data;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+
+      if(this.$store.state.user.home){
+        var path = "zones?home_id=" + this.$store.state.user.home.id;
+        axios
+          .get(path)
+          .then((response) => {
+            this.zonesList = response.data;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+
     },
     moveUser() {
       var path =
