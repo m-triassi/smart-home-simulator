@@ -71,7 +71,7 @@ export default {
 
                     {
                         id:1,
-                        value:"0.5",
+                        value:"0",
                         type:1
                     },
                     {

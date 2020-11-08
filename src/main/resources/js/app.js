@@ -27,8 +27,9 @@ const store = new VueX.Store({
   state: {
     outputMessage: "",
     isAway: false,
-    user:{},
-    simulationState:null
+    user: {},
+    simulationState: null,
+    simulationStart: null,
   },
   mutations: {
     appendMessage(state, message) {
