@@ -1,7 +1,9 @@
 package com.soen343.smarthomesimulator.controllers;
 
 import com.soen343.smarthomesimulator.models.Home;
+import com.soen343.smarthomesimulator.models.User;
 import com.soen343.smarthomesimulator.services.HomeService;
+import com.soen343.smarthomesimulator.services.UserService;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,11 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * Class HomeController
- * 
+ * <p>
  * Controller for the Home component. Contains the endpoints that perform logic on the home entity.
  */
 @RestController
@@ -24,6 +27,9 @@ public class HomeController {
 
     @Autowired
     HomeService homeService;
+
+    @Autowired
+    UserService userService;
 
     private Map<String, String> response;
 
@@ -34,9 +40,9 @@ public class HomeController {
 
     /**
      * POST endpoint to <code>/home/store</code>
-     * 
+     * <p>
      * This endpoint creates a new Home entity and saves it to the database.
-     * 
+     *
      * @param name Defines the name of the home being saved.
      * @return Response containing the operation's status.
      */
@@ -62,11 +68,26 @@ public class HomeController {
         }
 
         if (securityLevel != null) {
-            home.setSecurityLevel(securityLevel);
+            boolean armed = this.armAlarm(home, securityLevel);
+            if (!armed) {
+                this.response.put("message", "Alarm cannot be engaged because there are still users present in the home.");
+            }
         }
 
         homeService.save(home);
         return new JSONObject(this.response);
+    }
+
+    private boolean armAlarm(Home home, String securityLevel) {
+        List<User> users = userService.findAll();
+        for (User user : users) {
+            if (user.getHome().getId().equals(home.getId()) && user.getZone() != null) {
+                return false;
+            }
+        }
+        home.setSecurityLevel(securityLevel);
+        homeService.save(home);
+        return true;
     }
 
 }

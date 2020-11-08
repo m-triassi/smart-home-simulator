@@ -24,7 +24,7 @@ public class Home {
 
     public static final String SECURITY_OFF = "off";
 
-    public static final String SECURITY_AWAY = "away";
+    public static final String SECURITY_ARMED = "armed";
 
     public Home() {
         this.name = "Generic Home";
