@@ -101,56 +101,28 @@ export default {
         changeState() {
 
             var speedselected = document.querySelector('span[id="speedselected"]').textContent.split(" ")[1];
-            var interval;
-
             if (this.$store.state.simulationState != null) {
                 if (this.$store.state.simulationState == 0) {
                     this.$store.state.simulationState = 1;
                     this.$store.state.user.home.simulationState = 1;
                     this.$store.commit('appendMessage', 'Simulation ON');
-                    axios
-                        .post(
-                            '/home/update?id=' +
-                                this.$store.state.user.home.id +
-                                '&simulation_state=' +
-                                1
-                        )
-                        .then(function (response) {})
+                    this.$store.state.simulationStart = Date.now()
+                    axios.post('/home/update?simulation_state=0&id=' + this.$store.state.user.home.id, )
                         .catch(function (error) {
-                            console.log(error);
+                          console.log(error);
                         });
                 } else {
                     this.$store.state.simulationState = 0;
                     this.$store.state.user.home.simulationState = 0;
                     this.$store.commit('appendMessage', 'Simulation OFF');
-                    axios
-                        .post(
-                            '/home/update?id=' +
-                                this.$store.state.user.home.id +
-                                '&simulation_state=' +
-                                0
-                        )
-                        .then(function (response) {})
-                        .catch(function (error) {
-                            console.log(error);
-                        });
+                    axios.post('/home/update?simulation_state=0&id=' + this.$store.state.user.home.id +
+                        '&start_time=' + this.$store.state.simulationStart +
+                        '&multiplier=' + speedselected
+                    ).then(response => this.$store.state.user.home.date = response.data.date).catch(function (error) {
+                      console.log(error);
+                    });
                 }
             }
-
-            interval = setInterval(() => {
-              if(Boolean(this.$store.state.simulationState)){
-                axios.post("/home/update?id=" + this.$store.state.user.home.id + "&dateToBeIncremented=" + this.$store.state.user.home.date).then(response => {
-                  this.zones = response.data;
-                }).catch(function (error){
-                  console.log(error)
-                })
-                this.getUser();
-              }
-              else{
-                clearInterval(interval);
-                interval = null;
-              }
-            }, 1000/speedselected);
         },
     },
     mounted() {
