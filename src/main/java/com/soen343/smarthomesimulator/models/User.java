@@ -1,3 +1,4 @@
+
 package com.soen343.smarthomesimulator.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
