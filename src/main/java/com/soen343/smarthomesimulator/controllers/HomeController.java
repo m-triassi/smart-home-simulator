@@ -66,7 +66,9 @@ public class HomeController {
     public JSONObject update(@RequestParam(value = "id") Long id,
                              @RequestParam(value = "temperature", required = false) Integer temperature,
                              @RequestParam(value = "date", required = false) String date,
-                             @RequestParam(value = "security_level", required = false) String securityLevel) {
+                             @RequestParam(value = "security_level", required = false) String securityLevel,
+                             @RequestParam(value = "auto_mode", required = false) Integer autoMode,
+                             @RequestParam(value = "simulation_state", required = false) Integer simulationState) {
         Home home = homeService.findById(id);
 
         if (temperature != null) {
@@ -82,6 +84,13 @@ public class HomeController {
             if (!armed) {
                 this.response.put("message", "Alarm cannot be engaged because there are still users present in the home.");
             }
+        }
+        if (autoMode != null) {
+            home.setAutoMode(autoMode);
+        }
+
+        if (simulationState != null) {
+            home.setSimulationState(simulationState);
         }
 
         homeService.save(home);
