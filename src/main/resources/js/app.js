@@ -27,7 +27,8 @@ const store = new VueX.Store({
   state: {
     outputMessage: "",
     isAway: false,
-    user:{}
+    user:{},
+    simulationState:null
   },
   mutations: {
     appendMessage(state, message) {
@@ -35,6 +36,9 @@ const store = new VueX.Store({
     },
     changeAwayState(state) {
       state.isAway = !state.isAway;
+    },
+    changeSimulationState(state){
+      state.simulationState = !state.simulationState;
     }
   }
 })
@@ -69,11 +73,12 @@ const app = new Vue({
           axios
             .get('/user?id=' + response.data.id)
             .then((response) => {
-              if (response.data.zone.id == undefined) {
+              if (response.data.zone.id == 0) {
                 this.$store.state.isAway = true;
               } else {
                 this.$store.state.isAway = false;
               }
+              this.$store.state.simulationState = response.data.house.simulation_state;
             });
         })
         .catch(function (error) {
@@ -83,7 +88,6 @@ const app = new Vue({
 
   },
   mounted() {
-
   }
 
 }).use(VueX).$mount('#app');

@@ -8,26 +8,18 @@
             <tr>
                 <td class="profile_section" rowspan="2">
                     <p>Simulation</p>
-
                     <toggle-button
-                        :value="simulationEnabled"
+                        :sync="true"
+                        :value="Boolean(this.$store.state.simulationState)"
                         :labels="{ checked: 'On', unchecked: 'Off' }"
                         @change="changeState()"
                     />
-
-                    <profile
-                        :simulationEnabled="simulationEnabled"
-                    ></profile>
+                    <profile></profile>
                 </td>
-
                 <td>
                     <p>Modules</p>
-
-                    <modules
-                        :simulationEnabled="simulationEnabled"
-                    ></modules>
+                    <modules></modules>
                 </td>
-
                 <td>
                     <div v-for="zone in zones" :key="zone.id" class="zone_box">
                         {{ zone.name }}
@@ -37,10 +29,7 @@
             </tr>
             <td colspan="2">
                 <p>Output Console</p>
-
-                <outputconsole
-                    :simulationEnabled="simulationEnabled"
-                ></outputconsole>
+                <outputconsole></outputconsole>
             </td>
             <tr></tr>
         </table>
@@ -74,6 +63,10 @@ export default {
                             } else {
                                 this.$store.state.isAway = false;
                             }
+                            console.log("simulationState before if "+this.$store.state.simulationState)
+                            if (this.$store.state.simulationState == null || this.$store.state.simulationState == undefined) {
+                                this.$store.state.simulationState = this.$store.state.user.home.simulationState;
+                            }
                         });
                 })
                 .catch(function (error) {
@@ -91,24 +84,38 @@ export default {
                 });
         },
         changeState() {
-            if (this.simulationEnabled === true) {
-                this.simulationEnabled = false;
-                this.$store.commit('appendMessage', 'Simulation OFF');
-            } else {
-                this.simulationEnabled = true;
-                this.$store.commit('appendMessage', 'Simulation ON');
-            }
-
-            console.log('output: ' + this.$store.state.outputMessage);
-
-            localStorage.simulationEnabled = this.simulationEnabled;
-            console.log('simulationEnabled: ' + this.simulationEnabled);
-        },
-        saveSimulationState() {
-            if (localStorage.simulationEnabled == undefined) {
-                this.simulationEnabled = false;
-            } else {
-                this.simulationEnabled = localStorage.simulationEnabled;
+            if (this.$store.state.simulationState != null) {
+                if (this.$store.state.simulationState == 0) {
+                    this.$store.state.simulationState = 1;
+                    this.$store.state.user.home.simulationState = 1;
+                    this.$store.commit('appendMessage', 'Simulation ON');
+                    axios
+                        .post(
+                            '/home/update?id=' +
+                                this.$store.state.user.home.id +
+                                '&simulation_state=' +
+                                1
+                        )
+                        .then(function (response) {})
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                } else {
+                    this.$store.state.simulationState = 0;
+                    this.$store.state.user.home.simulationState = 0;
+                    this.$store.commit('appendMessage', 'Simulation OFF');
+                    axios
+                        .post(
+                            '/home/update?id=' +
+                                this.$store.state.user.home.id +
+                                '&simulation_state=' +
+                                0
+                        )
+                        .then(function (response) {})
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
             }
         },
     },
@@ -118,7 +125,6 @@ export default {
     },
     data() {
         return {
-            simulationEnabled: false,
             zones: {},
         };
     },
