@@ -2,8 +2,8 @@
 
     <div>
 
-        <h5 class="centerText" v-if="simulationEnabled">Simulation ON <span class="enableSimulTimer" v-if="simulationEnabled">{{ user.home.date }}</span></h5>
-        <h5 class="centerText" v-if="!simulationEnabled">Simulation OFF <span class="disableSimulTimer" v-if="!simulationEnabled">{{ user.home.date }}</span></h5>
+        <h5 class="centerText" v-if="simulationEnabled">Simulation ON <span class="enableSimulTimer" v-if="simulationEnabled">{{ $store.state.user.home.date }}</span></h5>
+        <h5 class="centerText" v-if="!simulationEnabled">Simulation OFF <span class="disableSimulTimer" v-if="!simulationEnabled">{{ $store.state.user.home.date }}</span></h5>
 
         <table class="module_table">
             <tr>
@@ -127,16 +127,18 @@ export default {
         },
         methods: {
             getZones() {
-                var path = "zones?home_id=" + this.$store.state.user.home.id;
-                axios
-                .get(path)
-                .then((response) => {
-                    this.locations = response.data;
-                    console.log(this.locations)
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                if(this.$store.state.user.home){
+                    var path = "zones?home_id=" + this.$store.state.user.home.id;
+                    axios
+                    .get(path)
+                    .then((response) => {
+                        this.locations = response.data;
+                        console.log(this.locations)
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+                }
             },
             getOpenings(){
                 var path = "openings";
