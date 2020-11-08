@@ -4,60 +4,60 @@
       <h3>Create Home</h3>
       <div class="signup-box">
         <input class='input' id='home_name' v-model='name' type="text" placeholder="Home name"
-               :disabled="simulationEnabled"/>
+               :disabled="Boolean(this.$store.state.simulationState)"/>
       </div>
 
-      <button class="btn" :disabled="simulationEnabled">Create Home</button>
+      <button class="btn" :disabled="Boolean(this.$store.state.simulationState)">Create Home</button>
     </form>
     <form @submit.prevent="joinHome()">
       <h3>Join Home</h3>
 
       <div class="signup-box">
         <input class='input' id='join_home_id' v-model='joinId' type="text" placeholder="Home ID"
-               :disabled="simulationEnabled"/>
+               :disabled="Boolean(this.$store.state.simulationState)"/>
       </div>
 
-      <button class="btn" :disabled="simulationEnabled">Join Home</button>
+      <button class="btn" :disabled="Boolean(this.$store.state.simulationState)">Join Home</button>
     </form>
     <form @submit.prevent="editHome()">
       <h3>Edit Home</h3>
 
       <div class="signup-box">
-        <input class='input' id='home_id' v-model='id' type="text" placeholder="Home id" :disabled="simulationEnabled"/>
+        <input class='input' id='home_id' v-model='id' type="text" placeholder="Home id" :disabled="Boolean(this.$store.state.simulationState)"/>
       </div>
 
       <div class="signup-box">
         <input class='input' id='home_temperature' v-model='temperature' type="text" placeholder="Outside temperature"
-               :disabled="simulationEnabled"/>
+               :disabled="Boolean(this.$store.state.simulationState)"/>
       </div>
 
       <div class="signup-box">
         <input class='input' id='home_date' v-model='date' type="date" placeholder="Date"
-               :disabled="simulationEnabled"/>
+               :disabled="Boolean(this.$store.state.simulationState)"/>
       </div>
 
       <div class="signup-box">
         <input id='home_time' v-model='time' type="text"
                :placeholder="[[today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds()]]"
-               :disabled="simulationEnabled">
+               :disabled="Boolean(this.$store.state.simulationState)">
       </div>
       <br/>
-      <button class="btn" :disabled="simulationEnabled">Edit Home</button>
+      <button class="btn" :disabled="Boolean(this.$store.state.simulationState)">Edit Home</button>
     </form>
     <form @submit.prevent="createZone" enctype="multipart/form-data" action="/zones/load">
       <h3>Create Zone</h3>
 
       <div class="signup-box">
-        <input class='input' name='home_id' id='zone_home_id' v-model='home_id' type="text"
+        <input :disabled="Boolean(this.$store.state.simulationState)" class='input' name='home_id' id='zone_home_id' v-model='home_id' type="text"
                placeholder="Home id in which this zone is located"/>
       </div>
 
       <div class="signup-box">
 <!--        <input class='input' name="layout" id='zone_layout' type="file" placeholder="Zone layout"/>-->
-        <input class='input' name="layout" id='zone_layout' type="file" placeholder="Zone layout" @change="processFile($event)"/>
+        <input :disabled="Boolean(this.$store.state.simulationState)" class='input' name="layout" id='zone_layout' type="file" placeholder="Zone layout" @change="processFile($event)"/>
       </div>
 
-      <button class="btn" :disabled="simulationEnabled">Create Zone</button>
+      <button class="btn" :disabled="Boolean(this.$store.state.simulationState)">Create Zone</button>
     </form>
     <br/>
   </div>
@@ -80,7 +80,6 @@ export default {
       time: new Date().getHours() + ':' + new Date().getMinutes() + ':' + new Date().getSeconds()
     }
   },
-  props: ["user", "simulationEnabled"],
   methods: {
     createHome() {
       var path = '/home/store?name=' + this.name;

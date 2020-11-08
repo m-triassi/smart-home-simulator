@@ -1,54 +1,41 @@
 <template>
-  <div>
-    <a href="login" class="LoginButton">
-      Login
-    </a>
-    <a href="signup" class="SignupButton">
-      Signup
-    </a>
-    <a href="logout" class="LogoutButton">
-      Logout
-    </a>
+    <div>
+        <a href="login" class="LoginButton"> Login </a>
+        <a href="signup" class="SignupButton"> Signup </a>
+        <a href="logout" class="LogoutButton"> Logout </a>
 
-    <table class="main_table">
-
-      <tr>
-        <td class="profile_section" rowspan="2">
-          <p>Simulation
-
-          <toggle-button :value="simulationEnabled" :labels="{checked: 'On', unchecked: 'Off'}"
-                         @change="onToggle()" class="onOffSimul" :disabled="$store.state.user.name == null"/>
-
-          </p>
-          <p></p>
-          <profile :simulationEnabled="simulationEnabled" ></profile>
-
-        </td>
-
-        <td>
-          <p>Modules</p>
-
-          <modules :simulationEnabled="simulationEnabled"></modules>
-
-        </td>
-
-        <td>
-          <div v-for="zone in zones" :key="zone.id" class="zone_box">{{zone.name}}</div>
-          <p>House Layout</p>
-        </td>
-      </tr>
-      <td colspan="2">
-        <p>Output Console</p>
-
-        <outputconsole :simulationEnabled=simulationEnabled></outputconsole>
-
-      </td>
-      <tr>
-
-      </tr>
-
-    </table>
-  </div>
+        <table class="main_table">
+            <tr>
+                <td class="profile_section" rowspan="2">
+                    <p>Simulation</p>
+                    <toggle-button
+                        :sync="true"
+                        :value="Boolean(this.$store.state.simulationState)"
+                        :labels="{ checked: 'On', unchecked: 'Off' }"
+                        @change="changeState()"
+                        class="onOffSimul"
+                        :disabled="$store.state.user.name == null"
+                    />
+                    <profile></profile>
+                </td>
+                <td>
+                    <p>Modules</p>
+                    <modules></modules>
+                </td>
+                <td>
+                    <div v-for="zone in zones" :key="zone.id" class="zone_box">
+                        {{ zone.name }}
+                    </div>
+                    <p>House Layout</p>
+                </td>
+            </tr>
+            <td colspan="2">
+                <p>Output Console</p>
+                <outputconsole></outputconsole>
+            </td>
+            <tr></tr>
+        </table>
+    </div>
 </template>
 
 <script>
@@ -78,6 +65,9 @@ export default {
                             } else {
                                 this.$store.state.isAway = false;
                             }
+                            if (this.$store.state.simulationState == null || this.$store.state.simulationState == undefined) {
+                                this.$store.state.simulationState = this.$store.state.user.home.simulationState;
+                            }
                         });
                 })
                 .catch(function (error) {
@@ -97,17 +87,58 @@ export default {
           }
         },
         onToggle() {
-          var speedselected = document.querySelector('span[id="speedselected"]').textContent.split(" ")[1];
+          
           this.simulationEnabled = !this.simulationEnabled;
-          var interval;
+          
           if(this.simulationEnabled){
 
             if(!window.location.href.includes('#shc')){
               window.location.href = window.location.origin + '#shc';
             }
           }
-          interval = setInterval(() => {
-              if(this.simulationEnabled){
+          
+        },
+        changeState() {
+
+            var speedselected = document.querySelector('span[id="speedselected"]').textContent.split(" ")[1];
+            var interval;
+
+            if (this.$store.state.simulationState != null) {
+                if (this.$store.state.simulationState == 0) {
+                    this.$store.state.simulationState = 1;
+                    this.$store.state.user.home.simulationState = 1;
+                    this.$store.commit('appendMessage', 'Simulation ON');
+                    axios
+                        .post(
+                            '/home/update?id=' +
+                                this.$store.state.user.home.id +
+                                '&simulation_state=' +
+                                1
+                        )
+                        .then(function (response) {})
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                } else {
+                    this.$store.state.simulationState = 0;
+                    this.$store.state.user.home.simulationState = 0;
+                    this.$store.commit('appendMessage', 'Simulation OFF');
+                    axios
+                        .post(
+                            '/home/update?id=' +
+                                this.$store.state.user.home.id +
+                                '&simulation_state=' +
+                                0
+                        )
+                        .then(function (response) {})
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+                }
+            }
+
+            interval = setInterval(() => {
+              if(Boolean(this.$store.state.simulationState)){
                 axios.post("/home/update?id=" + this.$store.state.user.home.id + "&dateToBeIncremented=" + this.$store.state.user.home.date).then(response => {
                   this.zones = response.data;
                 }).catch(function (error){
@@ -121,27 +152,6 @@ export default {
               }
             }, 1000/speedselected);
         },
-        changeState() {
-            if (this.simulationEnabled === true) {
-                this.simulationEnabled = false;
-                this.$store.commit('appendMessage', 'Simulation OFF');
-            } else {
-                this.simulationEnabled = true;
-                this.$store.commit('appendMessage', 'Simulation ON');
-            }
-
-            console.log('output: ' + this.$store.state.outputMessage);
-
-            localStorage.simulationEnabled = this.simulationEnabled;
-            console.log('simulationEnabled: ' + this.simulationEnabled);
-        },
-        saveSimulationState() {
-            if (localStorage.simulationEnabled == undefined) {
-                this.simulationEnabled = false;
-            } else {
-                this.simulationEnabled = localStorage.simulationEnabled;
-            }
-        },
     },
     mounted() {
         this.getUser();
@@ -149,7 +159,6 @@ export default {
     },
     data() {
         return {
-            simulationEnabled: false,
             zones: {},
         };
     },

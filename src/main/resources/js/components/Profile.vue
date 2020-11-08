@@ -1,10 +1,9 @@
 <template>
   <div>
-    <a href="edit/profile" class="EditButton" :class="{disabled: simulationEnabled}">
+    <a href="edit/profile" class="EditButton" :class="{disabled: Boolean(this.$store.state.simulationState)}">
           Edit Profile
-    </a>
+        </a>
     <table class="profile_table" v-if="this.$store.state.user.id != undefined">
-
       <tr>
         <td>
           <h5>Signed in as:</h5>
@@ -16,6 +15,7 @@
               <p/>
               {{ $store.state.user.name }}
         </td>
+
       </tr>
       <tr>
 
@@ -65,7 +65,6 @@ Vue.component('ToggleButton', ToggleButton)
 
 export default {
   name: 'profile',
-  props: ["simulationEnabled"],
   data() {
     return {
     };
