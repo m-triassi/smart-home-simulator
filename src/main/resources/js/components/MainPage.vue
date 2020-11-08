@@ -14,11 +14,13 @@
 
       <tr>
         <td class="profile_section" rowspan="2">
-          <p>Simulation</p>
+          <p>Simulation
 
           <toggle-button :value="simulationEnabled" :labels="{checked: 'On', unchecked: 'Off'}"
-                         @change="simulationEnabled=!simulationEnabled"/>
+                         @change="onToggle()" class="onOffSimul" :disabled="user.name == null"/>
 
+          </p>
+          <p></p>
           <profile :simulationEnabled="simulationEnabled" :user="user"></profile>
 
         </td>
@@ -76,11 +78,38 @@ export default {
       });
     },
     getZones() {
-      axios.get("/zones?home_id=" + this.user.home.id).then(response => {
-        this.zones = response.data;
-      }).catch(function (error){
-        console.log(error)
-      })
+      if(this.user.home){
+        axios.get("/zones?home_id=" + this.user.home.id).then(response => {
+          this.zones = response.data;
+        }).catch(function (error){
+          console.log(error)
+        })
+      }
+    },
+    onToggle() {
+      var speedselected = document.querySelector('span[id="speedselected"]').textContent.split(" ")[1];
+      this.simulationEnabled = !this.simulationEnabled;
+      var interval;
+      if(this.simulationEnabled){
+
+        if(!window.location.href.includes('#shc')){
+          window.location.href = window.location.origin + '#shc';
+        }
+      }
+      interval = setInterval(() => {
+          if(this.simulationEnabled){
+            axios.post("/home/update?id=" + this.user.home.id + "&dateToBeIncremented=" + this.user.home.date).then(response => {
+              this.zones = response.data;
+            }).catch(function (error){
+              console.log(error)
+            })
+            this.getUser();
+          }
+          else{
+            clearInterval(interval);
+            interval = null;
+          }
+        }, 1000/speedselected);
     }
   },
   mounted() {
@@ -91,7 +120,8 @@ export default {
     return {
       simulationEnabled: false,
       user: {},
-      zones: {}
+      zones: {},
+      simulationStartTime: {}
     };
   }
 }

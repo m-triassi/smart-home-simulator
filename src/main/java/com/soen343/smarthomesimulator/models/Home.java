@@ -67,7 +67,9 @@ public class Home {
         return date;
     }
 
+    // remove 1.8e+7 milliseconds from date which is 5hours; when displaying the time in javascript it uses UTC and adds 5hours
     public void setDate(Timestamp date) {
+        date.setTime(date.getTime() - 18000000);
         this.date = date;
     }
 }

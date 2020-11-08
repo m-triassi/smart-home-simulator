@@ -10,10 +10,13 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jdk.jfr.StackTrace;
+
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
-
+import java.util.Date;
+import java.text.SimpleDateFormat;
 /**
  * Class HomeController
  * 
@@ -49,16 +52,32 @@ public class HomeController {
     @PostMapping("/home/update")
     public JSONObject update(@RequestParam(value = "id") Long id,
                              @RequestParam(value = "temperature", required = false) Integer temperature,
-                             @RequestParam(value = "date", required = false) String date) {
+                             @RequestParam(value = "date", required = false) String date,
+                             @RequestParam(value = "dateToBeIncremented", required = false) String dateToBeIncremented) {
         Home home = homeService.findById(id);
 
         if (temperature != null) {
             home.setOutside_temp(temperature);
         }
 
-        if (date != "") {
+        if (date != null) {
             home.setDate(Timestamp.valueOf(date));
         }
+
+        if (dateToBeIncremented != "") {
+            long inc = 1000;
+            dateToBeIncremented = dateToBeIncremented.replace("T", " ");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            Date sdfToDate = null;
+            try{
+                sdfToDate = sdf.parse(dateToBeIncremented);
+                long millis = sdfToDate.getTime();
+                Timestamp incrementedDate = new Timestamp(millis + inc);
+                home.setDate(incrementedDate);
+            }catch(Exception e){
+                System.err.print(e.toString());
+            }
+        }        
 
         homeService.save(home);
         return new JSONObject(this.response);

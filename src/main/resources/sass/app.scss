@@ -94,4 +94,23 @@ a.LoginButton, a.SignupButton, a.LogoutButton, a.EditButton, a.EditHomeButton{
       }
       .sidetoside{
         display: inline-block;
-      }      
+      }
+      .profileValue{
+        text-align: center;
+      }
+      .onOffSimul{
+        float: right;
+      }
+      .enableSimulTimer{
+        color: rgb(5, 150, 5);
+        font-weight: bold;
+        font-size: 1.3em;
+      }
+      .disableSimulTimer{
+        color: rgb(167, 46, 16);
+        font-weight: bold;
+        font-size: 1.3em;
+      }
+      .centerText{
+        text-align: center;
+      }
