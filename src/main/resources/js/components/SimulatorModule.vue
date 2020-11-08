@@ -1,9 +1,7 @@
 <template>
   <div>
+    <p>This is the simulator module</p>
     <table class="main_table">
-      <tr>
-        <p>This is the simulator module</p>
-      </tr>
       <tr>
         <td>
           <edithome></edithome>

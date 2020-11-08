@@ -28,6 +28,8 @@ public class Opening {
     @JsonIgnoreProperties("openings")
     private Zone zone;
     
+    private String connected_zone;
+
     public Opening() {
         this.type = "door";
     }
@@ -35,6 +37,12 @@ public class Opening {
     public Opening(String type, Zone zone) {
         this.type = type;
         this.zone = zone;
+    }
+
+    public Opening(String type, Zone zone, String connected_zone) {
+        this.type = type;
+        this.zone = zone;
+        this.connected_zone = connected_zone;
     }
 
     public Long getId() {

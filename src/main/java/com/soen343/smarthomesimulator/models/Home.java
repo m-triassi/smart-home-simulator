@@ -40,7 +40,7 @@ public class Home {
 
     public Home(String name) {
         this.name = name;
-        this.date = new Timestamp(System.currentTimeMillis());
+        this.date = new Timestamp(System.currentTimeMillis() - 18000000);
         this.outside_temp = 21;
     }
 

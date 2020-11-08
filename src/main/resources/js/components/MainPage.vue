@@ -7,16 +7,18 @@
         <table class="main_table">
             <tr>
                 <td class="profile_section" rowspan="2">
-                    <p>Simulation</p>
-                    <toggle-button
-                        :sync="true"
-                        :value="Boolean(this.$store.state.simulationState)"
-                        :labels="{ checked: 'On', unchecked: 'Off' }"
-                        @change="changeState()"
-                        class="onOffSimul"
-                        :disabled="$store.state.user.name == null"
-                    />
-                    <profile></profile>
+                    <div id="profilesection">
+                        <p>Simulation</p>
+                        <toggle-button
+                            :sync="true"
+                            :value="Boolean(this.$store.state.simulationState)"
+                            :labels="{ checked: 'On', unchecked: 'Off' }"
+                            @change="changeState()"
+                            class="onOffSimul"
+                            :disabled="$store.state.user.name == null"
+                        />
+                        <profile></profile>
+                    </div>
                 </td>
                 <td>
                     <p>Modules</p>

@@ -96,6 +96,9 @@ public class ZoneController {
             this.response.put("exception", e.toString());
         }
 
+        
+        System.out.println("412parsend " + parsed);
+
         // Build zones + openings
         for (Object z : parsed) {
             Zone zone;
@@ -106,15 +109,37 @@ public class ZoneController {
             }
             zoneService.save(zone);
 
-            int wCount = Integer.parseInt(handleGet(z, "windows"));
-            for (int i = 0; i < wCount; i++) {
-                openingService.save(new Opening("window", zone));
+            JSONArray windows = new JSONArray();
+            JSONArray doors = new JSONArray();
+            try {
+                windows = (JSONArray) loaded.parse(handleGet(z, "windows"));
+                doors = (JSONArray) loaded.parse(handleGet(z, "doors"));
+            } catch (ParseException e) {
+                this.response.put("success", "false");
+                this.response.put("message", "Parsing Failure");
+                this.response.put("exception", e.toString());
             }
 
-            int dCount = Integer.parseInt(handleGet(z, "doors"));
-            for (int j = 0; j < dCount; j++) {
-                openingService.save(new Opening("door", zone));
+            for(Object window : windows){
+                String connection;
+                try{
+                    connection = handleGet(window, "connection");
+                } catch(NullPointerException e){
+                    connection = null;
+                }
+                openingService.save(new Opening("window", zone, connection));
             }
+
+            for(Object door : doors){
+                String connection;
+                try{
+                    connection = handleGet(door, "connection");
+                } catch(NullPointerException e){
+                    connection = null;
+                }
+                openingService.save(new Opening("door", zone, connection));
+            }
+            
             applianceService.save(new Appliance(zone, "light"));
         }
 

@@ -1,22 +1,68 @@
 [
   {
     "name": "Zone 1",
-    "windows": 1,
-    "doors": 2
+    "windows": [
+      {
+        "window_id": 1,
+        "connection": null
+      },
+      {
+        "window_id": 2,
+        "connection": "Zone 3"
+      }
+    ],
+    "doors": [
+      {
+        "door_id": 1,
+        "connection": null
+      },
+      {
+        "door_id": 2,
+        "connection": "Zone 2"
+      }
+    ]
   },
   {
     "name": "Zone 2",
-    "windows": 3,
-    "doors": 1
+    "windows": [
+      {
+        "window_id": 3,
+        "connection": null
+      },
+      {
+        "window_id": 4,
+        "connection": null
+      }
+    ],
+    "doors": [
+      {
+        "door_id": 1,
+        "connection": "Zone 1"
+      }
+    ]
   },
   {
     "name": "Zone 3",
-    "windows": 2,
-    "doors": 3
+    "windows": [
+      {
+        "window_id": 3,
+        "connection": null
+      },
+      {
+        "window_id": 4,
+        "connection": "Zone 1"
+      }
+    ],
+    "doors": [
+      {
+        "door_id": 1,
+        "connection": "Zone 1"
+      }
+    ]
   },
   {
     "name": "Zone 4",
-    "windows": 1,
-    "doors": 1
+    "windows": [],
+    "doors": []
   }
 ]
