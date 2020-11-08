@@ -81,7 +81,6 @@
                 <span>Selected: {{ checkedLocation.name }}</span>
                 <br />
                 <button v-on:click="toggleHouseItemState()">All/None</button>
-                <span>{{ $store.state.houseItemsList }}</span>
             </tr>
         </table>
     </div>
@@ -142,6 +141,7 @@ export default {
             speedSelected: 1,
             locations: {},
             checkedLocation: 'None',
+            houseItemsList: [],
             houseItemsSize: 0,
         };
     },
@@ -160,46 +160,48 @@ export default {
                     });
             }
         },
-        getOpenings() {
+        async getOpenings() {
             var path =
                 'openings?zone_id=' +
                 this.checkedLocation.id +
                 '&type=' +
                 this.picked.type;
-            // axios
-            //     .get(path)
-            //     .then((response) => {
-            //         this.$store.state.houseItemsList = response.data;
-            //         console.log(
-            //             'size of array in getOpenings(): ' +
-            //                 this.$store.state.houseItemsList.length
-            //         ); //size 2
-            //     })
-            //     .catch(function (error) {
-            //         console.log(error);
-            //     });
-
-            this.$store.state.houseItemsList = this.callAxios(path);
-
-            console.log(
-                'size of array in getOpenings() at the end: ' +
-                    this.$store.state.houseItemsList.length
-            ); //size 0
+             return axios
+                .get(path)
+                .then((response) => {
+                    return this.houseItemsList = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
-        toggleHouseItemState() {
+        async getAppliances() {
+            var path =
+                'appliances?zone_id=' +
+                this.checkedLocation.id
+             return axios
+                .get(path)
+                .then((response) => {
+                    return this.houseItemsList = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        async toggleHouseItemState() {
             if (this.picked.houseItemType == 'opening') {
-                this.getOpenings();
+                this.houseItemsList = await this.getOpenings()
+                setTimeout(this,1000)
                 console.log(
-                    'size of array in toggle: ' +
-                        this.$store.state.houseItemsList.length
+                    'size of array in toggle (opening): ' + this.houseItemsList.length
                 );
-                for (var houseItem in this.$store.state.houseItemsList) {
+                for (var i = 0; i < this.houseItemsList.length; i++) {
                     this.houseItemsSize += 1;
-                    if (houseItem.state == 0) {
+                    if (this.houseItemsList[i].state == 0) {
                         axios
                             .post(
                                 '/openings/update?id=' +
-                                    houseItem.id +
+                                    this.houseItemsList[i].id +
                                     '&state=' +
                                     1
                             )
@@ -211,7 +213,7 @@ export default {
                         axios
                             .post(
                                 '/openings/update?id=' +
-                                    houseItem.id +
+                                    this.houseItemsList[i].id +
                                     '&state=' +
                                     0
                             )
@@ -221,26 +223,51 @@ export default {
                             });
                     }
                 }
-                this.$store.commit(
+            }else if(this.picked.houseItemType == 'appliance'){
+               this.houseItemsList = await this.getAppliances()
+                setTimeout(this,1000)
+                console.log(
+                    'size of array in toggle (appliance): ' + this.houseItemsList.length
+                );
+                for (var i = 0; i < this.houseItemsList.length; i++) {
+                    this.houseItemsSize += 1;
+                    if (this.houseItemsList[i].state == 0) {
+                        axios
+                            .post(
+                                '/appliances/update?appliance_id=' +
+                                    this.houseItemsList[i].id +
+                                    '&state=' +
+                                    1
+                            )
+                            .then(function (response) {})
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    } else {
+                        axios
+                            .post(
+                                '/appliances/update?appliance_id=' +
+                                    this.houseItemsList[i].id +
+                                    '&state=' +
+                                    0
+                            )
+                            .then(function (response) {})
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+                    }
+                }
+            }
+            this.$store.commit(
                     'appendMessage',
                     'Changed the state of ' +
                         this.houseItemsSize +
                         ' ' +
                         this.picked.name +
-                        '(s)'
+                        '(s) in '+this.checkedLocation.name
                 );
-            }
-        },
-        callAxios(path) {
-            axios
-                .get(path)
-                .then(function (response) {
-                    console.log(response);
-                    return response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+                this.houseItemsList = [];
+                this.houseItemsSize = 0; 
         },
     },
     mounted() {
