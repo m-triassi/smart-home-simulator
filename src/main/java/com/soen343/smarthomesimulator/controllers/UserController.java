@@ -75,7 +75,7 @@ public class UserController {
                              @RequestParam(value = "zone_id", required = false) Long zoneId,
                              @RequestParam(value = "name", required = false) String name,
                              @RequestParam(value = "email", required = false) String email,
-                             @RequestParam(value = "password", required = false) String password) throws Exception {
+                             @RequestParam(value = "password", required = false) String password) {
 
         User user = userService.findById(id);
         if (homeId != null && homeService.exists(homeId)) {
@@ -104,7 +104,9 @@ public class UserController {
         }
 
         if (user.getHome().getSecurityLevel().equals(Home.SECURITY_ARMED) && user.getZone().getId() != 0) {
-            throw new Exception("Alarm has been triggered. Please leave the home and disable the alarm.");
+            this.response.put("success", "false");
+            this.response.put("message", "Alarm has been triggered. Please leave the home and disable the alarm.");
+            return new JSONObject(this.response);
         }
 
         if (name != null) {
