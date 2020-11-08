@@ -1,11 +1,23 @@
+drop table if exists appliances cascade;
+
+drop table if exists openings cascade;
+
+drop table if exists users cascade;
+
+drop table if exists zones cascade;
+
+drop table if exists homes cascade;
+
 create table homes
 (
-    id             bigint unsigned auto_increment
+    id               bigint unsigned auto_increment
         primary key,
-    name           varchar(255) not null,
-    date           datetime     not null,
-    outside_temp   int          not null,
-    security_level varchar(30)  null
+    name             varchar(255)  not null,
+    date             datetime      not null,
+    outside_temp     int           not null,
+    security_level   varchar(30)   null,
+    auto_mode        int default 1 null,
+    simulation_state int default 0 null
 )
     collate = utf8mb4_unicode_ci;
 

@@ -22,6 +22,12 @@ public class Home {
     @Column(name = "security_level")
     private String securityLevel;
 
+    @Column(name = "auto_mode")
+    private int autoMode;
+
+    @Column(name = "simulation_state")
+    private int simulationState;
+
     public static final String SECURITY_OFF = "off";
 
     public static final String SECURITY_ARMED = "armed";
@@ -76,5 +82,21 @@ public class Home {
 
     public void setSecurityLevel(String securityLevel) {
         this.securityLevel = securityLevel;
+    }
+
+    public int getAutoMode() {
+        return autoMode;
+    }
+
+    public void setAutoMode(int autoMode) {
+        this.autoMode = autoMode;
+    }
+
+    public int getSimulationState() {
+        return simulationState;
+    }
+
+    public void setSimulationState(int simulationState) {
+        this.simulationState = simulationState;
     }
 }
