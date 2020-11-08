@@ -69,6 +69,18 @@ public class HomeController {
         return new JSONObject(this.response);
     }
 
+    /**
+     * Modify the parameters of a home / the context of the simulation
+     * @param id ID of the house to modify (Required)
+     * @param temperature Temperature of the enviornment outside of the home
+     * @param date the date and time the simulation is currently at
+     * @param startTime Unix Epoch when the simulation was turned on
+     * @param multiplier the speed at which time was moving
+     * @param securityLevel the security level that the home should be set to
+     * @param autoMode whether appliances like lights should automatically turn on when a user enters a zone in the home
+     * @param simulationState State of the sumulation, 0/1 for off/on
+     * @return JSONObject
+     */
     @PostMapping("/home/update")
     public JSONObject update(@RequestParam(value = "id") Long id,
                              @RequestParam(value = "temperature", required = false) Integer temperature,
@@ -115,6 +127,12 @@ public class HomeController {
         return new JSONObject(this.response);
     }
 
+    /**
+     * Helper function that checks no users are present in the home as well as locking all the doors in the home
+     * @param home Home to have its alarm armed
+     * @param securityLevel level the home is being set too
+     * @return boolean, on fail (a user is still present) returns false
+     */
     private boolean armAlarm(Home home, String securityLevel) {
         List<User> users = userService.findAll();
         int state;

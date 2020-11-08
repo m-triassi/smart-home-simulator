@@ -220,6 +220,11 @@ public class UserController {
         return new JSONObject(this.response);
     }
 
+    /**
+     * Allows for deleting of a user's account
+     * @param id The Id of a user to be destroyed
+     * @return JSONObject
+     */
     @PostMapping("/users/destroy")
     public JSONObject destroy(@RequestParam(value = "id") Long id) {
         User current = currentUser();
