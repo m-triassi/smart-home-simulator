@@ -1,123 +1,82 @@
-# ************************************************************
-# Sequel Pro SQL dump
-# Version 5446
-#
-# https://www.sequelpro.com/
-# https://github.com/sequelpro/sequelpro
-#
-# Host: localhost (MySQL 5.7.26)
-# Database: smart-home-simulator
-# Generation Time: 2020-10-12 01:39:05 +0000
-# ************************************************************
+drop table if exists appliances cascade;
 
+drop table if exists openings cascade;
 
-/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
-/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
-/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
-SET NAMES utf8mb4;
-/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
-/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
-/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+drop table if exists users cascade;
 
+drop table if exists zones cascade;
 
-# Dump of table appliances
-# ------------------------------------------------------------
+drop table if exists homes cascade;
 
-DROP TABLE IF EXISTS `appliances`;
+create table homes
+(
+    id               bigint unsigned auto_increment
+        primary key,
+    name             varchar(255)  not null,
+    date             datetime      not null,
+    outside_temp     int           not null,
+    security_level   varchar(30)   null,
+    auto_mode        int default 1 null,
+    simulation_state int default 0 null
+)
+    collate = utf8mb4_unicode_ci;
 
-CREATE TABLE `appliances` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `state` int(11) NOT NULL,
-  `home_id` bigint(20) unsigned DEFAULT NULL,
-  `zone_id` bigint(20) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `appliances_home_id_foreign` (`home_id`),
-  KEY `appliances_zone_id_foreign` (`zone_id`),
-  CONSTRAINT `appliances_home_id_foreign` FOREIGN KEY (`home_id`) REFERENCES `homes` (`id`),
-  CONSTRAINT `appliances_zone_id_foreign` FOREIGN KEY (`zone_id`) REFERENCES `zones` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+create table zones
+(
+    id          bigint unsigned auto_increment
+        primary key,
+    name        varchar(255)    not null,
+    temperature int default 21  not null,
+    home_id     bigint unsigned null,
+    constraint zones_home_id_foreign
+        foreign key (home_id) references homes (id)
+)
+    collate = utf8mb4_unicode_ci;
 
+create table appliances
+(
+    id      bigint unsigned auto_increment
+        primary key,
+    type    varchar(255)    not null,
+    name    varchar(255)    not null,
+    state   int             not null,
+    home_id bigint unsigned null,
+    zone_id bigint unsigned null,
+    constraint appliances_home_id_foreign
+        foreign key (home_id) references homes (id),
+    constraint appliances_zone_id_foreign
+        foreign key (zone_id) references zones (id)
+)
+    collate = utf8mb4_unicode_ci;
 
+create table openings
+(
+    id      bigint unsigned auto_increment
+        primary key,
+    type    varchar(255)       not null,
+    state   smallint default 0 not null,
+    zone_id bigint unsigned    null,
+    constraint openings_zone_id_foreign
+        foreign key (zone_id) references zones (id)
+)
+    collate = utf8mb4_unicode_ci;
 
-# Dump of table homes
-# ------------------------------------------------------------
+create table users
+(
+    id       bigint unsigned auto_increment
+        primary key,
+    name     varchar(255)                                                                   not null,
+    email    varchar(255)                                                                   not null,
+    role     enum ('ROLE_ADMIN', 'ROLE_PARENT', 'ROLE_USER', 'ROLE_CHILD', 'ROLE_STRANGER') null,
+    password varchar(255)                                                                   not null,
+    home_id  bigint unsigned                                                                null,
+    zone_id  bigint unsigned                                                                null,
+    constraint users_email_unique
+        unique (email),
+    constraint users_home_id_foreign
+        foreign key (home_id) references homes (id),
+    constraint users_zone_id_foreign
+        foreign key (zone_id) references zones (id)
+)
+    collate = utf8mb4_unicode_ci;
 
-DROP TABLE IF EXISTS `homes`;
-
-CREATE TABLE `homes` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `date` datetime NOT NULL,
-  `outside_temp` int(11) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
-
-# Dump of table openings
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `openings`;
-
-CREATE TABLE `openings` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `type` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `state` smallint(6) NOT NULL DEFAULT '0',
-  `zone_id` bigint(20) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `openings_zone_id_foreign` (`zone_id`),
-  CONSTRAINT `openings_zone_id_foreign` FOREIGN KEY (`zone_id`) REFERENCES `zones` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
-
-# Dump of table users
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `users`;
-
-CREATE TABLE `users` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `email` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `role` enum('ROLE_ADMIN', 'ROLE_PARENT', 'ROLE_USER','ROLE_CHILD') COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `home_id` bigint(20) unsigned DEFAULT NULL,
-  `zone_id` bigint(20) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `users_email_unique` (`email`),
-  KEY `users_zone_id_foreign` (`zone_id`),
-  KEY `users_home_id_foreign` (`home_id`),
-  CONSTRAINT `users_home_id_foreign` FOREIGN KEY (`home_id`) REFERENCES `homes` (`id`),
-  CONSTRAINT `users_zone_id_foreign` FOREIGN KEY (`zone_id`) REFERENCES `zones` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
-
-# Dump of table zones
-# ------------------------------------------------------------
-
-DROP TABLE IF EXISTS `zones`;
-
-CREATE TABLE `zones` (
-  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
-  `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `temperature` int(11) NOT NULL DEFAULT '21',
-  `home_id` bigint(20) unsigned DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  KEY `zones_home_id_foreign` (`home_id`),
-  CONSTRAINT `zones_home_id_foreign` FOREIGN KEY (`home_id`) REFERENCES `homes` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
-
-
-/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
-/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
-/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

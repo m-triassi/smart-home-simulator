@@ -2,15 +2,7 @@ package com.soen343.smarthomesimulator.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToOne;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
@@ -26,6 +18,19 @@ public class Home {
     private Integer outside_temp;
 
     private Timestamp date;
+
+    @Column(name = "security_level")
+    private String securityLevel;
+
+    @Column(name = "auto_mode")
+    private int autoMode;
+
+    @Column(name = "simulation_state")
+    private int simulationState;
+
+    public static final String SECURITY_OFF = "off";
+
+    public static final String SECURITY_ARMED = "armed";
 
     public Home() {
         this.name = "Generic Home";
@@ -71,5 +76,29 @@ public class Home {
     public void setDate(Timestamp date) {
         date.setTime(date.getTime() - 18000000);
         this.date = date;
+    }
+
+    public String getSecurityLevel() {
+        return securityLevel;
+    }
+
+    public void setSecurityLevel(String securityLevel) {
+        this.securityLevel = securityLevel;
+    }
+
+    public int getAutoMode() {
+        return autoMode;
+    }
+
+    public void setAutoMode(int autoMode) {
+        this.autoMode = autoMode;
+    }
+
+    public int getSimulationState() {
+        return simulationState;
+    }
+
+    public void setSimulationState(int simulationState) {
+        this.simulationState = simulationState;
     }
 }

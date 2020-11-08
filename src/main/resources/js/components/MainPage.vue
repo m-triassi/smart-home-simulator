@@ -49,107 +49,136 @@
 
     </table>
   </div>
-   
 </template>
 
 <script>
-
 import profile from './Profile';
-import modules from './Modules'
-import outputconsole from './OutputConsole'
-
+import modules from './Modules';
+import outputconsole from './OutputConsole';
 
 export default {
-  name: 'mainpage',
-  components: {
-    'profile': profile,
-    'modules': modules,
-    'outputconsole': outputconsole,
-  },
-  methods: {
-    getUser() {
-      var path = 'user/current';
-      axios.get(path).then(response => {
-        axios.get('/user?id=' + response.data.id).then(response => {
-          this.user = response.data;
-        })
-      }).catch(function (error) {
-        console.log(error);
-      });
+    name: 'mainpage',
+    components: {
+        profile: profile,
+        modules: modules,
+        outputconsole: outputconsole,
     },
-    getZones() {
-      if(this.user.home){
-        axios.get("/zones?home_id=" + this.user.home.id).then(response => {
-          this.zones = response.data;
-        }).catch(function (error){
-          console.log(error)
-        })
-      }
-    },
-    onToggle() {
-      var speedselected = document.querySelector('span[id="speedselected"]').textContent.split(" ")[1];
-      this.simulationEnabled = !this.simulationEnabled;
-      var interval;
-      if(this.simulationEnabled){
-
-        if(!window.location.href.includes('#shc')){
-          window.location.href = window.location.origin + '#shc';
-        }
-      }
-      interval = setInterval(() => {
+    methods: {
+        getUser() {
+            var path = 'user/current';
+            axios
+                .get(path)
+                .then((response) => {
+                    axios
+                        .get('/user?id=' + response.data.id)
+                        .then((response) => {
+                            this.$store.state.user = response.data;
+                            if (this.$store.state.user.zone.id == 0) {
+                                this.$store.state.isAway = true;
+                            } else {
+                                this.$store.state.isAway = false;
+                            }
+                        });
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        getZones() {
+            axios
+                .get('/zones?home_id=' + this.$store.state.user.home.id)
+                .then((response) => {
+                    this.zones = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        },
+        onToggle() {
+          var speedselected = document.querySelector('span[id="speedselected"]').textContent.split(" ")[1];
+          this.simulationEnabled = !this.simulationEnabled;
+          var interval;
           if(this.simulationEnabled){
-            axios.post("/home/update?id=" + this.user.home.id + "&dateToBeIncremented=" + this.user.home.date).then(response => {
-              this.zones = response.data;
-            }).catch(function (error){
-              console.log(error)
-            })
-            this.getUser();
-          }
-          else{
-            clearInterval(interval);
-            interval = null;
-          }
-        }, 1000/speedselected);
-    }
-  },
-  mounted() {
-    this.getUser();
-    setTimeout(this.getZones, 1000)
-  },
-  data() {
-    return {
-      simulationEnabled: false,
-      user: {},
-      zones: {},
-      simulationStartTime: {}
-    };
-  }
-}
 
+            if(!window.location.href.includes('#shc')){
+              window.location.href = window.location.origin + '#shc';
+            }
+          }
+          interval = setInterval(() => {
+              if(this.simulationEnabled){
+                axios.post("/home/update?id=" + this.user.home.id + "&dateToBeIncremented=" + this.user.home.date).then(response => {
+                  this.zones = response.data;
+                }).catch(function (error){
+                  console.log(error)
+                })
+                this.getUser();
+              }
+              else{
+                clearInterval(interval);
+                interval = null;
+              }
+            }, 1000/speedselected);
+        },
+        changeState() {
+            if (this.simulationEnabled === true) {
+                this.simulationEnabled = false;
+                this.$store.commit('appendMessage', 'Simulation OFF');
+            } else {
+                this.simulationEnabled = true;
+                this.$store.commit('appendMessage', 'Simulation ON');
+            }
+
+            console.log('output: ' + this.$store.state.outputMessage);
+
+            localStorage.simulationEnabled = this.simulationEnabled;
+            console.log('simulationEnabled: ' + this.simulationEnabled);
+        },
+        saveSimulationState() {
+            if (localStorage.simulationEnabled == undefined) {
+                this.simulationEnabled = false;
+            } else {
+                this.simulationEnabled = localStorage.simulationEnabled;
+            }
+        },
+    },
+    mounted() {
+        this.getUser();
+        setTimeout(this.getZones, 1000);
+    },
+    data() {
+        return {
+            simulationEnabled: false,
+            zones: {},
+        };
+    },
+};
 </script>
 
 <style>
-table, th, td {
-  border: 1px solid black;
-  border-collapse: collapse;
+table,
+th,
+td {
+    border: 1px solid black;
+    border-collapse: collapse;
 }
 
-th, td {
-  padding: 5px;
-  text-align: left;
+th,
+td {
+    padding: 5px;
+    text-align: left;
 }
 
 .main_table {
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
 }
 
 .profile_section {
-  width: 20%;
-  height: auto;
+    width: 20%;
+    height: auto;
 }
 .zone_box {
-  padding: 100px;
-  outline: 2px solid black;
+    padding: 100px;
+    outline: 2px solid black;
 }
 </style>

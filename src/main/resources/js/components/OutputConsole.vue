@@ -15,8 +15,10 @@ export default {
         },
         computed:{
             message(){
-                return this.simulationEnabled ? "Simulation ON" : "Simulation OFF"
+                return this.$store.state.outputMessage;
             }
+        },
+        mounted(){
         }
 }
 

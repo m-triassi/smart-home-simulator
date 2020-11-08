@@ -44,12 +44,13 @@
 
             <tr>
                 <div v-bind:key="location.id" v-for="location in locations">
-                    <input type="checkbox" :id="location.id" :value="location.name" v-model="checkedLocations">
+                    <input type="radio" :id="location.id" :value="location.name" v-model="checkedLocation">
                     <label :for="location.id">{{location.name}}</label>
+                    <br>
                 </div>
 
-                <p>{{checkedLocations.name}}</p>
-
+                <span>Selected: {{ checkedLocation }}</span>
+                <br>
                 <button>All/None</button>
                 
             </tr>
@@ -64,7 +65,7 @@
 
 export default {
         name: 'core',
-        props: ["user", "simulationEnabled"],
+        props: ["simulationEnabled"],
         data() {
             return {
 
@@ -119,24 +120,23 @@ export default {
                 picked:"None",
                 speedSelected: 1,
                 locations:{},
-                checkedLocations: [],
+                checkedLocation: "None",
                 openingsList:{}
 
             };
         },
         methods: {
             getZones() {
-                if(this.user.home) {
-                    var path = "zones?home_id=" + this.user.home.id;
-                    axios
-                    .get(path)
-                    .then((response) => {
-                        this.locations = response.data;
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
-                }
+                var path = "zones?home_id=" + this.$store.state.user.home.id;
+                axios
+                .get(path)
+                .then((response) => {
+                    this.locations = response.data;
+                    console.log(this.locations)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
             },
             getOpenings(){
                 var path = "openings";

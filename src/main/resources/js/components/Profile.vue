@@ -3,7 +3,8 @@
     <a href="edit/profile" class="EditButton" :class="{disabled: simulationEnabled}">
           Edit Profile
     </a>
-    <table class="profile_table" v-if="user.id != undefined">
+    <table class="profile_table" v-if="this.$store.state.user.id != undefined">
+
       <tr>
         <td>
           <h5>Signed in as:</h5>
@@ -17,11 +18,12 @@
         </td>
       </tr>
       <tr>
+
         <td>
           <h5>Acces type:</h5>
         </td>
         <td class="profileValue">
-          <h5>{{ this.user.role }}</h5>
+          <h5>{{ $store.state.user.role }}</h5>
         </td>
       </tr>
       <tr>
@@ -29,7 +31,8 @@
           <h5>Location:</h5>
         </td>
         <td class="profileValue">
-          <h5>{{ this.user.zone.name }}</h5>
+          <h5 v-if="$store.state.user.zone.id != 0">{{$store.state.user.zone.name}}</h5>
+          <h5 v-if="$store.state.user.zone.id == 0">Away</h5>
         </td>
       </tr>
       <tr>
@@ -37,8 +40,9 @@
           <h5>Outside Temperature:</h5>
         </td>
         <td class="profileValue">
-          <h5>{{ this.user.home.outside_temp }}C</h5>
+          <h5>{{ this.$store.state.user.home.outside_temp }}C</h5>
         </td>
+
       </tr>
       <tr>
         <td>
@@ -61,10 +65,12 @@ Vue.component('ToggleButton', ToggleButton)
 
 export default {
   name: 'profile',
-  props: ["user", "simulationEnabled"],
+  props: ["simulationEnabled"],
   data() {
     return {
     };
+  },
+  mounted(){
   }
 }
 

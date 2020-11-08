@@ -1,18 +1,18 @@
 <template>
 
-  <div v-if="user.id != undefined">
+  <div v-if="this.$store.state.user.id != undefined">
     <tabs>
       <tab name="SHS">
-        <simulator :user="user" :simulationEnabled=simulationEnabled></simulator>
+        <simulator :simulationEnabled=simulationEnabled></simulator>
       </tab>
       <tab name="SHC">
-        <core :user="user" :simulationEnabled=simulationEnabled></core>
+        <core :simulationEnabled=simulationEnabled></core>
       </tab>
       <tab name="SHP">
-        <security></security>
+        <security :simulationEnabled=simulationEnabled></security>
       </tab>
       <tab name="SHH">
-        <heating></heating>
+        <heating :simulationEnabled=simulationEnabled></heating>
       </tab>
       <tab name="+">
         <custom></custom>
@@ -44,7 +44,7 @@ export default {
     'custom': custom,
     'simulator': simulator,
   },
-  props: ["user", "simulationEnabled"]
+  props: ["simulationEnabled"]
 }
 
 </script>
