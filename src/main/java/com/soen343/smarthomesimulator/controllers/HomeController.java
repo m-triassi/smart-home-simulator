@@ -16,11 +16,14 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jdk.jfr.StackTrace;
+
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import java.util.Date;
+import java.text.SimpleDateFormat;
 /**
  * Class HomeController
  * <p>
@@ -66,6 +69,7 @@ public class HomeController {
     public JSONObject update(@RequestParam(value = "id") Long id,
                              @RequestParam(value = "temperature", required = false) Integer temperature,
                              @RequestParam(value = "date", required = false) String date,
+                             @RequestParam(value = "dateToBeIncremented", required = false) String dateToBeIncremented) {
                              @RequestParam(value = "security_level", required = false) String securityLevel,
                              @RequestParam(value = "auto_mode", required = false) Integer autoMode,
                              @RequestParam(value = "simulation_state", required = false) Integer simulationState) {
@@ -79,6 +83,21 @@ public class HomeController {
             home.setDate(Timestamp.valueOf(date));
         }
 
+
+        if (dateToBeIncremented != "") {
+            long inc = 1000;
+            dateToBeIncremented = dateToBeIncremented.replace("T", " ");
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
+            Date sdfToDate = null;
+            try{
+                sdfToDate = sdf.parse(dateToBeIncremented);
+                long millis = sdfToDate.getTime();
+                Timestamp incrementedDate = new Timestamp(millis + inc);
+                home.setDate(incrementedDate);
+            }catch(Exception e){
+                System.err.print(e.toString());
+            }
+        }        
         if (securityLevel != null) {
             boolean armed = this.armAlarm(home, securityLevel);
             if (!armed) {

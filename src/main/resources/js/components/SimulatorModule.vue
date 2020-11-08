@@ -6,7 +6,7 @@
       </tr>
       <tr>
         <td>
-          <edithome :simulationEnabled="simulationEnabled"></edithome>
+          <edithome :simulationEnabled="simulationEnabled" :user="user"></edithome>
         </td>
         <td>
           <tr>
@@ -67,15 +67,19 @@ export default {
         });
     },
     getZones() {
-      var path = "zones?home_id=" + this.$store.state.user.home.id;
-      axios
-        .get(path)
-        .then((response) => {
-          this.zonesList = response.data;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+
+      if(this.user.home){
+        var path = "zones?home_id=" + this.$store.state.user.home.id;
+        axios
+          .get(path)
+          .then((response) => {
+            this.zonesList = response.data;
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+
     },
     moveUser() {
       var path =

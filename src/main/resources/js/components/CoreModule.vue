@@ -2,9 +2,23 @@
 
     <div>
 
-        <p>This is the core module</p>
+        <h5 class="centerText" v-if="simulationEnabled">Simulation ON <span class="enableSimulTimer" v-if="simulationEnabled">{{ user.home.date }}</span></h5>
+        <h5 class="centerText" v-if="!simulationEnabled">Simulation OFF <span class="disableSimulTimer" v-if="!simulationEnabled">{{ user.home.date }}</span></h5>
 
         <table class="module_table">
+            <tr>
+                Simulation speed
+            </tr>
+
+            <tr>
+                <div v-bind:key="speed.id" v-for="speed in speeds" :disabled="simulationEnabled">
+                    <input type="radio" :id="speed.id" :value="speed.value" v-model="speedSelected" :disabled="simulationEnabled">
+                    <label :for="speed.id">{{speed.value}}</label>
+                    <br>
+                </div>
+                <span id="speedselected">Selected: {{ speedSelected }}</span>
+                
+            </tr>
 
             <tr>
                 Item
@@ -74,7 +88,37 @@ export default {
                     }
 
                 ],
+                 speeds:[
+
+                    {
+                        id:1,
+                        value:"0.5",
+                        type:1
+                    },
+                    {
+                        id:2,
+                        value: "1",
+                        type:2
+                    },
+                    {
+                        id:3,
+                        value:"2",
+                        type:3
+                    },
+                    {
+                        id:4,
+                        value:"5",
+                        type:4
+                    },
+                    {
+                        id:5,
+                        value:"10",
+                        type:5
+                    }
+
+                ],
                 picked:"None",
+                speedSelected: 1,
                 locations:{},
                 checkedLocation: "None",
                 openingsList:{}
@@ -131,5 +175,6 @@ export default {
     .module_table{
         width: 50%;
         height: auto;
+        margin: auto;
     }
 </style>

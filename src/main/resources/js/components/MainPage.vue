@@ -1,50 +1,54 @@
 <template>
-    <div>
-        <a href="login" class="LoginButton"> Login </a>
-        <a href="signup" class="SignupButton"> Signup </a>
-        <a href="logout" class="LogoutButton"> Logout </a>
+  <div>
+    <a href="login" class="LoginButton">
+      Login
+    </a>
+    <a href="signup" class="SignupButton">
+      Signup
+    </a>
+    <a href="logout" class="LogoutButton">
+      Logout
+    </a>
 
-        <table class="main_table">
-            <tr>
-                <td class="profile_section" rowspan="2">
-                    <p>Simulation</p>
+    <table class="main_table">
 
-                    <toggle-button
-                        :value="simulationEnabled"
-                        :labels="{ checked: 'On', unchecked: 'Off' }"
-                        @change="changeState()"
-                    />
+      <tr>
+        <td class="profile_section" rowspan="2">
+          <p>Simulation
 
-                    <profile
-                        :simulationEnabled="simulationEnabled"
-                    ></profile>
-                </td>
+          <toggle-button :value="simulationEnabled" :labels="{checked: 'On', unchecked: 'Off'}"
+                         @change="onToggle()" class="onOffSimul" :disabled="user.name == null"/>
 
-                <td>
-                    <p>Modules</p>
+          </p>
+          <p></p>
+          <profile :simulationEnabled="simulationEnabled" :user="user"></profile>
 
-                    <modules
-                        :simulationEnabled="simulationEnabled"
-                    ></modules>
-                </td>
+        </td>
 
-                <td>
-                    <div v-for="zone in zones" :key="zone.id" class="zone_box">
-                        {{ zone.name }}
-                    </div>
-                    <p>House Layout</p>
-                </td>
-            </tr>
-            <td colspan="2">
-                <p>Output Console</p>
+        <td>
+          <p>Modules</p>
 
-                <outputconsole
-                    :simulationEnabled="simulationEnabled"
-                ></outputconsole>
-            </td>
-            <tr></tr>
-        </table>
-    </div>
+          <modules :simulationEnabled=simulationEnabled :user="user"></modules>
+
+        </td>
+
+        <td>
+          <div v-for="zone in zones" :key="zone.id" class="zone_box">{{zone.name}}</div>
+          <p>House Layout</p>
+        </td>
+      </tr>
+      <td colspan="2">
+        <p>Output Console</p>
+
+        <outputconsole :simulationEnabled=simulationEnabled></outputconsole>
+
+      </td>
+      <tr>
+
+      </tr>
+
+    </table>
+  </div>
 </template>
 
 <script>
@@ -89,6 +93,31 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                 });
+        },
+        onToggle() {
+          var speedselected = document.querySelector('span[id="speedselected"]').textContent.split(" ")[1];
+          this.simulationEnabled = !this.simulationEnabled;
+          var interval;
+          if(this.simulationEnabled){
+
+            if(!window.location.href.includes('#shc')){
+              window.location.href = window.location.origin + '#shc';
+            }
+          }
+          interval = setInterval(() => {
+              if(this.simulationEnabled){
+                axios.post("/home/update?id=" + this.user.home.id + "&dateToBeIncremented=" + this.user.home.date).then(response => {
+                  this.zones = response.data;
+                }).catch(function (error){
+                  console.log(error)
+                })
+                this.getUser();
+              }
+              else{
+                clearInterval(interval);
+                interval = null;
+              }
+            }, 1000/speedselected);
         },
         changeState() {
             if (this.simulationEnabled === true) {
