@@ -1,9 +1,13 @@
 package com.soen343.smarthomesimulator.controllers;
 
 import com.soen343.smarthomesimulator.models.Home;
+import com.soen343.smarthomesimulator.models.Opening;
 import com.soen343.smarthomesimulator.models.User;
+import com.soen343.smarthomesimulator.models.Zone;
 import com.soen343.smarthomesimulator.services.HomeService;
+import com.soen343.smarthomesimulator.services.OpeningService;
 import com.soen343.smarthomesimulator.services.UserService;
+import com.soen343.smarthomesimulator.services.ZoneService;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +34,12 @@ public class HomeController {
 
     @Autowired
     UserService userService;
+
+    @Autowired
+    OpeningService openingService;
+
+    @Autowired
+    ZoneService zoneService;
 
     private Map<String, String> response;
 
@@ -62,7 +72,7 @@ public class HomeController {
         if (temperature != null) {
             home.setOutside_temp(temperature);
         }
-        System.out.println(date);
+
         if (date != null) {
             home.setDate(Timestamp.valueOf(date));
         }
@@ -80,11 +90,27 @@ public class HomeController {
 
     private boolean armAlarm(Home home, String securityLevel) {
         List<User> users = userService.findAll();
+        int state;
+
+        if (securityLevel.equals("armed")) {
+            state = -1;
+        } else {
+            state = 0;
+        }
+
         for (User user : users) {
-            if (user.getHome().getId().equals(home.getId()) && user.getZone() != null) {
+            if (user.getHome().getId().equals(home.getId()) && user.getZone().getId() != 0) {
                 return false;
             }
         }
+
+        for (Zone zone : zoneService.findByHome(home.getId())) {
+            for (Opening opening : openingService.findByZone(zone.getId())) {
+                opening.setState(state);
+                openingService.save(opening);
+            }
+        }
+
         home.setSecurityLevel(securityLevel);
         homeService.save(home);
         return true;
