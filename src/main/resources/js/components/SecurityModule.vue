@@ -34,6 +34,7 @@ export default {
                 this.$store.state.user.home.securityLevel == 'armed'
                     ? true
                     : false,
+            houseItemsList: []
         };
     },
     methods: {
@@ -52,10 +53,14 @@ export default {
                         console.log(error);
                     });
 
-                if (this.homeResponse.data.message == '') {
+                if (this.homeResponse.data.message == '' || this.homeResponse.data.message == undefined) {
                     this.$store.commit(
                         'appendMessage',
                         'Success. House is [Armed]'
+                    );
+                    this.$store.commit(
+                        'appendMessage',
+                        'All Doors & Windows locked'
                     );
                     this.$store.state.user.home.securityLevel = 'armed';
                     this.isArmed = true;
@@ -79,10 +84,14 @@ export default {
                         console.log(error);
                     });
 
-                if (this.homeResponse.data.message == '') {
+                if (this.homeResponse.data.message == '' || this.homeResponse.data.message == undefined) {
                     this.$store.commit(
                         'appendMessage',
                         'Success. House is [Unarmed]'
+                    );
+                    this.$store.commit(
+                        'appendMessage',
+                        'All Doors & Windows open'
                     );
                     this.$store.state.user.home.securityLevel = 'unarmed';
                     this.isArmed = false;
