@@ -137,7 +137,7 @@ public class HomeController {
         List<User> users = userService.findAll();
         int state;
 
-        if (securityLevel.equals("armed")) {
+        if (securityLevel.equals(Home.SECURITY_ARMED)) {
             state = -1;
         } else {
             state = 0;
