@@ -66,7 +66,6 @@ export default {
         });
     },
     getZones() {
-
       if(this.$store.state.user.home){
         var path = "zones?home_id=" + this.$store.state.user.home.id;
         axios
@@ -87,6 +86,11 @@ export default {
         "&zone_id=" +
         this.selectedZone.id;
       this.callAxios(path);
+
+      axios.get("/zones?home_id=" + this.$store.state.user.home.id)
+          .then(response => {
+            this.$store.state.zones = response.data
+          })
 
       if(this.selectedZone.id == 0){
         this.$store.commit('appendMessage',this.selectedUser.name+' left the house.');

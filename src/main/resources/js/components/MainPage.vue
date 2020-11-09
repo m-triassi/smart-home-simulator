@@ -23,8 +23,10 @@
                     <modules></modules>
                 </td>
                 <td>
-                    <div v-for="zone in zones" :key="zone.id" class="zone_box">
-                        {{ zone.name }}
+                    <div v-for="zone in this.$store.state.zones" :key="zone.id" class="zone_box">
+                      <p>{{ zone.name }}</p>
+                      <p>Users in this zone: {{ zone.users.map(user => { return user.name }).join(", ") }}</p>
+                      <p></p>
                     </div>
                     <p>House Layout</p>
                 </td>
@@ -79,7 +81,7 @@ export default {
             axios
                 .get('/zones?home_id=' + this.$store.state.user.home.id)
                 .then((response) => {
-                    this.zones = response.data;
+                  this.$store.state.zones = response.data;
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -127,7 +129,7 @@ export default {
     },
     mounted() {
         this.getUser();
-        setTimeout(this.getZones, 1000);
+        this.getZones()
     },
     data() {
         return {

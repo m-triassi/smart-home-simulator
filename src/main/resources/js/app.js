@@ -28,6 +28,7 @@ const store = new VueX.Store({
     outputMessage: "",
     isAway: false,
     user: {},
+    zones: [],
     simulationState: null,
     simulationStart: null,
   },
