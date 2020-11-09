@@ -18,7 +18,12 @@ import Vue from 'vue'
 import VueX from 'vuex'
 import vuetify from 'vuetify' // path to vuetify export
 import axios from 'axios';
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+library.add(faUserSecret)
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 // make axios globally available
 window.axios = axios
