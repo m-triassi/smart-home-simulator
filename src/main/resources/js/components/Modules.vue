@@ -1,5 +1,4 @@
 <template>
-
   <div v-if="this.$store.state.user.id != undefined">
     <tabs>
       <tab name="SHS">
@@ -19,13 +18,11 @@
       </tab>
     </tabs>
   </div>
-
 </template>
 
 <script>
-
 import Vue from 'vue';
-import {Tabs, Tab} from 'vue-tabs-component';
+import { Tabs, Tab } from 'vue-tabs-component';
 import core from './CoreModule';
 import security from './SecurityModule';
 import heating from './HeatingModule';
@@ -38,14 +35,13 @@ Vue.component('tab', Tab);
 export default {
   name: 'modules',
   components: {
-    'core': core,
-    'security': security,
-    'heating': heating,
-    'custom': custom,
-    'simulator': simulator,
+    core: core,
+    security: security,
+    heating: heating,
+    custom: custom,
+    simulator: simulator
   }
-}
-
+};
 </script>
 
 <style>
@@ -99,9 +95,9 @@ export default {
     background-color: #fff;
     border: solid 1px #ddd;
     border-radius: 3px 3px 0 0;
-    margin-right: .5em;
+    margin-right: 0.5em;
     transform: translateY(2px);
-    transition: transform .3s ease;
+    transition: transform 0.3s ease;
   }
 
   .tabs-component-tab.is-active {
@@ -115,7 +111,7 @@ export default {
   align-items: center;
   color: inherit;
   display: flex;
-  padding: .75em 1em;
+  padding: 0.75em 1em;
   text-decoration: none;
 }
 
@@ -129,7 +125,7 @@ export default {
     background-color: #fff;
     border: solid 1px #ddd;
     border-radius: 0 6px 6px 6px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, .05);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.05);
     padding: 4em 2em;
   }
 }
