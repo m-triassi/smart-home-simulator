@@ -6,7 +6,9 @@
   "scripts": {
     "dev": "cd src/main && npm run dev",
     "prod": "cd src/main && npm run prod",
-    "start": "cd src/main && npm run dev && cd ../../ && ./mvnw spring-boot:run"
+    "start": "cd src/main && npm run dev && cd ../../ && ./mvnw spring-boot:run",
+    "prettier": "prettier --write src/main/resources/",
+    "prettier:check": "prettier --check src/main/resources/"
   },
   "repository": {
     "type": "git",
@@ -30,7 +32,11 @@
   "devDependencies": {
     "@nuxtjs/vuetify": "^1.11.2",
     "deepmerge": "^4.2.2",
-    "prettier": "^2.1.2",
+    "eslint": "^7.14.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "husky": "^5.0.4",
+    "prettier": "^2.2.1",
     "sass": "^1.27.0",
     "sass-loader": "^10.0.3"
   }
