@@ -9,11 +9,16 @@
           v-model="name"
           type="text"
           placeholder="Home name"
-          :disabled="simulationEnabled"
+          :disabled="Boolean(this.$store.state.simulationState)"
         />
       </div>
 
-      <button class="btn" :disabled="simulationEnabled">Create Home</button>
+      <button
+        class="btn"
+        :disabled="Boolean(this.$store.state.simulationState)"
+      >
+        Create Home
+      </button>
     </form>
     <form @submit.prevent="joinHome()">
       <h3>Join Home</h3>
@@ -25,11 +30,16 @@
           v-model="joinId"
           type="text"
           placeholder="Home ID"
-          :disabled="simulationEnabled"
+          :disabled="Boolean(this.$store.state.simulationState)"
         />
       </div>
 
-      <button class="btn" :disabled="simulationEnabled">Join Home</button>
+      <button
+        class="btn"
+        :disabled="Boolean(this.$store.state.simulationState)"
+      >
+        Join Home
+      </button>
     </form>
     <form @submit.prevent="editHome()">
       <h3>Edit Home</h3>
@@ -41,7 +51,7 @@
           v-model="id"
           type="text"
           placeholder="Home id"
-          :disabled="simulationEnabled"
+          :disabled="Boolean(this.$store.state.simulationState)"
         />
       </div>
 
@@ -52,7 +62,7 @@
           v-model="temperature"
           type="text"
           placeholder="Outside temperature"
-          :disabled="simulationEnabled"
+          :disabled="Boolean(this.$store.state.simulationState)"
         />
       </div>
 
@@ -63,7 +73,7 @@
           v-model="date"
           type="date"
           placeholder="Date"
-          :disabled="simulationEnabled"
+          :disabled="Boolean(this.$store.state.simulationState)"
         />
       </div>
 
@@ -81,11 +91,16 @@
                 today.getSeconds()
             ]
           ]"
-          :disabled="simulationEnabled"
+          :disabled="Boolean(this.$store.state.simulationState)"
         />
       </div>
       <br />
-      <button class="btn" :disabled="simulationEnabled">Edit Home</button>
+      <button
+        class="btn"
+        :disabled="Boolean(this.$store.state.simulationState)"
+      >
+        Edit Home
+      </button>
     </form>
     <form
       @submit.prevent="createZone"
@@ -96,6 +111,7 @@
 
       <div class="signup-box">
         <input
+          :disabled="Boolean(this.$store.state.simulationState)"
           class="input"
           name="home_id"
           id="zone_home_id"
@@ -108,6 +124,7 @@
       <div class="signup-box">
         <!--        <input class='input' name="layout" id='zone_layout' type="file" placeholder="Zone layout"/>-->
         <input
+          :disabled="Boolean(this.$store.state.simulationState)"
           class="input"
           name="layout"
           id="zone_layout"
@@ -117,7 +134,12 @@
         />
       </div>
 
-      <button class="btn" :disabled="simulationEnabled">Create Zone</button>
+      <button
+        class="btn"
+        :disabled="Boolean(this.$store.state.simulationState)"
+      >
+        Create Zone
+      </button>
     </form>
     <br />
   </div>
@@ -144,7 +166,6 @@ export default {
         new Date().getSeconds()
     };
   },
-  props: ['user', 'simulationEnabled'],
   methods: {
     createHome() {
       var path = '/home/store?name=' + this.name;

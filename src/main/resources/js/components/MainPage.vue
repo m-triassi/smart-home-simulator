@@ -7,38 +7,68 @@
     <table class="main_table">
       <tr>
         <td class="profile_section" rowspan="2">
-          <p>
-            Simulation
-
-            <toggle-button
-              :value="simulationEnabled"
-              :labels="{ checked: 'On', unchecked: 'Off' }"
-              @change="onToggle()"
-              class="onOffSimul"
-              :disabled="$store.state.user.name == null"
-            />
-          </p>
-          <p></p>
-          <profile :simulationEnabled="simulationEnabled"></profile>
+          <p>Simulation</p>
+          <toggle-button
+            :sync="true"
+            :value="Boolean(this.$store.state.simulationState)"
+            :labels="{ checked: 'On', unchecked: 'Off' }"
+            @change="changeState()"
+            class="onOffSimul"
+            :disabled="$store.state.user.name == null"
+          />
+          <profile></profile>
         </td>
-
         <td>
           <p>Modules</p>
-
-          <modules :simulationEnabled="simulationEnabled"></modules>
+          <modules></modules>
         </td>
-
         <td>
-          <div v-for="zone in zones" :key="zone.id" class="zone_box">
-            {{ zone.name }}
+          <div
+            v-for="zone in this.$store.state.zones"
+            :key="zone.id"
+            class="zone_box"
+          >
+            <p>{{ zone.name }}</p>
+            <p>
+              Users in this zone:
+              {{
+                zone.users
+                  .map(user => {
+                    return user.name;
+                  })
+                  .join(', ')
+              }}
+            </p>
+            <span>Openings in this zone:</span>
+            <table>
+              <tr>
+                <td
+                  v-for="(open, index) in zone.openings.map(opening => {
+                    return displayOpening(opening);
+                  })"
+                  :key="index"
+                >
+                  <span :key="index" v-html="open"></span>
+                </td>
+              </tr>
+            </table>
+            <span>Lights in this zone:</span>
+            <div
+              v-for="(open, index) in zone.appliances.map(appliance => {
+                return displayLights(appliance);
+              })"
+              :key="index"
+            >
+              <span :key="index" v-html="open"></span>
+            </div>
+            <p></p>
           </div>
           <p>House Layout</p>
         </td>
       </tr>
       <td colspan="2">
         <p>Output Console</p>
-
-        <outputconsole :simulationEnabled="simulationEnabled"></outputconsole>
+        <outputconsole></outputconsole>
       </td>
       <tr></tr>
     </table>
@@ -70,6 +100,12 @@ export default {
             } else {
               this.$store.state.isAway = false;
             }
+            if (
+              this.$store.state.simulationState == null ||
+              this.$store.state.simulationState == undefined
+            ) {
+              this.$store.state.simulationState = this.$store.state.user.home.simulationState;
+            }
           });
         })
         .catch(function (error) {
@@ -81,7 +117,8 @@ export default {
         axios
           .get('/zones?home_id=' + this.$store.state.user.home.id)
           .then(response => {
-            this.zones = response.data;
+            this.$store.state.zones = response.data;
+            console.log('514zones ', this.$store.state.zones);
           })
           .catch(function (error) {
             console.log(error);
@@ -89,58 +126,87 @@ export default {
       }
     },
     onToggle() {
-      var speedselected = document
-        .querySelector('span[id="speedselected"]')
-        .textContent.split(' ')[1];
       this.simulationEnabled = !this.simulationEnabled;
-      var interval;
+
       if (this.simulationEnabled) {
         if (!window.location.href.includes('#shc')) {
           window.location.href = window.location.origin + '#shc';
         }
       }
-      interval = setInterval(() => {
-        if (this.simulationEnabled) {
+    },
+    changeState() {
+      var speedselected = document
+        .querySelector('span[id="speedselected"]')
+        .textContent.split(' ')[1];
+      if (this.$store.state.simulationState != null) {
+        if (this.$store.state.simulationState == 0) {
+          this.$store.state.simulationState = 1;
+          this.$store.state.user.home.simulationState = 1;
+          this.$store.commit('appendMessage', 'Simulation ON');
+          this.$store.state.simulationStart = Date.now();
           axios
             .post(
-              '/home/update?id=' +
-                this.$store.state.user.home.id +
-                '&dateToBeIncremented=' +
-                this.$store.state.user.home.date
+              '/home/update?simulation_state=0&id=' +
+                this.$store.state.user.home.id
             )
-            .then(response => {
-              this.zones = response.data;
-            })
             .catch(function (error) {
               console.log(error);
             });
-          this.getUser();
         } else {
-          clearInterval(interval);
-          interval = null;
+          this.$store.state.simulationState = 0;
+          this.$store.state.user.home.simulationState = 0;
+          this.$store.commit('appendMessage', 'Simulation OFF');
+          axios
+            .post(
+              '/home/update?simulation_state=0&id=' +
+                this.$store.state.user.home.id +
+                '&start_time=' +
+                this.$store.state.simulationStart +
+                '&multiplier=' +
+                speedselected
+            )
+            .then(
+              response =>
+                (this.$store.state.user.home.date = response.data.date)
+            )
+            .catch(function (error) {
+              console.log(error);
+            });
         }
-      }, 1000 / speedselected);
-    },
-    changeState() {
-      if (this.simulationEnabled === true) {
-        this.simulationEnabled = false;
-        this.$store.commit('appendMessage', 'Simulation OFF');
-      } else {
-        this.simulationEnabled = true;
-        this.$store.commit('appendMessage', 'Simulation ON');
       }
-
-      console.log('output: ' + this.$store.state.outputMessage);
-
-      localStorage.simulationEnabled = this.simulationEnabled;
-      console.log('simulationEnabled: ' + this.simulationEnabled);
     },
-    saveSimulationState() {
-      if (localStorage.simulationEnabled == undefined) {
-        this.simulationEnabled = false;
+    displayOpening(opening) {
+      var result;
+
+      if (opening.type == 'window') {
+        if (opening.state == 0) {
+          result =
+            '<img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/3190/3190083.svg">';
+        } else {
+          result =
+            '<img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/3190/3190150.svg ">';
+        }
       } else {
-        this.simulationEnabled = localStorage.simulationEnabled;
+        if (opening.state == 0) {
+          result =
+            '<img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/32/32533.svg">';
+        } else {
+          result =
+            '<img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/59/59801.svg ">';
+        }
       }
+      return result;
+    },
+    displayLights(appliance) {
+      var result;
+      if (appliance.state == 0) {
+        result =
+          '<img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/82/82648.svg ">';
+      } else {
+        result =
+          '<img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/3721/3721106.svg ">';
+      }
+      return result;
     }
   },
   mounted() {
@@ -149,7 +215,6 @@ export default {
   },
   data() {
     return {
-      simulationEnabled: false,
       zones: {}
     };
   }

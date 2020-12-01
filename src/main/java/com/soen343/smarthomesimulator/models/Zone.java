@@ -1,5 +1,6 @@
 package com.soen343.smarthomesimulator.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -26,6 +27,10 @@ public class Zone {
     @ManyToOne
     @JoinColumn(name = "home_id")
     public Home home;
+
+    @OneToMany(mappedBy = "zone")
+    @JsonIgnoreProperties({"home", "zone"})
+    private List<User> users;
 
     public Zone() {
         this.name = "Generic Zone";
@@ -78,5 +83,21 @@ public class Zone {
 
     public void setAppliances(List<Appliance> appliances) {
         this.appliances = appliances;
+    }
+
+    public Home getHome() {
+        return home;
+    }
+
+    public void setHome(Home home) {
+        this.home = home;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }

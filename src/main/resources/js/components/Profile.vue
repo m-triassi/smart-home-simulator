@@ -3,7 +3,7 @@
     <a
       href="edit/profile"
       class="EditButton"
-      :class="{ disabled: simulationEnabled }"
+      :class="{ disabled: Boolean(this.$store.state.simulationState) }"
     >
       Edit Profile
     </a>
@@ -35,10 +35,7 @@
           <h5>Location:</h5>
         </td>
         <td class="profileValue">
-          <h5 v-if="$store.state.user.zone.id != 0">
-            {{ $store.state.user.zone.name }}
-          </h5>
-          <h5 v-if="$store.state.user.zone.id == 0">Away</h5>
+          <h5>{{ $store.state.user.zone.name }}</h5>
         </td>
       </tr>
       <tr>
@@ -69,7 +66,6 @@ Vue.component('ToggleButton', ToggleButton);
 
 export default {
   name: 'profile',
-  props: ['simulationEnabled'],
   data() {
     return {};
   },

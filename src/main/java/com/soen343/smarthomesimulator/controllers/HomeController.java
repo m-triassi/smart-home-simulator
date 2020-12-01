@@ -1,5 +1,6 @@
 package com.soen343.smarthomesimulator.controllers;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.soen343.smarthomesimulator.models.Home;
 import com.soen343.smarthomesimulator.models.Opening;
 import com.soen343.smarthomesimulator.models.User;
@@ -10,6 +11,7 @@ import com.soen343.smarthomesimulator.services.UserService;
 import com.soen343.smarthomesimulator.services.ZoneService;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import jdk.jfr.StackTrace;
 
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,11 +69,24 @@ public class HomeController {
         return new JSONObject(this.response);
     }
 
+    /**
+     * Modify the parameters of a home / the context of the simulation
+     * @param id ID of the house to modify (Required)
+     * @param temperature Temperature of the enviornment outside of the home
+     * @param date the date and time the simulation is currently at
+     * @param startTime Unix Epoch when the simulation was turned on
+     * @param multiplier the speed at which time was moving
+     * @param securityLevel the security level that the home should be set to
+     * @param autoMode whether appliances like lights should automatically turn on when a user enters a zone in the home
+     * @param simulationState State of the sumulation, 0/1 for off/on
+     * @return JSONObject
+     */
     @PostMapping("/home/update")
     public JSONObject update(@RequestParam(value = "id") Long id,
                              @RequestParam(value = "temperature", required = false) Integer temperature,
-                             @RequestParam(value = "date", required = false) String date,
-                             @RequestParam(value = "dateToBeIncremented", required = false) String dateToBeIncremented,
+                             @RequestParam(value = "date", required = false) Timestamp date,
+                             @RequestParam(value = "start_time", required = false) Long startTime,
+                             @RequestParam(value = "multiplier", required = false) Integer multiplier,
                              @RequestParam(value = "security_level", required = false) String securityLevel,
                              @RequestParam(value = "auto_mode", required = false) Integer autoMode,
                              @RequestParam(value = "simulation_state", required = false) Integer simulationState) {
@@ -81,25 +97,18 @@ public class HomeController {
         }
 
         if (date != null) {
-            home.setDate(Timestamp.valueOf(date));
+            home.setDate(date);
         }
 
-
-        if (dateToBeIncremented != null) {
-            long inc = 1000;
-            dateToBeIncremented = dateToBeIncremented.replace("T", " ");
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
-            Date sdfToDate = null;
-            try {
-                sdfToDate = sdf.parse(dateToBeIncremented);
-                long millis = sdfToDate.getTime();
-                Timestamp incrementedDate = new Timestamp(millis + inc);
-                home.setDate(incrementedDate);
-            } catch (Exception e) {
-                System.err.print(e.toString());
-            }
+        if (startTime != null) {
+            long stopTime = System.currentTimeMillis();
+            long incrementedEpoch = 18000000 + home.getDate().getTime() + (stopTime - startTime) * multiplier;
+            String formatted = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(incrementedEpoch));
+            Timestamp incrementedDate = Timestamp.valueOf(formatted);
+            home.setDate(incrementedDate);
+            this.response.put("date", home.getDate().toString());
         }
-        
+
         if (securityLevel != null) {
             boolean armed = this.armAlarm(home, securityLevel);
             if (!armed) {
@@ -118,11 +127,17 @@ public class HomeController {
         return new JSONObject(this.response);
     }
 
+    /**
+     * Helper function that checks no users are present in the home as well as locking all the doors in the home
+     * @param home Home to have its alarm armed
+     * @param securityLevel level the home is being set too
+     * @return boolean, on fail (a user is still present) returns false
+     */
     private boolean armAlarm(Home home, String securityLevel) {
         List<User> users = userService.findAll();
         int state;
 
-        if (securityLevel.equals("armed")) {
+        if (securityLevel.equals(Home.SECURITY_ARMED)) {
             state = -1;
         } else {
             state = 0;
