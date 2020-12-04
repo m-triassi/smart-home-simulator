@@ -78,30 +78,9 @@ public class UserController {
                              @RequestParam(value = "password", required = false) String password) {
 
         User user = userService.findById(id);
-        if (homeId != null && homeService.exists(homeId)) {
-            Home home = homeService.findById(homeId);
-            user.setHome(home);
-        } else if (homeId != null) {
-            this.response.put("home", "Home supplied does not exist");
-        }
-
-        if (zoneId != null && zoneService.exists(zoneId)) {
-            Zone zone = zoneService.findById(zoneId);
-            user.setZone(zone);
-        } else if (zoneId != null && zoneId == 0) {
-            user.setZone(null);
-        } else if (zoneId != null) {
-            this.response.put("zone", "Zone supplied does not exist");
-        }
-
-        if (user.getHome().getAutoMode() == 1) {
-            for (Appliance appliance: user.getZone().getAppliances()) {
-                if (appliance != null && appliance.getType().equals("light") && appliance.getState() != 1) {
-                    appliance.setState(1);
-                    applianceService.save(appliance);
-                }
-            }
-        }
+        setUserHome(homeId, user);
+        setUserZone(zoneId, user);
+        getAppliancesFromZone(user);
 
         if (user.getHome().getSecurityLevel().equals(Home.SECURITY_ARMED) && user.getZone().getId() != 0) {
             this.response.put("success", "false");
@@ -121,12 +100,59 @@ public class UserController {
             user.setPassword(passwordEncoder().encode(password));
         }
 
-
         userService.save(user);
 
         return new JSONObject(this.response);
     }
 
+    /**
+     * Find Home object using the homeId. If found, save the user's home as the found home.
+     * 
+     * @param user Current logged in user
+     * @param homeId ID of home used to find Home object to be updated to
+     */
+    public void setUserHome(Long homeId, User user){
+        if (homeId != null && homeService.exists(homeId)) {
+            Home home = homeService.findById(homeId);
+            user.setHome(home);
+        } else if (homeId != null) {
+            this.response.put("home", "Home supplied does not exist");
+        }
+    }
+    
+    /**
+     * Find Zone object using the zoneId. If found, save the user's zone as the found zone.
+     * 
+     * @param user Current logged in user
+     * @param zoneId ID of zone used to find Zone object to be updated to
+     */
+    public void setUserZone(Long zoneId, User user){
+        if (zoneId != null && zoneService.exists(zoneId)) {
+            Zone zone = zoneService.findById(zoneId);
+            user.setZone(zone);
+        } else if (zoneId != null && zoneId == 0) {
+            user.setZone(null);
+        } else if (zoneId != null) {
+            this.response.put("zone", "Zone supplied does not exist");
+        }
+    }
+
+    /**
+    * Fetches appliances from user's current zone. Saves appliances to applianceService.
+    * 
+    * @param user Current logged in user
+    */
+    public void getAppliancesFromZone(User user){
+        if (user.getHome().getAutoMode() == 1) {
+            for (Appliance appliance: user.getZone().getAppliances()) {
+                if (appliance != null && appliance.getType().equals("light") && appliance.getState() != 1) {
+                    appliance.setState(1);
+                    applianceService.save(appliance);
+                }
+            }
+        }
+    }
+    
     /**
      * GET endpoint to <code>/user</code>
      * 
@@ -165,10 +191,10 @@ public class UserController {
      */
     @GetMapping("/user/current")
     public User currentUser() {
-
-
-        // case when no user is logged in, the principal is set to string 'anonymousUser' by default;
-        // if a user is logged in, cast the principal to UserDetailsModel
+        /**
+         * case when no user is logged in, the principal is set to string 'anonymousUser' by default;
+         * if a user is logged in, cast the principal to User
+         */ 
         if (SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass() == String.class)
             return null;
         else {
@@ -197,9 +223,6 @@ public class UserController {
                         @RequestParam(value = "isParent") Boolean isParent,
                         @RequestParam(value = "isChild") Boolean isChild,
                         @RequestParam(value = "isGuest") Boolean isGuest) {
-
-
-        // TODO: Input Validation
 
         password = this.passwordEncoder().encode(password);
         String role;

@@ -69,8 +69,10 @@
 
 <script>
 export default {
+  name: 'editprofile',
   data() {
     return {
+      id: '',
       name: '',
       email: '',
       password: '',
@@ -85,7 +87,21 @@ export default {
       if (this.isParent == '') this.isParent = false;
       if (this.isChild == '') this.isChild = false;
       if (this.isGuest == '') this.isGuest = false;
-      var path = '/user/service?';
+      var path =
+        '/user/update?id=' +
+        this.$store.state.user.id +
+        '?name=' +
+        this.name +
+        '&email=' +
+        this.email +
+        '&password=' +
+        this.password +
+        '&isParent=' +
+        this.isParent +
+        '&isChild=' +
+        this.isChild +
+        '&isGuest=' +
+        this.isGuest;
       axios
         .post(path)
         .then(function (response) {

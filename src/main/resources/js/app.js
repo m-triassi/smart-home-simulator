@@ -8,10 +8,10 @@ import security from './components/SecurityModule';
 import heating from './components/HeatingModule';
 import custom from './components/CustomModule';
 import simulator from './components/SimulatorModule';
-import login from './components/Login';
 import signup from './components/Signup';
 import editprofile from './components/Editprofile';
 import edithome from './components/Edithome';
+import houselayout from './components/HouseLayout';
 
 import Vue from 'vue';
 import VueX from 'vuex';
@@ -67,7 +67,8 @@ const app = new Vue({
     simulator,
     signup,
     editprofile,
-    edithome
+    edithome,
+    houselayout
   },
   methods: {
     getUser() {
