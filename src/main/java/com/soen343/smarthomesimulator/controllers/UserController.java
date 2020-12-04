@@ -78,7 +78,6 @@ public class UserController {
                              @RequestParam(value = "password", required = false) String password) {
 
         User user = userService.findById(id);
-        
         setUserHome(homeId, user);
         setUserZone(zoneId, user);
         getAppliancesFromZone(user);
@@ -192,31 +191,14 @@ public class UserController {
      */
     @GetMapping("/user/current")
     public User currentUser() {
-<<<<<<< Updated upstream
         /**
          * case when no user is logged in, the principal is set to string 'anonymousUser' by default;
          * if a user is logged in, cast the principal to User
          */ 
-=======
-<<<<<<< Updated upstream
-
-
-        // case when no user is logged in, the principal is set to string 'anonymousUser' by default;
-        // if a user is logged in, cast the principal to UserDetailsModel
->>>>>>> Stashed changes
         if (SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass() == String.class)
             return null;
         else {
             return (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-=======
-        // case when no user is logged in, the principal is set to string 'anonymousUser' by default;
-        // if a user is logged in, cast the principal to User
-        if(SecurityContextHolder.getContext().getAuthentication().getPrincipal().getClass() == String.class)
-            return null;
-        else{
-            User currentUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-            return currentUser;
->>>>>>> Stashed changes
         }
     }
 
