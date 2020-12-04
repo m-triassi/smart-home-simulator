@@ -1,22 +1,14 @@
 <template>
-
-    <div>
-
-        <p>This is the heating module</p>
-
-    </div>
-
+  <div>
+    <p>This is the heating module</p>
+  </div>
 </template>
 
 <script>
-
 export default {
-        name: 'heating',
-        data() {
-            return {
-                
-            };
-        }
-}
-
+  name: 'heating',
+  data() {
+    return {};
+  }
+};
 </script>

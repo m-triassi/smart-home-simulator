@@ -20,7 +20,7 @@
             <strong>to</strong>
             <select v-model="selectedZone">
               <option disabled value="">Select zone</option>
-              <option :key="0" :value="{id:0}">Leave</option>
+              <option :key="0" :value="{ id: 0 }">Leave</option>
               <option v-for="item in zonesList" :key="item.id" :value="item">
                 {{ item.name }}
               </option>
@@ -36,27 +36,27 @@
 </template>
 
 <script>
-import edithome from "./Edithome";
+import edithome from './Edithome';
 
 export default {
-  name: "simulator",
+  name: 'simulator',
   components: {
-    edithome: edithome,
+    edithome: edithome
   },
   data() {
     return {
-      selectedUser: "",
-      selectedZone: "",
+      selectedUser: '',
+      selectedZone: '',
       usersList: {},
       zonesList: {}
     };
   },
   methods: {
     getUsers() {
-      var path = "users";
+      var path = 'users';
       axios
         .get(path)
-        .then((response) => {
+        .then(response => {
           this.usersList = response.data;
         })
         .catch(function (error) {
@@ -64,34 +64,43 @@ export default {
         });
     },
     getZones() {
-
-      if(this.$store.state.user.home){
-        var path = "zones?home_id=" + this.$store.state.user.home.id;
+      if (this.$store.state.user.home) {
+        var path = 'zones?home_id=' + this.$store.state.user.home.id;
         axios
           .get(path)
-          .then((response) => {
+          .then(response => {
             this.zonesList = response.data;
           })
           .catch(function (error) {
             console.log(error);
           });
       }
-
     },
     moveUser() {
       var path =
-        "user/update?id=" +
+        'user/update?id=' +
         this.selectedUser.id +
-        "&zone_id=" +
+        '&zone_id=' +
         this.selectedZone.id;
       this.callAxios(path);
 
-      if(this.selectedZone.id == 0){
-        this.$store.commit('appendMessage',this.selectedUser.name+' left the house.');
-      }else{
-        this.$store.commit('appendMessage',this.selectedUser.name+' moved to '+this.selectedZone.name+'.');
-      }
+      axios
+        .get('/zones?home_id=' + this.$store.state.user.home.id)
+        .then(response => {
+          this.$store.state.zones = response.data;
+        });
 
+      if (this.selectedZone.id == 0) {
+        this.$store.commit(
+          'appendMessage',
+          this.selectedUser.name + ' left the house.'
+        );
+      } else {
+        this.$store.commit(
+          'appendMessage',
+          this.selectedUser.name + ' moved to ' + this.selectedZone.name + '.'
+        );
+      }
     },
     callAxios(path) {
       axios
@@ -102,7 +111,7 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
-    },
+    }
   },
   mounted() {
     this.getUsers();
@@ -112,12 +121,15 @@ export default {
 </script>
 
 <style>
-table, th, td {
+table,
+th,
+td {
   border: 1px solid black;
   border-collapse: collapse;
 }
 
-th, td {
+th,
+td {
   padding: 5px;
   text-align: left;
 }

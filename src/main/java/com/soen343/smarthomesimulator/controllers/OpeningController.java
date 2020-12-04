@@ -27,9 +27,9 @@ public class OpeningController {
     }
 
     /**
-     *
-     * @param zoneId
-     * @param type
+     * List all openings in a zone
+     * @param zoneId Zone to search for openings
+     * @param type filter by opening type
      * @return List
      */
     @GetMapping("/openings")

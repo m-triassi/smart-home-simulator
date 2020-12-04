@@ -79,6 +79,14 @@ public class ApplianceController {
         return new JSONObject(this.response);
     }
 
+    /**
+     * Modify the properties of a given appliance and presist changes to db
+     * @param applianceId ID of the appliance in question
+     * @param state State to change the appliance to: 0/1 for off/on, or some int to represent a temperature
+     * @param name New name to idenify the appliance by
+     * @param zoneId ID of the zone to move the appliance too
+     * @return JSONObject
+     */
     @PostMapping("/appliances/update")
     public JSONObject update(@RequestParam(value = "appliance_id") Long applianceId,
                              @RequestParam(value = "state", required = false) Integer state,

@@ -1,8 +1,10 @@
 package com.soen343.smarthomesimulator.controllers;
 
+import com.soen343.smarthomesimulator.models.Appliance;
 import com.soen343.smarthomesimulator.models.Home;
 import com.soen343.smarthomesimulator.models.User;
 import com.soen343.smarthomesimulator.models.Zone;
+import com.soen343.smarthomesimulator.services.ApplianceService;
 import com.soen343.smarthomesimulator.services.HomeService;
 import com.soen343.smarthomesimulator.services.UserService;
 import com.soen343.smarthomesimulator.services.ZoneService;
@@ -29,6 +31,9 @@ public class UserController {
 
     @Autowired
     ZoneService zoneService;
+
+    @Autowired
+    ApplianceService applianceService;
 
     private Map<String, String> response;
 
@@ -87,6 +92,21 @@ public class UserController {
             user.setZone(null);
         } else if (zoneId != null) {
             this.response.put("zone", "Zone supplied does not exist");
+        }
+
+        if (user.getHome().getAutoMode() == 1) {
+            for (Appliance appliance: user.getZone().getAppliances()) {
+                if (appliance != null && appliance.getType().equals("light") && appliance.getState() != 1) {
+                    appliance.setState(1);
+                    applianceService.save(appliance);
+                }
+            }
+        }
+
+        if (user.getHome().getSecurityLevel().equals(Home.SECURITY_ARMED) && user.getZone().getId() != 0) {
+            this.response.put("success", "false");
+            this.response.put("message", "Alarm has been triggered. Please leave the home and disable the alarm.");
+            return new JSONObject(this.response);
         }
 
         if (name != null) {
@@ -200,6 +220,11 @@ public class UserController {
         return new JSONObject(this.response);
     }
 
+    /**
+     * Allows for deleting of a user's account
+     * @param id The Id of a user to be destroyed
+     * @return JSONObject
+     */
     @PostMapping("/users/destroy")
     public JSONObject destroy(@RequestParam(value = "id") Long id) {
         User current = currentUser();
