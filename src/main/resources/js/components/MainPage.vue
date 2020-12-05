@@ -118,7 +118,6 @@ export default {
           .get('/zones?home_id=' + this.$store.state.user.home.id)
           .then(response => {
             this.$store.state.zones = response.data;
-            console.log('514zones ', this.$store.state.zones);
           })
           .catch(function (error) {
             console.log(error);

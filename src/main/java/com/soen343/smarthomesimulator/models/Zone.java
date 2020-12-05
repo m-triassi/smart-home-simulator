@@ -28,6 +28,10 @@ public class Zone {
     @JoinColumn(name = "home_id")
     public Home home;
 
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    public Group group;
+
     @OneToMany(mappedBy = "zone")
     @JsonIgnoreProperties({"home", "zone"})
     private List<User> users;
@@ -91,6 +95,14 @@ public class Zone {
 
     public void setHome(Home home) {
         this.home = home;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
     }
 
     public List<User> getUsers() {

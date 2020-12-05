@@ -28,6 +28,7 @@ create table zones
     name        varchar(255)    not null,
     temperature int default 21  not null,
     home_id     bigint unsigned null,
+    group_id    bigint unsigned null,
     constraint zones_home_id_foreign
         foreign key (home_id) references homes (id)
 )
@@ -46,6 +47,19 @@ create table appliances
         foreign key (home_id) references homes (id),
     constraint appliances_zone_id_foreign
         foreign key (zone_id) references zones (id)
+)
+    collate = utf8mb4_unicode_ci;
+
+create table home_groups
+(
+    id      bigint unsigned auto_increment
+        primary key,
+    name    varchar(255)    not null,
+    home_id bigint unsigned not null,
+    temperature int default 20 not null,
+    temperature_winter int default 21 not null,
+    temperature_summer int default 18 not null,
+    heating boolean null
 )
     collate = utf8mb4_unicode_ci;
 

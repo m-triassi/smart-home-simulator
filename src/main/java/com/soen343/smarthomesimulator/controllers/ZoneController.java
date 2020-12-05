@@ -122,7 +122,6 @@ public class ZoneController {
         return new JSONObject(this.response);
     }
 
-
     private String handleGet(Object obj, String field) {
         return new JSONObject((HashMap<String, String>) obj).get(field).toString();
     }
