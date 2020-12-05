@@ -23,47 +23,7 @@
           <modules></modules>
         </td>
         <td>
-          <div
-            v-for="zone in this.$store.state.zones"
-            :key="zone.id"
-            class="zone_box"
-          >
-            <p>{{ zone.name }}</p>
-            <p>
-              Users in this zone:
-              {{
-                zone.users
-                  .map(user => {
-                    return user.name;
-                  })
-                  .join(', ')
-              }}
-            </p>
-            <span>Openings in this zone:</span>
-            <table>
-              <tr>
-                <td
-                  v-for="(open, index) in zone.openings.map(opening => {
-                    return displayOpening(opening);
-                  })"
-                  :key="index"
-                >
-                  <span :key="index" v-html="open"></span>
-                </td>
-              </tr>
-            </table>
-            <span>Lights in this zone:</span>
-            <div
-              v-for="(open, index) in zone.appliances.map(appliance => {
-                return displayLights(appliance);
-              })"
-              :key="index"
-            >
-              <span :key="index" v-html="open"></span>
-            </div>
-            <p></p>
-          </div>
-          <p>House Layout</p>
+          <houselayout></houselayout>
         </td>
       </tr>
       <td colspan="2">
@@ -79,13 +39,15 @@
 import profile from './Profile';
 import modules from './Modules';
 import outputconsole from './OutputConsole';
+import houselayout from './HouseLayout'
 
 export default {
   name: 'mainpage',
   components: {
     profile: profile,
     modules: modules,
-    outputconsole: outputconsole
+    outputconsole: outputconsole,
+    houselayout: houselayout
   },
   methods: {
     getUser() {
@@ -175,39 +137,6 @@ export default {
         }
       }
     },
-    displayOpening(opening) {
-      var result;
-
-      if (opening.type == 'window') {
-        if (opening.state == 0) {
-          result =
-            '<img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/3190/3190083.svg">';
-        } else {
-          result =
-            '<img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/3190/3190150.svg ">';
-        }
-      } else {
-        if (opening.state == 0) {
-          result =
-            '<img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/32/32533.svg">';
-        } else {
-          result =
-            '<img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/59/59801.svg ">';
-        }
-      }
-      return result;
-    },
-    displayLights(appliance) {
-      var result;
-      if (appliance.state == 0) {
-        result =
-          '<img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/82/82648.svg ">';
-      } else {
-        result =
-          '<img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/3721/3721106.svg ">';
-      }
-      return result;
-    }
   },
   mounted() {
     this.getUser();
