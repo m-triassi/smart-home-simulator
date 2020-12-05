@@ -34,7 +34,8 @@ const store = new VueX.Store({
     user: {},
     zones: [],
     simulationState: null,
-    simulationStart: null
+    simulationStart: null,
+    houseLayoutKey: 0,
   },
   mutations: {
     appendMessage(state, message) {

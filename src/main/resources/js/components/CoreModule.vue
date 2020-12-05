@@ -256,6 +256,9 @@ export default {
       );
       this.houseItemsList = [];
       this.houseItemsSize = 0;
+
+      this.$store.state.houseLayoutKey += 1;
+
     }
   },
   mounted() {
