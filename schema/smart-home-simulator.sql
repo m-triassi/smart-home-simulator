@@ -29,6 +29,7 @@ create table zones
     temperature int default 21  not null,
     home_id     bigint unsigned null,
     group_id    bigint unsigned null,
+    overridden  boolean null,
     constraint zones_home_id_foreign
         foreign key (home_id) references homes (id)
 )

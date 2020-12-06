@@ -42,8 +42,9 @@ public class Group {
         this.heating = true;
     }
 
-    public Group(String name, int temperature, int temperatureWinter, int temperatureSummer, boolean heating){
+    public Group(String name, Home home, int temperature, int temperatureWinter, int temperatureSummer, boolean heating){
         this.name = name;
+        this.home = home;
         this.temperature = temperature;
         this.temperature_winter = temperatureWinter;
         this.temperature_summer = temperatureSummer;
