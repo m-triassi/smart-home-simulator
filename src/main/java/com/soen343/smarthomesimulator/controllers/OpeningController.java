@@ -1,10 +1,12 @@
 package com.soen343.smarthomesimulator.controllers;
 
+import com.soen343.smarthomesimulator.exceptions.UnauthorizedActionException;
 import com.soen343.smarthomesimulator.models.Opening;
 import com.soen343.smarthomesimulator.models.User;
 import com.soen343.smarthomesimulator.services.OpeningService;
 import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -52,7 +54,9 @@ public class OpeningController {
      * @return The response status of the operation.
      */
     @PostMapping("/openings/update")
-    public JSONObject update(@RequestParam(value = "id") Long id, @RequestParam(value = "state") Integer state) {
+    public JSONObject update(@RequestParam(value = "id") Long id, 
+                             @RequestParam(value = "state") Integer state, 
+                             @RequestParam(value= "blocked", required = false) Boolean blocked) {
         Opening opening = openingService.findById(id);
         User current = new UserController().currentUser();
 
@@ -60,6 +64,13 @@ public class OpeningController {
             this.response.put("success", "true");
             this.response.put("message", "You do not have permission to perform that action");
             return new JSONObject(this.response);
+        }
+
+        if(current != null && blocked != null) {
+            if(current.getRole() == "ROLE_CHILD" || current.getRole() == "ROLE_STRANGER"){
+                throw new UnauthorizedActionException();
+            }
+            opening.setBlocked(blocked);
         }
 
         opening.setState(state);

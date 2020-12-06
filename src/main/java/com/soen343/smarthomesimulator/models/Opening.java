@@ -28,6 +28,8 @@ public class Opening {
     @JsonIgnoreProperties("openings")
     private Zone zone;
     
+    private Boolean blocked;
+
     public Opening() {
         this.type = "door";
     }
@@ -68,5 +70,13 @@ public class Opening {
 
     public void setZone(Zone zone) {
         this.zone = zone;
+    }
+
+    public Boolean isBlocked() {
+        return blocked;
+    }
+
+    public void setBlocked(Boolean blocked) {
+        this.blocked = blocked;
     }
 }
