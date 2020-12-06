@@ -71,6 +71,7 @@ create table openings
     type    varchar(255)       not null,
     state   smallint default 0 not null,
     zone_id bigint unsigned    null,
+    blocked boolean null,
     constraint openings_zone_id_foreign
         foreign key (zone_id) references zones (id)
 )

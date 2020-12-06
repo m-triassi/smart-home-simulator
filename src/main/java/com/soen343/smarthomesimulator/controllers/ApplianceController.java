@@ -1,6 +1,7 @@
 package com.soen343.smarthomesimulator.controllers;
 
 
+import com.soen343.smarthomesimulator.exceptions.UnauthorizedActionException;
 import com.soen343.smarthomesimulator.models.Appliance;
 import com.soen343.smarthomesimulator.models.Home;
 import com.soen343.smarthomesimulator.models.User;
@@ -98,6 +99,10 @@ public class ApplianceController {
             this.response.put("success", "true");
             this.response.put("message", "You do not have permission to perform that action");
             return new JSONObject(this.response);
+        }
+
+        if(current != null && current.getRole().equals(User.ROLE_CHILD)){
+            throw new UnauthorizedActionException();
         }
 
         Appliance appliance = applianceService.findById(applianceId);
