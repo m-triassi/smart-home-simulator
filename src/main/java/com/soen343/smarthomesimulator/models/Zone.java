@@ -18,6 +18,8 @@ public class Zone {
 
     private Integer temperature = 21;
 
+    private Boolean overridden;
+
     @OneToMany(mappedBy = "zone", cascade = CascadeType.ALL)
     private List<Opening> openings;
 
@@ -27,6 +29,10 @@ public class Zone {
     @ManyToOne
     @JoinColumn(name = "home_id")
     public Home home;
+
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    public Group group;
 
     @OneToMany(mappedBy = "zone")
     @JsonIgnoreProperties({"home", "zone"})
@@ -91,6 +97,22 @@ public class Zone {
 
     public void setHome(Home home) {
         this.home = home;
+    }
+
+    public Group getGroup() {
+        return group;
+    }
+
+    public void setGroup(Group group) {
+        this.group = group;
+    }
+
+    public Boolean getOverridden() {
+        return overridden;
+    }
+
+    public void setOverridden(Boolean overridden) {
+        this.overridden = overridden;
     }
 
     public List<User> getUsers() {

@@ -2,6 +2,7 @@ package com.soen343.smarthomesimulator.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.soen343.smarthomesimulator.models.Appliance;
+import com.soen343.smarthomesimulator.models.Group;
 import com.soen343.smarthomesimulator.models.Opening;
 import com.soen343.smarthomesimulator.models.Zone;
 import com.soen343.smarthomesimulator.services.*;
@@ -42,6 +43,9 @@ public class ZoneController {
     @Autowired
     ApplianceService applianceService;
 
+    @Autowired
+    GroupService groupService;
+
     private Map<String, String> response;
 
     public ZoneController() {
@@ -56,6 +60,27 @@ public class ZoneController {
     @GetMapping("/zones")
     public List<Zone> index(@RequestParam(value = "home_id") Long homeId) {
         return zoneService.findByHome(homeId);
+    }
+
+    @PostMapping("zone/update")
+    public JSONObject update(@RequestParam(value = "zone_id") Long zoneId,
+                             @RequestParam(value = "group_id", required = false) Long groupId,
+                             @RequestParam(value = "overridden", required = false) Boolean overridden) {
+
+        
+        Zone zone = zoneService.findById(zoneId);
+
+        if(groupId != null && groupService.findById(groupId) != null){
+            Group group = groupService.findById(groupId);
+            zone.setGroup(group);
+        }
+
+        if(overridden != null){
+            zone.setOverridden(overridden);
+        }
+
+        zoneService.save(zone);
+        return new JSONObject(this.response);
     }
 
     /**
@@ -121,7 +146,6 @@ public class ZoneController {
         this.response.put("layout", parsed.toString());
         return new JSONObject(this.response);
     }
-
 
     private String handleGet(Object obj, String field) {
         return new JSONObject((HashMap<String, String>) obj).get(field).toString();
