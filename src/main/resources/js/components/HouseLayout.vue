@@ -9,7 +9,7 @@
     >
       <p>{{ zone.name }}</p>
       <p>
-        Users in this zone:
+        Users in this room:
         {{
           zone.users
             .map(user => {
@@ -18,7 +18,7 @@
             .join(', ')
         }}
       </p>
-      <span>Openings in this zone:</span>
+      <span>Openings in this room:</span>
       <table>
         <tr>
           <td
@@ -31,7 +31,7 @@
           </td>
         </tr>
       </table>
-      <span>Lights in this zone:</span>
+      <span>Lights in this room:</span>
       <div
         v-for="(open, index) in zone.appliances.map(appliance => {
           return displayLights(appliance);
@@ -40,6 +40,9 @@
       >
         <span :key="index" v-html="open"></span>
       </div>
+      <span>Current heating or air conditioning:</span>
+      <p></p>
+      <span v-html="displayHeating(zone.group.heating)"></span>
       <p></p>
     </div>
   </div>
@@ -82,7 +85,6 @@ export default {
           .get('/zones?home_id=' + this.$store.state.user.home.id)
           .then(response => {
             this.$store.state.zones = response.data;
-            console.log('514zones ', this.$store.state.zones);
           })
           .catch(function (error) {
             console.log(error);
@@ -119,6 +121,15 @@ export default {
       } else {
         result =
           '<img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/3721/3721106.svg ">';
+      }
+      return result;
+    },
+    displayHeating(heating){
+      var result;
+      if(heating){
+        result = '<img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/889/889940.svg ">';
+      } else {
+        result = '<img class="icon" src="https://www.flaticon.com/svg/static/icons/svg/1035/1035796.svg ">';
       }
       return result;
     }

@@ -65,6 +65,7 @@ public class ZoneController {
     @PostMapping("zone/update")
     public JSONObject update(@RequestParam(value = "zone_id") Long zoneId,
                              @RequestParam(value = "group_id", required = false) Long groupId,
+                             @RequestParam(value = "temperature", required = false) Integer temperature,
                              @RequestParam(value = "overridden", required = false) Boolean overridden) {
 
         
@@ -77,6 +78,10 @@ public class ZoneController {
 
         if(overridden != null){
             zone.setOverridden(overridden);
+        }
+
+        if(temperature != null){
+            zone.setTemperature(temperature);
         }
 
         zoneService.save(zone);

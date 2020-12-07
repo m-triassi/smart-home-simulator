@@ -1,5 +1,6 @@
 package com.soen343.smarthomesimulator.controllers;
 
+import com.soen343.smarthomesimulator.exceptions.UnauthorizedActionException;
 import com.soen343.smarthomesimulator.models.Appliance;
 import com.soen343.smarthomesimulator.models.Home;
 import com.soen343.smarthomesimulator.models.User;
@@ -82,7 +83,7 @@ public class UserController {
         setUserZone(zoneId, user);
         getAppliancesFromZone(user);
 
-        if (user.getHome().getSecurityLevel().equals(Home.SECURITY_ARMED) && user.getZone().getId() != 0) {
+        if (user.getHome().getSecurityLevel() != null && user.getHome().getSecurityLevel().equals(Home.SECURITY_ARMED) && user.getZone().getId() != 0) {
             this.response.put("success", "false");
             this.response.put("message", "Alarm has been triggered. Please leave the home and disable the alarm.");
             return new JSONObject(this.response);
@@ -256,7 +257,7 @@ public class UserController {
         } else {
             // TODO: Add exception that sets status code to 403 here
             this.response.put("success", "false");
-            this.response.put("message", "You do not have permission to perform that action");
+            throw new UnauthorizedActionException();
         }
         return new JSONObject(this.response);
     }
