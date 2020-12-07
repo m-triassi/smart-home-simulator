@@ -1,5 +1,7 @@
 com.soen343.smarthomesimulator
 com.soen343.smarthomesimulator.controllers
+com.soen343.smarthomesimulator.exceptions
 com.soen343.smarthomesimulator.models
+com.soen343.smarthomesimulator.observers
 com.soen343.smarthomesimulator.repositories
 com.soen343.smarthomesimulator.services
