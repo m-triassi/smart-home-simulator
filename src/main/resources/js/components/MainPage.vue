@@ -86,6 +86,10 @@ export default {
           });
       }
     },
+    getMonth(){
+      this.$store.state.currentMonth = parseInt((this.$store.state.user.home.date).split("-")[1])
+      console.log("Current month is "+this.$store.state.currentMonth)
+    },
     onToggle() {
       this.simulationEnabled = !this.simulationEnabled;
 
@@ -140,6 +144,7 @@ export default {
   mounted() {
     this.getUser();
     setTimeout(this.getZones, 1000);
+    setTimeout(this.getMonth, 1500);
   },
   data() {
     return {
