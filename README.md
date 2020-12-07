@@ -20,7 +20,7 @@ java -version
 
 
 #### MacOs
-- First you'll need [Homebrew](https://brew.sh/), if you already have it installed
+- First you'll need [Homebrew](https://brew.sh/), if you don't already have it installed
 ```bash
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 ```
@@ -48,16 +48,45 @@ If you need more comprehensive information, be sure to visit that page.
 ### MySql
 - Required Version: `^5.7`
 
-This project also requires a MySql Database to be running. 
+This project also requires a MySql Database to be running. For ease of setup, MySQL has been containerized.
+To run MySQL for this project, install [Docker by following the documentation](https://docs.docker.com/get-docker/)
 
-_TODO: setup instructions_
+once installed, start the Docker Daemon and run the following commands from the root of the project:
+```
+cd schema
+# For MacOS and Linux
+docker-compose up -d
+
+# For windows
+docker-compose.exe up -d
+``` 
+The container should now be running and available at `localhost:3307`. The database `smart-home-simulator` will be pre-created, but will have no schema.
+
+Connect to the database with the username `root` and password `root` via a MySQL Client, and import the .sql file found at `schema/smart-home-simulator.sql`
+
+
+Alternatively if you already have MySQL:5.7 installed, simply create a database called `smart-home-simulator` and import the above schema.
+
 
 ### Node
 - Required Version: `^14.0`
 
 Node is a Javascript runtime, its package manager holds all of our front end dependencies.
 
-_TODO: add install Instructions_
+Visit the Node [download page](https://nodejs.org/en/download/), and download the relevant installer for your system.
+After installation is complete ensure that NodeJS is on your `PATH`. You can check this by running:
+```bash
+node -v # Should be  v14.13.1
+npm -v # Should be 6.14.8
+```
+
+if you are running a linux distribution, like Ubuntu, you can use a package manager.
+```bash
+sudo apt update
+sudo apt install nodejs
+```
+
+For any systems not covered here, refer to the NodeJS [documentation](https://nodejs.org/en/download/package-manager/) 
 
 ### Application Properties
 Once set up, you'll need to add your database credentials to the `application.properties` file.
