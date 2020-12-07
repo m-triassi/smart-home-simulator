@@ -83,7 +83,7 @@ public class UserController {
         setUserZone(zoneId, user);
         getAppliancesFromZone(user);
 
-        if (user.getHome().getSecurityLevel().equals(Home.SECURITY_ARMED) && user.getZone().getId() != 0) {
+        if (user.getHome().getSecurityLevel() != null && user.getHome().getSecurityLevel().equals(Home.SECURITY_ARMED) && user.getZone().getId() != 0) {
             this.response.put("success", "false");
             this.response.put("message", "Alarm has been triggered. Please leave the home and disable the alarm.");
             return new JSONObject(this.response);
