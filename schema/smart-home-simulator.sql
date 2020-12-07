@@ -8,6 +8,8 @@ drop table if exists zones cascade;
 
 drop table if exists homes cascade;
 
+drop table if exists home_groups cascade;
+
 create table homes
 (
     id               bigint unsigned auto_increment

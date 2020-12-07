@@ -182,6 +182,9 @@ export default {
         ' ' +
         this.time;
       this.callAxios(path);
+      this.$store.state.user.home.date = this.date;
+      this.$store.state.currentMonth = parseInt((this.date).split("-")[1])
+
     },
     createZone(e) {
       console.log(this.layout);
