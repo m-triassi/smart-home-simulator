@@ -47,7 +47,7 @@
         </td>
         <td>
           <h5 v-if="overwrittenZones[zone.id] == 1">OW</h5>
-          <h5 v-else-if="$store.state.zones[zone.id - 1].overridden == 1">
+          <h5 v-else-if="$store.state.zones[zone.id - 1] && $store.state.zones[zone.id - 1].overridden == 1">
             OW
           </h5>
           <button
@@ -57,7 +57,7 @@
           >
             Restore</button
           ><button
-            v-else-if="$store.state.zones[zone.id - 1].overridden == 1"
+            v-else-if="$store.state.zones[zone.id - 1] && $store.state.zones[zone.id - 1].overridden == 1"
             :id="zone.id"
             v-on:click="restore($event)"
           >
