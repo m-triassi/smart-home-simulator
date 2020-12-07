@@ -64,9 +64,10 @@ The container should now be running and available at `localhost:3307`. The datab
 
 Connect to the database with the username `root` and password `root` via a MySQL Client, and import the .sql file found at `schema/smart-home-simulator.sql`
 
-
 Alternatively if you already have MySQL:5.7 installed, simply create a database called `smart-home-simulator` and import the above schema.
 
+**NOTE:** the application.properties.example file has been preconfigured out of the box to run with **Docker**.
+if you are not using the Docker set-up provided you **must** change the application.properties to reflect your system set-up
 
 ### Node
 - Required Version: `^14.0`
