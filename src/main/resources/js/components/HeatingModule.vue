@@ -18,7 +18,7 @@
         <td>Group ID</td>
         <td>Name</td>
         <td>Temperature</td>
-        <td>Overwritten</td>
+        <td>Overridden</td>
       </tr>
       <tr v-bind:key="zone.id" v-for="zone in $store.state.zones">
         <td>{{ zone.id }}</td>
@@ -46,9 +46,9 @@
           />
         </td>
         <td>
-          <h5 v-if="overwrittenZones[zone.id] == 1">OW</h5>
+          <h5 v-if="overwrittenZones[zone.id] == 1">overridden</h5>
           <h5 v-else-if="$store.state.zones[zone.id - 1].overridden == 1">
-            OW
+            overridden
           </h5>
           <button
             v-if="overwrittenZones[zone.id] == 1"
@@ -66,6 +66,60 @@
         </td>
       </tr>
     </table>
+
+    <form @submit.prevent="createGroup()">
+      <h3>Create Group</h3>
+      <div class="signup-box">
+        <input
+          class="input"
+          id="group_name"
+          v-model="name"
+          type="text"
+          placeholder="Group name"
+          :disabled="Boolean(this.$store.state.simulationState)"
+        />
+
+        <input
+          class="input"
+          id="temperature"
+          v-model="temperature"
+          type="text"
+          placeholder="Temperature (*C)"
+          :disabled="Boolean(this.$store.state.simulationState)"
+        />
+
+        <input
+          class="input"
+          id="winter"
+          v-model="winter"
+          type="text"
+          placeholder="Temperature Winter (*C)"
+          :disabled="Boolean(this.$store.state.simulationState)"
+        />
+
+        <input
+          class="input"
+          id="summer"
+          v-model="summer"
+          type="text"
+          placeholder="Temperature Summer (*C)"
+          :disabled="Boolean(this.$store.state.simulationState)"
+        />
+
+        <input type="radio" id="heating" value="1" v-model="picked" />
+        <label for="heating">Heating</label>
+        <br />
+        <input type="radio" id="cooling" value="0" v-model="picked" />
+        <label for="cooling">Cooling</label>
+        <br />
+      </div>
+      <button
+        class="btn"
+        :disabled="Boolean(this.$store.state.simulationState)"
+      >
+        Create Group
+      </button>
+    </form>
   </div>
 </template>
 
@@ -77,7 +131,7 @@ export default {
       inputTemp: [],
       inputGroup: [],
       overwrittenZones: [],
-      currentMonth: this.$store.state.user.home.date.split('-')[1],
+      currentMonth: this.$store.state.user.home.date.split('-')[1]
     };
   },
   methods: {
@@ -101,8 +155,8 @@ export default {
       console.log(
         'Inside heating module, month is ' + this.$store.state.currentMonth
       );
-      
-      return (this.currentMonth >= 3 && this.currentMonth <= 7);
+
+      return this.currentMonth >= 3 && this.currentMonth <= 7;
     },
     changeRoomTemperature(e, inputTemp) {
       console.log(
@@ -152,8 +206,31 @@ export default {
       this.$store.state.zones[e.target.id - 1].overridden = 0;
 
       axios
-        .post('/zone/update?zone_id=' + (e.target.id) + '&overridden=0')
+        .post('/zone/update?zone_id=' + e.target.id + '&overridden=0')
         .then(function (response) {})
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    createGroup() {
+      var path =
+        '/group/create?name=' +
+        this.name +
+        '&home_id=' +
+        this.$store.state.user.home.id +
+        '&temperature=' +
+        this.temperature +
+        '&winter=' +
+        this.winter +
+        '&summer=' +
+        this.summer +
+        '&heating=' +
+        this.picked;
+      axios
+        .post(path)
+        .then(function (response) {
+          window.location.href = '/';
+        })
         .catch(function (error) {
           console.log(error);
         });
